@@ -20,19 +20,8 @@ type TRegion = {
   id: number
 };
 
-// type TData = {
-//   retions: TRegion[] | null;
-// }
-
 export default Vue.extend({
   name: 'IndexPage',
-
-  // data() {
-  //   return {
-  //     retions: null
-  //   }
-  // },
-
   async asyncData({ $axios }) {
     const POKE_API_REGION_URL = "https://pokeapi.co/api/v2/region";
     const { results } = await $axios.$get(`${POKE_API_REGION_URL}?limit=3`);
