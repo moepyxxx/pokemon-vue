@@ -6,7 +6,7 @@
     <p>ポケモンを探しにいこう</p>
 
     <div v-for="(region, i) in regions" :key="i">
-      <button>{{ region.name }}</button>
+      <NuxtLink :to="'/region/' + region.id">{{ region.name }}</NuxtLink>
     </div>
 
   </div>
