@@ -72,9 +72,7 @@ export default Vue.extend({
         nickname: this.nickname,
         gender: this.checkGender
       }
-      console.log(pokemons);
       handPokemonsModule.addToOnHandPokemon(onHandPokemon);
-      console.log(pokemons);
       this.isFixFirstPokemon = true;
     }
   },
