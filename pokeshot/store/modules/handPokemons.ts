@@ -5,15 +5,12 @@ export type THandPokemon =  {
   pokemon: string;
   gender: 'オス' | 'メス' | '不明';
   nickname: string;
+  speciesId: number;
 }
 
 @Module({ dynamic: true, store, name: "handPokemons" })
 export default class HandPokemons extends VuexModule {
-  pokemons: THandPokemon[] = [{
-    pokemon: 'アチャモ',
-    gender: 'オス',
-    nickname: 'ほげ'
-  }];
+  pokemons: THandPokemon[] = [];
 
   get firstOnHandPokemon() {
     return this.pokemons[0];
