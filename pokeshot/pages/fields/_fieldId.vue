@@ -20,7 +20,6 @@
 <script lang="ts">
 import Vue from 'vue'
 
-
 type TData = {
   currentPosition: number,
   allPositionLength: number
@@ -39,12 +38,14 @@ export default Vue.extend({
       const nextPosition = this.currentPosition - 5;
       if (nextPosition >= 1) {
         this.currentPosition = nextPosition;
+        this.checkAppearWildPokemon();
       }
     },
     goBottom() {
       const nextPosition = this.currentPosition + 5;
       if (nextPosition <= 25) {
         this.currentPosition = nextPosition;
+        this.checkAppearWildPokemon();
       }
     },
     goLeft() {
@@ -56,6 +57,7 @@ export default Vue.extend({
       ;
       if (mostLefts.includes(this.currentPosition)) {
         this.currentPosition -= 1;
+        this.checkAppearWildPokemon();
       }
     },
     goRight() {
@@ -67,7 +69,16 @@ export default Vue.extend({
       ;
       if (mostRights.includes(this.currentPosition)) {
         this.currentPosition += 1;      
+        this.checkAppearWildPokemon();
       }
+    },
+    async checkAppearWildPokemon() {
+      const rand = Math.random();
+      const isAppear = rand < 0.3 ? true : false;
+      if (!isAppear) return;
+
+      const wildPokemon = await this.$PokeApi.getPokemon(['normal', 'grass', 'poison', 'ground', 'bug']);
+      console.log(wildPokemon);
     }
   }
 })
