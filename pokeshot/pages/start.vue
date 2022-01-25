@@ -37,10 +37,12 @@ const handPokemonsModule = getModule(HandPokemons);
 const pokemons = handPokemonsModule.pokemons;
 console.log(pokemons);
 
+
+type TSelectPokemon = { id: number, name: string };
 type TData = {
   pokemons: THandPokemon[],
   nickname: string,
-  selectPokemon: { id: number, name: string } | null,
+  selectPokemon: TSelectPokemon | null,
   isFixFirstPokemon: boolean
 }
 
@@ -56,16 +58,19 @@ export default Vue.extend({
   },
   computed: {
     changeSelectPokemon() {
-      return (pokemon) => {
+      return (pokemon: TSelectPokemon) => {
         this.selectPokemon = pokemon;
       }
     },
-    checkGender() {
+    checkGender(): ('オス' | 'メス' | '不明') {
       return 'オス';
     },
   },
   methods: {
     fixFirstPokemon() {
+
+      if (!this.selectPokemon) return;
+
       const onHandPokemon: THandPokemon = {
         speciesId: this.selectPokemon.id,
         pokemon: this.selectPokemon.name,
@@ -80,12 +85,12 @@ export default Vue.extend({
 
     const names = await Promise.all(pokemonSelectableInFirst.map(async id => {
       const pokemon: IPokemonSpecies = await $axios.$get(POKE_API_SPECIRS_PATH + id);
-      const nameObj: TName = pokemon.names.find( (nameobj: TName ) => {
+      const nameObj: TName|false = pokemon.names.find( (nameobj: TName ) => {
         const isJaNameObj: boolean = nameobj.language.name === POKE_API_LANG_KEY;
         if (!isJaNameObj) return false;
         return nameobj;
-      })
-      return { id, nameObj };
+      }) ?? false;
+      return { id, nameObj: nameObj as TName };
     }))
 
     return {
