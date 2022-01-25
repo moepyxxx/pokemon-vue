@@ -1,22 +1,10 @@
-export type TNameProp = {
-  name: string;
-}
-
-type TUrlProp = {
-  url: string;
-}
-
-type TNameUrlPair = TNameProp & TUrlProp;
+import { TGeneration, TNameProp, TNameUrlPair, TVersion } from "./common";
 
 type TColor = TNameUrlPair;
 
 type TEggGroup = TNameUrlPair;
 
 type TLanguage = TNameUrlPair;
-
-type TVersion = TNameUrlPair;
-
-type TGeneration = TNameUrlPair;
 
 type TGrouthRate = TNameUrlPair;
 
@@ -36,14 +24,14 @@ export type TName = {
 };
 
 type TFlavorTextEntrie = {
-  flavor_text: string;
-  language: TLanguage;
-  version: TVersion;
+  flavor_text: string,
+  language: TLanguage,
+  version: TVersion
 }
 
 type TGenera = {
-  genus: string;
-  language: TLanguage;
+  genus: string,
+  language: TLanguage
 }
 
 type TPalParkEncounter = {
