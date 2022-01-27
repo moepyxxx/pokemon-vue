@@ -30,14 +30,11 @@ import Vue from 'vue'
 import { getModule } from 'vuex-module-decorators'
 import HandPokemons, { THandPokemon } from "../store/modules/handPokemons"
 import { pokemonSelectableInFirst } from "../datas/pokemonSelectableInFirst"
-import { POKE_API_LANG_KEY, POKE_API_SPECIRS_PATH } from "../config/pokeapi"
-import IPokemonSpecies, { TName } from "../config/types/pokemonSpecies"
+import IPokemonSpecies from "../config/types/pokemonSpecies"
 import { TGender } from '../types/gender';
 
 const handPokemonsModule = getModule(HandPokemons);
 const pokemons = handPokemonsModule.pokemons;
-console.log(pokemons);
-
 
 type TSelectPokemon = { id: number, name: string };
 type TData = {
@@ -82,25 +79,16 @@ export default Vue.extend({
       this.isFixFirstPokemon = true;
     }
   },
-  async asyncData({ $axios }) {
+  async asyncData(ctx) {
 
-    const names = await Promise.all(pokemonSelectableInFirst.map(async id => {
-      const pokemon: IPokemonSpecies = await $axios.$get(POKE_API_SPECIRS_PATH + id);
-      const nameObj: TName|false = pokemon.names.find( (nameobj: TName ) => {
-        const isJaNameObj: boolean = nameobj.language.name === POKE_API_LANG_KEY;
-        if (!isJaNameObj) return false;
-        return nameobj;
-      }) ?? false;
-      return { id, nameObj: nameObj as TName };
+    const pokemons = await Promise.all(pokemonSelectableInFirst.map(async id => {
+      const pokemon: IPokemonSpecies = await ctx.$PokeApi.getPokemonSpeciesFromId(id);
+      const name: string = ctx.$Poke.getJaName(pokemon.names);
+      return { id, name };
     }))
 
     return {
-      pokemons: names.map(name => {
-        return {
-          id: name.id,
-          name: name.nameObj.name
-        }
-      })
+      pokemons
     }
 
   },
