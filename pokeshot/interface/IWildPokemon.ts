@@ -1,7 +1,7 @@
 import { TGender } from "~/types/gender";
 import { TPokemonType } from "~/types/pokemonType";
 
-interface IBase {
+export interface IBase {
   id: number;
   name: string;
   type: TPokemonType[];

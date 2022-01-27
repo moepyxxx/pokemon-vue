@@ -1,30 +1,23 @@
-import {VuexModule, Module, MutationAction, Mutation, Action} from 'vuex-module-decorators' 
+import {VuexModule, Module, Mutation, Action} from 'vuex-module-decorators' 
 import store from "@/store/store"
-import { TGender } from '~/types/gender';
-
-export type THandPokemon =  {
-  pokemon: string;
-  gender: TGender;
-  nickname: string;
-  speciesId: number;
-}
+import IHandPokemon from '~/interface/IHandPokemon';
 
 @Module({ dynamic: true, store, name: "handPokemons" })
 export default class HandPokemons extends VuexModule {
-  pokemons: THandPokemon[] = [];
+  pokemons: IHandPokemon[] = [];
 
   get firstOnHandPokemon() {
     return this.pokemons[0];
   }
 
   @Mutation
-  addToOnHandPokemon(pokemon: THandPokemon) {
+  addToOnHandPokemon(pokemon: IHandPokemon) {
     if (this.pokemons.length >= 6) return;
     this.pokemons.push(pokemon);
   }
 
   @Action
-  async fetchNewPokemon(pokemon: THandPokemon) {
+  async fetchNewPokemon(pokemon: IHandPokemon) {
     this.context.commit('addWheel', pokemon)
   }
 
