@@ -30,15 +30,15 @@ type TVersionGroup = TNameUrlPair;
 
 type TMoveLearnMethod = TNameUrlPair;
 
-type TVersionDetailGroup = {
+type TVersionGroupDetails = {
   level_learned_at: number,
   version_group: TVersionGroup,
+  move_learn_method: TMoveLearnMethod
 }
 
 type TMove = {
   move: TNameUrlPair,
-  version_detail_groups: TVersionDetailGroup[],
-  move_learn_method: TMoveLearnMethod
+  version_group_details: TVersionGroupDetails[]
 }
 
 type TSpecies = TNameUrlPair;
@@ -62,7 +62,12 @@ type TPastType = {
   types: TType[]
 }
 
-type IPokemon = {
+export type TSpritesKey = 'back_default' | 'back_female' | 'back_shiny' | 'back_shiny_female' | 
+                    'front_default' | 'front_female' | 'front_shiny' | 'front_shiny_female';
+
+type TSprites = { [key in TSpritesKey]: string };
+
+type IApiPokemon = {
   id: number,
   name: string,
   base_experience: number,
@@ -77,8 +82,9 @@ type IPokemon = {
   location_area_encounters: string,
   moves: TMove[],
   species: TSpecies,
+  sprites: TSprites,
   stats: TStat[],
   types: TType[],
   past_types: TPastType[]
 }
-export default IPokemon;
+export default IApiPokemon;

@@ -19,6 +19,8 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import IPokemon from '../../config/types/pokemon';
+import IWildPokemon from '../../interface/IWildPokemon';
 
 type TData = {
   currentPosition: number,
@@ -77,7 +79,9 @@ export default Vue.extend({
       const isAppear = rand < 0.3 ? true : false;
       if (!isAppear) return;
 
-      const wildPokemon = await this.$PokeApi.getPokemon(['normal', 'grass', 'poison', 'ground', 'bug']);
+      const pokemon: IPokemon = await this.$PokeApi.getPokemon(['normal', 'grass', 'poison', 'ground', 'bug']);
+      const level: number = Math.floor( Math.random() * ( 5 - 2 ) ) + 2;
+      const wildPokemon: IWildPokemon = await this.$Poke.getWildPokemon(pokemon.id, level);
       console.log(wildPokemon);
     }
   }

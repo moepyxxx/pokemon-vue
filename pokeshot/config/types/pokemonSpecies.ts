@@ -20,7 +20,7 @@ type TShape = TNameUrlPair;
 
 export type TName = {
   language: TLanguage,
-  name: TNameProp
+  name: string
 };
 
 type TFlavorTextEntrie = {
@@ -50,7 +50,7 @@ type TVarietie = {
   is_default: boolean
 }
 
-type IPokemonSpecies = {
+type IApiPokemonSpecies = {
   base_happiness: number,
   capture_rate: number,
   color: TColor,
@@ -77,4 +77,4 @@ type IPokemonSpecies = {
   shape: TShape,
   varieties: TVarietie[]
 }
-export default IPokemonSpecies;
+export default IApiPokemonSpecies;

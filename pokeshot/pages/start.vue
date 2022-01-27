@@ -32,6 +32,7 @@ import HandPokemons, { THandPokemon } from "../store/modules/handPokemons"
 import { pokemonSelectableInFirst } from "../datas/pokemonSelectableInFirst"
 import { POKE_API_LANG_KEY, POKE_API_SPECIRS_PATH } from "../config/pokeapi"
 import IPokemonSpecies, { TName } from "../config/types/pokemonSpecies"
+import { TGender } from '../types/gender';
 
 const handPokemonsModule = getModule(HandPokemons);
 const pokemons = handPokemonsModule.pokemons;
@@ -62,7 +63,7 @@ export default Vue.extend({
         this.selectPokemon = pokemon;
       }
     },
-    checkGender(): ('オス' | 'メス' | '不明') {
+    checkGender(): TGender {
       return 'オス';
     },
   },

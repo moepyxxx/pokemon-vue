@@ -1,9 +1,10 @@
 import {VuexModule, Module, MutationAction, Mutation, Action} from 'vuex-module-decorators' 
 import store from "@/store/store"
+import { TGender } from '~/types/gender';
 
 export type THandPokemon =  {
   pokemon: string;
-  gender: 'オス' | 'メス' | '不明';
+  gender: TGender;
   nickname: string;
   speciesId: number;
 }

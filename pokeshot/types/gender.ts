@@ -1,0 +1,1 @@
+export type TGender = 'オス' | 'メス' | '不明';
