@@ -236,17 +236,19 @@ export default Vue.extend({
       
       // [note]: モック処理
 
+      const damage = 10;
+
       return {
         effect: {
           type: 'damage',
           changeStatus: 'hp',
           raiseOrLower: 'lower',
-          changeValue: 10
+          changeValue: damage
         },
         messages: [
           `${behave.pokemon.base.name}は${behave.move.name}した！`,
           'こうかはばつぐんだ！',
-          `${behave.target.base.name}に5のダメージ`
+          `${behave.target.base.name}に${damage}のダメージ`
         ]
       }
     },
