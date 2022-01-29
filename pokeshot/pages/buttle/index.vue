@@ -35,7 +35,7 @@
       <div>
         <p><strong>味方</strong></p>
         <div>
-          <p>{{ this.onHand.base.name }}（Lv. {{ this.onHand.level }}）</p>
+          <p>{{ this.onHand.nickname }}（Lv. {{ this.onHand.level }}）</p>
           <img :src="this.onHand.base.imageUrl" alt="">
           <p>HP残り：{{ this.onHand.stats.hp }}</p>
         </div>
@@ -338,7 +338,7 @@ export default Vue.extend({
         // ゲームオーバー処理
       } else {
         this.serifs.push(`${this.opponent.base.name}はたおれた`);
-        this.serifs.push(`${this.onHand.base.name}は経験値を手に入れた`);
+        this.serifs.push(`${this.onHand.nickname}は経験値を手に入れた`);
       }
     }
   },
@@ -354,7 +354,7 @@ export default Vue.extend({
     this.onHand = this.setButtle(pokemons[0]);
 
     this.serifs.push(`あ！やせいの${this.opponent.base.name}があらわれた`);
-    this.serifs.push(`いけ、${this.onHand.base.name}！`);
+    this.serifs.push(`いけ、${this.onHand.nickname}！`);
 
     // [note]: 残りの手持ちポケモンをthis.otherPokemon格納
     // ポケモン入れ替えの際に活用するため
@@ -367,7 +367,7 @@ export default Vue.extend({
       this.serifs = [];
 
       if ( this.buttleStatus === 'isSelectBehave') {
-        this.serifs.push(`${this.onHand.base.name}はどうする？`);
+        this.serifs.push(`${this.onHand.nickname}はどうする？`);
       }
       if ( this.buttleStatus === 'behaveExecute') {
         this.excuteBehave();

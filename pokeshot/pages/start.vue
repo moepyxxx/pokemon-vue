@@ -2,7 +2,7 @@
   <div class="align-center">
 
     <p v-if="isFixFirstPokemon">
-      おめでとう、あなたは{{ selectPokemon.name }}（{{ nickname ? nickname : 'ニックネームなし' }}）を手に入れたよ
+      おめでとう、あなたは{{ selectPokemon.base.name }}{{ nickname ? '（' + nickname + '）' : '' }}を手に入れたよ
       <NuxtLink to="/fields/aaaa">くさむらに行ってみよう</NuxtLink>
     </p>
 
@@ -49,7 +49,7 @@ export default Vue.extend({
   data(): TData {
     return {
       pokemons,
-      nickname: '',
+      nickname: null,
       selectPokemon: null,
       isFixFirstPokemon: false
     }
@@ -73,14 +73,13 @@ export default Vue.extend({
 
       const onHandPokemon: IHandPokemon = {
         ...this.selectPokemon,
-        nickname: this.nickname
+        nickname: this.nickname ?? this.selectPokemon.base.name
       }
       handPokemonsModule.addToOnHandPokemon(onHandPokemon);
       this.isFixFirstPokemon = true;
     }
   },
   async asyncData(ctx) {
-
 
     const pokemons = await Promise.all(pokemonSelectableInFirst.map(async id => {
       const wildPokemon: IWildPokemon = await ctx.$Poke.getWildPokemon(id, 10);
