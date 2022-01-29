@@ -1,3 +1,4 @@
+import { TStatusAilment } from "./IOnButtle";
 import { IBase, IMove, IStats } from "./IWildPokemon";
 
 interface IHandPokemon {
@@ -19,5 +20,7 @@ interface IHandPokemon {
 
   nickname: string;
 
+  // 状態異常ステータス
+  statusAilment: TStatusAilment | null;
 }
 export default IHandPokemon;
