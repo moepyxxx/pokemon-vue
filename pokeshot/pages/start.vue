@@ -3,21 +3,21 @@
 
     <p v-if="isFixFirstPokemon">
       おめでとう、あなたは{{ selectPokemon.name }}（{{ nickname ? nickname : 'ニックネームなし' }}）を手に入れたよ
-      <NuxtLink to="/field">くさむらに行ってみよう</NuxtLink>
+      <NuxtLink to="/fields/aaaa">くさむらに行ってみよう</NuxtLink>
     </p>
 
     <div v-else>
       <p>どのポケモンを選びますか？</p>
       <br />
       <div v-for="pokemon in pokemons" :key="pokemon.id">
-        <button @click="changeSelectPokemon(pokemon)">{{ pokemon.name }}</button>
+        <button @click="changeSelectPokemon(pokemon)">{{ pokemon.base.name }}</button>
       </div>
       <br />
       <p>ニックネーム</p>
       <input v-model="nickname" type="text" style="border: 1px solid #000"><br />
       <p>現在の入力：{{ nickname }}</p>
       <br />
-      <p>現在選んでいるポケモン：{{ selectPokemon ? selectPokemon.name : '' }}</p>
+      <p>現在選んでいるポケモン：{{ selectPokemon ? selectPokemon.base.name : '' }}</p>
       <br />
       <button @click="fixFirstPokemon">きみにきめた！</button>
     </div>
@@ -28,22 +28,19 @@
 <script lang="ts">
 import Vue from 'vue'
 import { getModule } from 'vuex-module-decorators'
-import HandPokemons, { THandPokemon } from "../store/modules/handPokemons"
+import HandPokemons from "../store/modules/handPokemons"
 import { pokemonSelectableInFirst } from "../datas/pokemonSelectableInFirst"
-import { POKE_API_LANG_KEY, POKE_API_SPECIRS_PATH } from "../config/pokeapi"
-import IPokemonSpecies, { TName } from "../config/types/pokemonSpecies"
 import { TGender } from '../types/gender';
+import IWildPokemon from '../interface/IWildPokemon'
+import IHandPokemon from '../interface/IHandPokemon'
 
 const handPokemonsModule = getModule(HandPokemons);
 const pokemons = handPokemonsModule.pokemons;
-console.log(pokemons);
 
-
-type TSelectPokemon = { id: number, name: string };
 type TData = {
-  pokemons: THandPokemon[],
+  pokemons: IHandPokemon[],
   nickname: string,
-  selectPokemon: TSelectPokemon | null,
+  selectPokemon: IWildPokemon | null,
   isFixFirstPokemon: boolean
 }
 
@@ -57,9 +54,10 @@ export default Vue.extend({
       isFixFirstPokemon: false
     }
   },
+
   computed: {
     changeSelectPokemon() {
-      return (pokemon: TSelectPokemon) => {
+      return (pokemon: IWildPokemon) => {
         this.selectPokemon = pokemon;
       }
     },
@@ -67,40 +65,30 @@ export default Vue.extend({
       return 'オス';
     },
   },
+
   methods: {
     fixFirstPokemon() {
 
       if (!this.selectPokemon) return;
 
-      const onHandPokemon: THandPokemon = {
-        speciesId: this.selectPokemon.id,
-        pokemon: this.selectPokemon.name,
-        nickname: this.nickname,
-        gender: this.checkGender
+      const onHandPokemon: IHandPokemon = {
+        ...this.selectPokemon,
+        nickname: this.nickname
       }
       handPokemonsModule.addToOnHandPokemon(onHandPokemon);
       this.isFixFirstPokemon = true;
     }
   },
-  async asyncData({ $axios }) {
+  async asyncData(ctx) {
 
-    const names = await Promise.all(pokemonSelectableInFirst.map(async id => {
-      const pokemon: IPokemonSpecies = await $axios.$get(POKE_API_SPECIRS_PATH + id);
-      const nameObj: TName|false = pokemon.names.find( (nameobj: TName ) => {
-        const isJaNameObj: boolean = nameobj.language.name === POKE_API_LANG_KEY;
-        if (!isJaNameObj) return false;
-        return nameobj;
-      }) ?? false;
-      return { id, nameObj: nameObj as TName };
+
+    const pokemons = await Promise.all(pokemonSelectableInFirst.map(async id => {
+      const wildPokemon: IWildPokemon = await ctx.$Poke.getWildPokemon(id, 10);
+      return { ...wildPokemon };
     }))
 
     return {
-      pokemons: names.map(name => {
-        return {
-          id: name.id,
-          name: name.nameObj.name
-        }
-      })
+      pokemons
     }
 
   },

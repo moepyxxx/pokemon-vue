@@ -51,6 +51,7 @@ class Poke {
       individualStats,
       effortStats: 0,
       level,
+      statusAilment: null,
       baseExperience: pokemon.base_experience
     }
   }
@@ -111,28 +112,29 @@ class Poke {
     return Math.floor( Math.random() * ( max - min ) ) + min;
   }
 
-  async getMoves(pokemon: IApiPokemon, level: number): Promise<IMove[]> {
+  async getMoves(pokemon: IApiPokemon, currentLevel: number): Promise<IMove[]> {
     const moveIds: number[] = [];
 
-    for (let i = 0; i < pokemon.moves.length; i++) {
+    for (let level = 0; level < pokemon.moves.length; level++) {
       // レベル以上であれば処理終了
-      const learnLevel = pokemon.moves[i].version_group_details.find(
+      const learnMove = pokemon.moves[level].version_group_details.find(
         group => group.version_group.name === POKE_API_VERSION_KEY
       );
-      if (learnLevel === undefined) continue;
-      if (learnLevel.level_learned_at > level) {
-        break;
-      }
 
-      const id = this.getUrlFromId(pokemon.moves[i].move.url);
+      // 不要なデータを取り除く
+      if (learnMove === undefined) continue;
+      if (learnMove.move_learn_method.name === 'machine') continue;
+      if (learnMove.level_learned_at > currentLevel) continue;
+      if (learnMove.level_learned_at === 0) continue;
+
+      const id = this.getUrlFromId(pokemon.moves[level].move.url);
 
       if (moveIds.length >= 4) {
-        moveIds.unshift();
+        moveIds.shift();
       }
       moveIds.push(id);
     }
 
-    // const move: IMove = await this.pokeApi.getMove(id);
     const moves: IMove[] = await Promise.all(moveIds.map(async (id) => {
       const move: IApiMove = await this.pokeApi.getMove(id);
       return {

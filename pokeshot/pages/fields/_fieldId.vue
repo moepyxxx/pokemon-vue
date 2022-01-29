@@ -80,9 +80,7 @@ export default Vue.extend({
       if (!isAppear) return;
 
       const pokemon: IPokemon = await this.$PokeApi.getPokemon(['normal', 'grass', 'poison', 'ground', 'bug']);
-      const level: number = Math.floor( Math.random() * ( 5 - 2 ) ) + 2;
-      const wildPokemon: IWildPokemon = await this.$Poke.getWildPokemon(pokemon.id, level);
-      console.log(wildPokemon);
+      this.$router.push(`/buttle?id=${pokemon.id}`)
     }
   }
 })

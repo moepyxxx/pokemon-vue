@@ -1,7 +1,8 @@
 import { TGender } from "~/types/gender";
 import { TPokemonType } from "~/types/pokemonType";
+import { TStatusAilment } from "./IOnButtle";
 
-interface IBase {
+export interface IBase {
   id: number;
   name: string;
   type: TPokemonType[];
@@ -56,5 +57,8 @@ interface IWildPokemon {
 
   // 努力値
   effortStats: number;
+
+  // 状態異常ステータス
+  statusAilment: TStatusAilment | null;
 }
 export default IWildPokemon;
