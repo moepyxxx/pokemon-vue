@@ -1,10 +1,10 @@
 import Vue from "vue"
 import Vuex from "vuex"
-import HandPokemons from "./modules/handPokemons"
+import handPokemons from "./modules/handPokemons"
 
 Vue.use(Vuex)
 
 export interface IRootState {
-  handPokemons: HandPokemons
+  handPokemons: handPokemons
 }
 export default new Vuex.Store<IRootState>({})

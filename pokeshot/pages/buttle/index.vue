@@ -54,7 +54,6 @@ import IWildPokemon, { IMove } from '../../interface/IWildPokemon';
 import IOnButtle from '../../interface/IOnButtle';
 
 const handPokemonsModule = getModule(HandPokemons);
-const pokemons = handPokemonsModule.pokemons;
 
 type TButtleStatus = 'buttleStart' | 'isSelectBehave' | 'behaveExecute' | 'buttleEnd' | 'buttleSave';
 
@@ -111,7 +110,7 @@ export default Vue.extend({
       serifs: [],
       currentSerifIndex: 0,
       buttleStatus: 'buttleStart',
-      onHand: pokemons[0],
+      onHand: null,
       opponent: null,
       otherOnHands: [],
       winner: null,
@@ -132,7 +131,7 @@ export default Vue.extend({
   methods: {
 
     // バトル開始時にバトルに必要なポケモンの状態を保持する
-    setButtle<T extends (IHandPokemon|IWildPokemon)>(pokemon: T) : T & IOnButtle {
+    prepareButtleRequired<T extends (IHandPokemon|IWildPokemon)>(pokemon: T) : T & IOnButtle {
       const onButtleInit: IOnButtle = {
         battleStatusRank: {
           attack: 1,
@@ -148,6 +147,12 @@ export default Vue.extend({
       return {
         ...pokemon,
         ...onButtleInit
+      }
+    },
+
+    saveButtleStatusToOnHand<T extends IHandPokemon & IOnButtle>(onHand: T): IHandPokemon {
+      return {
+        ...onHand
       }
     },
 
@@ -339,6 +344,14 @@ export default Vue.extend({
       } else {
         this.serifs.push(`${this.opponent.base.name}はたおれた`);
         this.serifs.push(`${this.onHand.nickname}は経験値を手に入れた`);
+
+        // ストアへポケモンのステータスを格納し直して登録
+        const buttleEndedPokemons: IHandPokemon[] = [];
+        const savedPokemon: IHandPokemon = this.saveButtleStatusToOnHand(this.onHand);
+        buttleEndedPokemons.push(savedPokemon);
+
+        // [note]: anyになるの直したい
+        handPokemonsModule.updateOnHandPokemons(buttleEndedPokemons);
       }
     }
   },
@@ -350,8 +363,9 @@ export default Vue.extend({
     const wildPokemon: IWildPokemon = await this.$Poke.getWildPokemon(id, level);
 
     // バトル展開
-    this.opponent = this.setButtle(wildPokemon);
-    this.onHand = this.setButtle(pokemons[0]);
+    this.opponent = this.prepareButtleRequired(wildPokemon);
+    const pokemons = handPokemonsModule.pokemons;
+    this.onHand = this.prepareButtleRequired(this._.cloneDeep(pokemons[0]));
 
     this.serifs.push(`あ！やせいの${this.opponent.base.name}があらわれた`);
     this.serifs.push(`いけ、${this.onHand.nickname}！`);

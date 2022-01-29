@@ -1,4 +1,4 @@
-import {VuexModule, Module, Mutation, Action} from 'vuex-module-decorators' 
+import {VuexModule, Module, Mutation, Action, getModule} from 'vuex-module-decorators' 
 import store from "@/store/store"
 import IHandPokemon from '~/interface/IHandPokemon';
 
@@ -11,14 +11,14 @@ export default class HandPokemons extends VuexModule {
   }
 
   @Mutation
-  addToOnHandPokemon(pokemon: IHandPokemon) {
+  public addToOnHandPokemon(pokemon: IHandPokemon) {
     if (this.pokemons.length >= 6) return;
     this.pokemons.push(pokemon);
   }
 
-  @Action
-  async fetchNewPokemon(pokemon: IHandPokemon) {
-    this.context.commit('addWheel', pokemon)
+  @Mutation
+  public updateOnHandPokemons(pokemons: IHandPokemon[]) {
+    this.pokemons = pokemons;
   }
 
 }

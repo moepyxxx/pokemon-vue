@@ -20,7 +20,6 @@
 <script lang="ts">
 import Vue from 'vue'
 import IPokemon from '../../config/types/pokemon';
-import IWildPokemon from '../../interface/IWildPokemon';
 
 type TData = {
   currentPosition: number,
