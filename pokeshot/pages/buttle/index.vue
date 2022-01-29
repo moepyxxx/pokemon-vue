@@ -198,7 +198,6 @@ export default Vue.extend({
       this.checkPriority();
 
       // ダメージ計算・こうげき結果処理
-      console.log(this.behaves.length);
       for (let i = 0; i < this.behaves.length; i++) {
         const { effect, messages } = this.attack(this.behaves[i]);
         this.serifs.push(...messages);
@@ -269,7 +268,6 @@ export default Vue.extend({
       if (target.stats.hp <= 0) {
         target.stats.hp = 0;
       }
-
     },
 
     /**
