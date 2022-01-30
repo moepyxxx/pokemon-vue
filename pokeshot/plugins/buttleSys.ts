@@ -30,7 +30,7 @@ const defineButtleSystem: Plugin = ( ctx: Context, inject: Inject ) => {
 }
 export default defineButtleSystem
 
-class ButtleSystem {
+export class ButtleSystem {
 
   constructor () {
   }
@@ -224,7 +224,7 @@ class ButtleSystem {
     // 経験値計算（ポケモンwikiから概算）
     const experiense = opponentLevel * opponentBaseExperience / 5;
     const levelCorrection = ( 2 * opponentLevel + 10) / ( opponentLevel + onHandLevel + 10 );
-    return Math.round(experiense * levelCorrection ** 2.5 + 1);
+    return Math.round(experiense * (levelCorrection ** 2.5) + 1);
   }
 
 
