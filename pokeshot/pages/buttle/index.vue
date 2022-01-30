@@ -204,8 +204,13 @@ export default Vue.extend({
       } else {
 
         const exp = this.$ButtleSys.getExp(this.onHand.level, this.opponent.level, this.opponent.baseExperience);
-        const { isLevelUp, onHand } = this.$ButtleSys.saveExp(this.onHand, exp);
-        this.onHand = onHand;
+        const { isLevelUp, level, currentExp } = this.$ButtleSys.saveExp(this.onHand.level, this.onHand.currentExp, exp);
+
+        this.onHand = {
+          level,
+          currentExp
+        };
+        console.log(this.onHand);
 
         this.serifs.push(`${this.opponent.base.name}はたおれた`);
         this.serifs.push(`${this.onHand.nickname}は${exp}の経験値を手に入れた`);

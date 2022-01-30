@@ -236,22 +236,28 @@ export class ButtleSystem {
   /**
    * 経験値を自らのステータスへ反映する
    */
-  saveExp(onHand: IHandPokemon & IOnButtle, exp: number) : {
+  saveExp(currnetLevel: number, currentExp: number, exp: number) : {
+    level: number,
+    currentExp: number,
     isLevelUp: boolean,
-    onHand: IHandPokemon & IOnButtle
   } {
-    onHand.currentExp+= exp;
+    currentExp+= exp;
 
     let isLevelUp = false;
-    let level = onHand.level;
-    while (onHand.currentExp >= (level + 1) ** 2) {
-      onHand.level++;
+    let level = currnetLevel;
+    while (currentExp >= (level + 1) ** 3) {
       isLevelUp = true;
       level++;
     }
 
+    if (level >= 100) {
+      level = 100;
+      currentExp = 1000000;
+    }
+
     return {
-      onHand,
+      level,
+      currentExp,
       isLevelUp
     }
   }
