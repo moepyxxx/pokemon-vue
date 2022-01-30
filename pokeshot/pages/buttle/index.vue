@@ -210,10 +210,12 @@ export default Vue.extend({
           level,
           currentExp
         };
-        console.log(this.onHand);
 
         this.serifs.push(`${this.opponent.base.name}はたおれた`);
         this.serifs.push(`${this.onHand.nickname}は${exp}の経験値を手に入れた`);
+        if (isLevelUp) {
+          this.serifs.push(`${this.onHand.nickname}はLv.${level}に上がった！`);
+        }
 
         if (isLevelUp) {
           this.serifs.push(`レベルあがった。${this.onHand.level}になった！`);
