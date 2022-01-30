@@ -8,6 +8,9 @@ interface IHandPokemon {
 
   baseExperience: number;
 
+  // 次のレベルまでの経験値
+  currentExp: number;
+
   level: number;
 
   stats: IStats;

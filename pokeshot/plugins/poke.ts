@@ -8,6 +8,7 @@ import IWildPokemon, { IMove, IStats } from "~/interface/IWildPokemon";
 import { TGender } from "~/types/gender";
 import { TPokemonType } from "~/types/pokemonType";
 import { PokeApi } from './pokeapi';
+import IHandPokemon from "~/interface/IHandPokemon";
 
 const definePoke: Plugin = ( ctx: Context, inject: Inject ) => {
 
@@ -53,6 +54,15 @@ class Poke {
       level,
       statusAilment: null,
       baseExperience: pokemon.base_experience
+    }
+  }
+
+  getHandPokemon(pokemon: IWildPokemon, nickname?: string) : IHandPokemon {
+    return {
+      ...pokemon,
+      nickname: nickname ?? pokemon.base.name,
+      // 初期の次までの経験値は必ずゼロになる
+      currentExp: pokemon.level ** 2
     }
   }
 

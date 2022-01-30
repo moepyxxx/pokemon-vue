@@ -71,10 +71,7 @@ export default Vue.extend({
 
       if (!this.selectPokemon) return;
 
-      const onHandPokemon: IHandPokemon = {
-        ...this.selectPokemon,
-        nickname: this.nickname ?? this.selectPokemon.base.name
-      }
+      const onHandPokemon: IHandPokemon = this.$Poke.getHandPokemon(this.selectPokemon, this.nickname);
       handPokemonsModule.addToOnHandPokemon(onHandPokemon);
       this.isFixFirstPokemon = true;
     }
