@@ -77,8 +77,8 @@ export default Vue.extend({
     }
   },
   async asyncData(ctx) {
-
-    const pokemons = await Promise.all(pokemonSelectableInFirst.map(async id => {
+    
+  const pokemons = await Promise.all(pokemonSelectableInFirst.map(async id => {
       const wildPokemon: IWildPokemon = await ctx.$Poke.getWildPokemon(id, 10);
       return { ...wildPokemon };
     }))

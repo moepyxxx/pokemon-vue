@@ -50,8 +50,9 @@ import Vue from 'vue'
 import { getModule } from 'vuex-module-decorators'
 import HandPokemons from "../../store/modules/handPokemons"
 import IHandPokemon from '../../interface/IHandPokemon';
-import IWildPokemon, { IMove } from '../../interface/IWildPokemon';
+import IWildPokemon, { IMove, IStats } from '../../interface/IWildPokemon';
 import IOnButtle from '../../interface/IOnButtle';
+import { TBehave, TButtlePokemon, TEffect } from '../../plugins/buttleSys';
 
 const handPokemonsModule = getModule(HandPokemons);
 
@@ -60,26 +61,6 @@ type TButtleStatus = 'buttleStart' | 'isSelectBehave' | 'behaveExecute' | 'buttl
 type TController = {
   runCount: number;
   actionCount: number;
-}
-
-type TButtlePokemon = 'opponent' | 'onHand';
-
-type TAction = 'attack' | 'run' | 'tool' | 'changePokemon';
-
-type TBehave = {
-  buttllePokemon: TButtlePokemon;
-  action: TAction;
-  move?: IMove;
-  pokemon: (IWildPokemon|IHandPokemon) & IOnButtle,
-  target: (IWildPokemon|IHandPokemon) & IOnButtle
-}
-
-type TEffect = {
-  type: 'damage' | 'change';
-  // [note]: どんな値が入るか見当がつかないため保留
-  changeStatus: string;
-  raiseOrLower: 'raise' | 'lower';
-  changeValue: number;
 }
 
 type TData = {
@@ -130,32 +111,6 @@ export default Vue.extend({
 
   methods: {
 
-    // バトル開始時にバトルに必要なポケモンの状態を保持する
-    prepareButtleRequired<T extends (IHandPokemon|IWildPokemon)>(pokemon: T) : T & IOnButtle {
-      const onButtleInit: IOnButtle = {
-        battleStatusRank: {
-          attack: 1,
-          defense: 1,
-          specialAttack: 1,
-          specialDefense: 1,
-          rapidity: 1,
-          critical: 1,
-          accuracy: 1,
-          evasion: 1,
-        }
-      }
-      return {
-        ...pokemon,
-        ...onButtleInit
-      }
-    },
-
-    saveButtleStatusToOnHand<T extends IHandPokemon & IOnButtle>(onHand: T): IHandPokemon {
-      return {
-        ...onHand
-      }
-    },
-
     /**
      * 次のセリフを展開
      */
@@ -182,6 +137,11 @@ export default Vue.extend({
         }
     },
 
+
+    /**
+     * [note]: ステート管理のためここで保存
+     * バトルステータスを変更
+     */
     changeButtleStatus(status: TButtleStatus) {
       this.buttleStatus = status;
     },
@@ -190,7 +150,9 @@ export default Vue.extend({
      * 自分のふるまいをセット
      */
     selectOnHandBehave(move: IMove) {
-      this.selectBehave('onHand', move);
+      const onHandBehave: TBehave = this.$ButtleSys.selectBehave(this.onHand, this.opponent, 'onHand', move);
+      this.behaves.push(onHandBehave);
+
       this.changeButtleStatus('behaveExecute');
     },
 
@@ -199,15 +161,30 @@ export default Vue.extend({
      */
     excuteBehave() {
 
-      this.selectBehave('opponent');
-      this.checkPriority();
+      const opponentBehave: TBehave = this.$ButtleSys.selectBehave(this.onHand, this.opponent, 'opponent');
+      this.behaves.push(opponentBehave);
+
+      this.behaves = this.$ButtleSys.checkPriority(this.behaves);
 
       // ダメージ計算・こうげき結果処理
       for (let i = 0; i < this.behaves.length; i++) {
-        const { effect, messages } = this.attack(this.behaves[i]);
+        const { effect, messages } = this.$ButtleSys.attack(this.behaves[i]);
         this.serifs.push(...messages);
-        this.changeStats(effect, this.behaves[i].pokemon, this.behaves[i].target);
-        this.checkButtlePokemonStats();
+        
+        const { behavor, target } : {
+          behavor: IStats,
+          target: IStats
+        } = this.$ButtleSys.changeStats(effect, this.behaves[i].pokemon, this.behaves[i].target);
+
+        if (this.behaves[i].buttlePokemon === 'onHand') {
+          this.onHand.stats = {...behavor};
+          this.opponent.stats = {...target};
+        } else {
+          this.onHand.stats = {...target};
+          this.opponent.stats = {...behavor};
+        }
+
+        this.winner = this.$ButtleSys.checkButtlePokemonStats(this.onHand, this.opponent);
 
         // 勝者が決まったら処理を終了
         if (this.winner !== null) {
@@ -219,122 +196,6 @@ export default Vue.extend({
       this.behaves = [];
     },
 
-    /**
-     * ステータスを確認
-     */
-    checkButtlePokemonStats() {
-      if (this.onHand.stats.hp <= 0) {
-        this.winner = 'opponent';
-      }
-      if (this.opponent.stats.hp <= 0) {
-        this.winner = 'onHand';
-      }
-    },
-
-    /**
-     * こうげきをおこなう
-     */
-    attack(behave: TBehave): {
-      effect: TEffect,
-      messages: string[]
-    } {
-      
-      // [note]: モック処理
-      const damage = 10;
-
-      return {
-        effect: {
-          type: 'damage',
-          changeStatus: 'hp',
-          raiseOrLower: 'lower',
-          changeValue: damage
-        },
-        messages: [
-          `${behave.pokemon.base.name}は${behave.move.name}した！`,
-          'こうかはばつぐんだ！',
-          `${behave.target.base.name}に${damage}のダメージ`
-        ]
-      }
-    },
-
-    /**
-     * ふるまいによってポケモンのステータスを変更する
-     */
-    changeStats(
-      effect: TEffect,
-      pokemon: (IHandPokemon|IWildPokemon) & IOnButtle,
-      target: (IHandPokemon|IWildPokemon) & IOnButtle
-    ) {
-
-      // [note]: もっと条件分岐あるが一旦割愛
-      if ( effect.type === 'damage' ) {
-        target.stats.hp = effect.raiseOrLower === 'lower' ? target.stats.hp - effect.changeValue : target.stats.hp + effect.changeValue;
-      }
-
-      if (target.stats.hp <= 0) {
-        target.stats.hp = 0;
-      }
-    },
-
-    /**
-     * ふるまいを選ぶ
-     */
-    selectBehave(buttlePokemon: TButtlePokemon, move?: IMove) {
-
-      if (buttlePokemon === 'onHand' && !move) return;
-
-      let behave: TBehave;
-      if( buttlePokemon === 'onHand') {
-        behave = {
-          buttllePokemon: 'onHand',
-          pokemon: this.onHand,
-          target: this.opponent,
-          action: 'attack',
-          move
-        }
-      } else {
-        const opponentMoveCount: number = this.opponent.moves.length;
-        const moveIndex: number = Math.floor( Math.random() * ( opponentMoveCount - 0 ) ) + 0;
-        behave = {
-          buttllePokemon: 'opponent',
-          pokemon: this.opponent,
-          target: this.onHand,
-          action: 'attack',
-          move: this.opponent.moves[moveIndex]
-        }
-      }
-      this.behaves.push(behave);
-    },
-
-    /**
-     * 戦闘の優先順位を判定する
-     */
-    checkPriority() {
-      this.behaves = this.behaves.sort((next, cur) => {
-        // わざの優先度を確認
-        if (next.move.priority !== cur.move.priority) {
-          if (next.move.priority < cur.move.priority) return 1;
-          if (next.move.priority > cur.move.priority) return -1;
-        }
-
-        // ポケモンのすばやさを確認
-        if (next.pokemon.stats.speed !== cur.pokemon.stats.speed) {
-          if (next.pokemon.stats.speed < cur.pokemon.stats.speed) return 1;
-          if (next.pokemon.stats.speed > cur.pokemon.stats.speed) return -1;
-        }
-
-
-        // ランダム確認
-        const randomNum = Math.floor(Math.random() * 2);
-        if (randomNum === 0) {
-          return 1;
-        } else {
-          return -1;
-        }
-
-      });
-    },
-
     endButtle() {
       // [note]: あとあと経験値処理等を行う
 
@@ -342,24 +203,22 @@ export default Vue.extend({
         // ゲームオーバー処理
       } else {
 
-        console.log('現在のレベル', this.onHand.level);
-        console.log('現在の経験値合計', this.onHand.currentExp);
-        
-        const exp = this.getExp(this.onHand.level, this.opponent.level, this.opponent.baseExperience);
-        const { isLevelUp, level } = this.saveExp(exp);
+        const exp = this.$ButtleSys.getExp(this.onHand.level, this.opponent.level, this.opponent.baseExperience);
+        const { isLevelUp, onHand } = this.$ButtleSys.saveExp(this.onHand, exp);
+        this.onHand = onHand;
 
         this.serifs.push(`${this.opponent.base.name}はたおれた`);
         this.serifs.push(`${this.onHand.nickname}は${exp}の経験値を手に入れた`);
 
         if (isLevelUp) {
-          this.serifs.push(`レベルあがった。${level}になった！`);
+          this.serifs.push(`レベルあがった。${this.onHand.level}になった！`);
         } else {
           this.serifs.push(`レベルあがらん`);
         }
 
         // ストアへポケモンのステータスを格納し直して登録
         const buttleEndedPokemons: IHandPokemon[] = [];
-        const savedPokemon: IHandPokemon = this.saveButtleStatusToOnHand(this.onHand);
+        const savedPokemon: IHandPokemon = this.$ButtleSys.saveButtleStatusToOnHand(this.onHand);
         buttleEndedPokemons.push(savedPokemon);
 
         // [note]: anyになるの直したい
@@ -367,42 +226,6 @@ export default Vue.extend({
       }
     },
 
-    getExp(onHandLevel: number, opponentLevel: number, opponentBaseExperience) {
-      // 経験値計算（ポケモンwikiから概算）
-      const experiense = opponentLevel * opponentBaseExperience / 5;
-      const levelCorrection = ( 2 * opponentLevel + 10) / ( opponentLevel + onHandLevel + 10 );
-      return Math.round(experiense * levelCorrection ** 2.5 + 1);
-    },
-
-    saveExp(exp: number) : {
-      isLevelUp: boolean,
-      level: number
-    } {
-      this.onHand.currentExp+= exp;
-
-      let isLevelUp = false;
-      let level = this.onHand.level;
-      while (this.onHand.currentExp >= (level + 1) ** 2) {
-        this.level++;
-        isLevelUp = true;
-        level++;
-      }
-
-      return {
-        isLevelUp,
-        level
-      }
-    },
-
-    /**
-     * 次の場所までに必要な経験値
-     */
-    getNeedNextLevelExp(onHand: IHandPokemon) {
-      // [note]: 計算方法
-      // 100万タイプですべて統一
-      // https://wiki.xn--rckteqa2e.com/wiki/%E7%B5%8C%E9%A8%93%E5%80%A4%E3%82%BF%E3%82%A4%E3%83%97#100.E4.B8.87.E3.82.BF.E3.82.A4.E3.83.97
-      return (onHand.level + 1)** 2 - (onHand.currentExp - (onHand.level ** 2) );
-    }
   },
 
 
@@ -412,9 +235,9 @@ export default Vue.extend({
     const wildPokemon: IWildPokemon = await this.$Poke.getWildPokemon(id, level);
 
     // バトル展開
-    this.opponent = this.prepareButtleRequired(wildPokemon);
+    this.opponent = this.$nuxt.context.$ButtleSys.prepareButtleRequired(wildPokemon);
     const pokemons = handPokemonsModule.pokemons;
-    this.onHand = this.prepareButtleRequired(this._.cloneDeep(pokemons[0]));
+    this.onHand = this.$nuxt.context.$ButtleSys.prepareButtleRequired(this._.cloneDeep(pokemons[0]));
 
     this.serifs.push(`あ！やせいの${this.opponent.base.name}があらわれた`);
     this.serifs.push(`いけ、${this.onHand.nickname}！`);
@@ -432,12 +255,15 @@ export default Vue.extend({
       if ( this.buttleStatus === 'isSelectBehave') {
         this.serifs.push(`${this.onHand.nickname}はどうする？`);
       }
+
       if ( this.buttleStatus === 'behaveExecute') {
         this.excuteBehave();
       }
+
       if ( this.buttleStatus === 'buttleEnd') {
         this.endButtle();
       }
+      
       if (this.buttleStatus === 'buttleSave') {
         this.$router.push(`/fields/aaa`);
       }

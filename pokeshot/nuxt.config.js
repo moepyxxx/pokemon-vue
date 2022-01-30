@@ -33,6 +33,7 @@ export default {
   plugins: [
     '~/plugins/pokeapi',
     '~/plugins/poke',
+    '~/plugins/buttleSys',
     '~/plugins/vendor/lodash.ts'
   ],
 
