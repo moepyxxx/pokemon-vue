@@ -10,7 +10,7 @@ export type TButtlePokemon = 'opponent' | 'onHand';
 export type TBehave = {
   buttlePokemon: TButtlePokemon;
   action: TAction;
-  move?: IMove;
+  move: IMove;
   pokemon: (IWildPokemon|IHandPokemon) & IOnButtle,
   target: (IWildPokemon|IHandPokemon) & IOnButtle
 }
@@ -90,7 +90,7 @@ export class ButtleSystem {
 
 
       // ランダム確認
-      const randomNum = Math.floor(Math.random() * 2);
+      const randomNum = this.getRandNum(0, 1);
       if (randomNum === 0) {
         return 1;
       } else {
@@ -98,6 +98,11 @@ export class ButtleSystem {
       }
 
     });
+  }
+
+
+  getRandNum(min: number, max: number) {
+    return Math.floor( Math.random() * ( max - min ) ) + min;
   }
 
 
@@ -181,7 +186,7 @@ export class ButtleSystem {
    */
   selectBehave
     <T extends (IWildPokemon|IHandPokemon) & IOnButtle>
-    (onHand: T, opponent: T, buttlePokemon: TButtlePokemon, move?: IMove)
+    (onHand: T, opponent: T, buttlePokemon: TButtlePokemon, move: IMove|null)
     : TBehave|never
   {
 
