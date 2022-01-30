@@ -240,7 +240,6 @@ export default Vue.extend({
     } {
       
       // [note]: モック処理
-
       const damage = 10;
 
       return {
@@ -342,8 +341,21 @@ export default Vue.extend({
       if (this.winner === 'opponent') {
         // ゲームオーバー処理
       } else {
+
+        console.log('現在のレベル', this.onHand.level);
+        console.log('現在の経験値合計', this.onHand.currentExp);
+        
+        const exp = this.getExp(this.onHand.level, this.opponent.level, this.opponent.baseExperience);
+        const { isLevelUp, level } = this.saveExp(exp);
+
         this.serifs.push(`${this.opponent.base.name}はたおれた`);
-        this.serifs.push(`${this.onHand.nickname}は経験値を手に入れた`);
+        this.serifs.push(`${this.onHand.nickname}は${exp}の経験値を手に入れた`);
+
+        if (isLevelUp) {
+          this.serifs.push(`レベルあがった。${level}になった！`);
+        } else {
+          this.serifs.push(`レベルあがらん`);
+        }
 
         // ストアへポケモンのステータスを格納し直して登録
         const buttleEndedPokemons: IHandPokemon[] = [];
@@ -353,6 +365,43 @@ export default Vue.extend({
         // [note]: anyになるの直したい
         handPokemonsModule.updateOnHandPokemons(buttleEndedPokemons);
       }
+    },
+
+    getExp(onHandLevel: number, opponentLevel: number, opponentBaseExperience) {
+      // 経験値計算（ポケモンwikiから概算）
+      const experiense = opponentLevel * opponentBaseExperience / 5;
+      const levelCorrection = ( 2 * opponentLevel + 10) / ( opponentLevel + onHandLevel + 10 );
+      return Math.round(experiense * levelCorrection ** 2.5 + 1);
+    },
+
+    saveExp(exp: number) : {
+      isLevelUp: boolean,
+      level: number
+    } {
+      this.onHand.currentExp+= exp;
+
+      let isLevelUp = false;
+      let level = this.onHand.level;
+      while (this.onHand.currentExp >= (level + 1) ** 2) {
+        this.level++;
+        isLevelUp = true;
+        level++;
+      }
+
+      return {
+        isLevelUp,
+        level
+      }
+    },
+
+    /**
+     * 次の場所までに必要な経験値
+     */
+    getNeedNextLevelExp(onHand: IHandPokemon) {
+      // [note]: 計算方法
+      // 100万タイプですべて統一
+      // https://wiki.xn--rckteqa2e.com/wiki/%E7%B5%8C%E9%A8%93%E5%80%A4%E3%82%BF%E3%82%A4%E3%83%97#100.E4.B8.87.E3.82.BF.E3.82.A4.E3.83.97
+      return (onHand.level + 1)** 2 - (onHand.currentExp - (onHand.level ** 2) );
     }
   },
 
