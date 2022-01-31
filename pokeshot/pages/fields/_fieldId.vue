@@ -8,10 +8,10 @@
       </span>
     </div>
     <div class="controller">
-      <button @click="goTop">上</button>
-      <button @click="goLeft">左</button>
-      <button @click="goRight">右</button>
-      <button @click="goBottom">下</button>
+      <button @click="controllTop">上</button>
+      <button @click="controllLeft">左</button>
+      <button @click="controllRight">右</button>
+      <button @click="controllBottom">下</button>
     </div>
   </div>
 </template>
@@ -21,9 +21,11 @@
 import Vue from 'vue'
 import IPokemon from '../../config/types/pokemon';
 
+type TDirection = 'top' | 'right' | 'left' | 'bottom';
 type TData = {
   currentPosition: number,
-  allPositionLength: number
+  allPositionLength: number,
+  direction: TDirection;
 }
 
 export default Vue.extend({
@@ -31,46 +33,69 @@ export default Vue.extend({
   data(): TData {
     return {
       currentPosition: 13,
-      allPositionLength: 25
+      allPositionLength: 25,
+      direction: 'bottom'
     }
   },
   methods: {
-    goTop() {
-      const nextPosition = this.currentPosition - 5;
-      if (nextPosition >= 1) {
-        this.currentPosition = nextPosition;
-        this.checkAppearWildPokemon();
+    changeDirection(direction: TDirection) {
+      this.direction = direction;
+    },
+    controllTop() {
+
+      if (this.direction !== 'top') {
+        this.changeDirection('top');
+      } else {
+        const nextPosition = this.currentPosition - 5;
+        if (nextPosition >= 1) {
+          this.currentPosition = nextPosition;
+          this.checkAppearWildPokemon();
+        }
       }
     },
-    goBottom() {
-      const nextPosition = this.currentPosition + 5;
-      if (nextPosition <= 25) {
-        this.currentPosition = nextPosition;
-        this.checkAppearWildPokemon();
+    controllBottom() {
+
+      if (this.direction !== 'bottom') {
+        this.changeDirection('bottom');
+      } else {
+        const nextPosition = this.currentPosition + 5;
+        if (nextPosition <= 25) {
+          this.currentPosition = nextPosition;
+          this.checkAppearWildPokemon();
+        }
       }
     },
-    goLeft() {
-      const mostLefts: number[] = Array.from(new Array(this.allPositionLength))
-        .map((_, i) => i + 1)
-        .filter((number: number) => {
-          if (number % 5 !== 1) return number;  
-        })
-      ;
-      if (mostLefts.includes(this.currentPosition)) {
-        this.currentPosition -= 1;
-        this.checkAppearWildPokemon();
+    controllLeft() {
+      if (this.direction !== 'left') {
+        this.changeDirection('left');
+
+      } else {
+        const mostLefts: number[] = Array.from(new Array(this.allPositionLength))
+          .map((_, i) => i + 1)
+          .filter((number: number) => {
+            if (number % 5 !== 1) return number;  
+          })
+        ;
+        if (mostLefts.includes(this.currentPosition)) {
+          this.currentPosition -= 1;
+          this.checkAppearWildPokemon();
+        }
       }
     },
-    goRight() {
-      const mostRights: number[] = Array.from(new Array(this.allPositionLength))
-        .map((_, i) => i + 1)
-        .filter((number: number) => {
-          if (number % 5 !== 0) return number;
-        })
-      ;
-      if (mostRights.includes(this.currentPosition)) {
-        this.currentPosition += 1;      
-        this.checkAppearWildPokemon();
+    controllRight() {
+      if (this.direction !== 'right') {
+        this.changeDirection('right');
+      } else {
+        const mostRights: number[] = Array.from(new Array(this.allPositionLength))
+          .map((_, i) => i + 1)
+          .filter((number: number) => {
+            if (number % 5 !== 0) return number;
+          })
+        ;
+        if (mostRights.includes(this.currentPosition)) {
+          this.currentPosition += 1;      
+          this.checkAppearWildPokemon();
+        }
       }
     },
     async checkAppearWildPokemon() {
