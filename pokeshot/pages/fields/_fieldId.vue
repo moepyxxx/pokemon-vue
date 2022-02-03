@@ -31,10 +31,10 @@
       </span>
     </div>
     <div class="controller">
-      <button @click="controllAbove">上</button>
-      <button @click="controllLeft">左</button>
-      <button @click="controllRight">右</button>
-      <button @click="controllBelow">下</button>
+      <button @click="controllDirection('above')">上</button>
+      <button @click="controllDirection('left')">左</button>
+      <button @click="controllDirection('right')">右</button>
+      <button @click="controllDirection('below')">下</button>
     </div>
   </div>
 </template>
@@ -44,13 +44,12 @@
 import Vue from 'vue'
 import IPokemon from '../../config/types/pokemon';
 import { douro101Objects, douro101Fields } from '../../datas/field/douro/101';
-import { TField, TFieldObject } from '../../datas/field/types';
+import { TDirection, TField, TFieldObject, TObjectAction } from '../../datas/field/types';
 
-type TDirection = 'above' | 'right' | 'left' | 'below';
 type TData = {
   currentPosition: number,
   allPositionLength: number,
-  direction: TDirection;
+  direction: TDirection,
   position: {
     col: number,
     row: number
@@ -74,6 +73,7 @@ export default Vue.extend({
       fieldObjects: douro101Objects ?? null
     }
   },
+  
   methods: {
     isFieldGrass(fieldIndex: number): boolean {
       return this.fields[fieldIndex].type === 'grass';
@@ -84,6 +84,7 @@ export default Vue.extend({
       if (!object) return false;
       return object.objectType === 'forestwall' && object.startMark;
     },
+
     isStoneStep(fieldIndex: number): boolean {
       const object: TFieldObject | null = this.fieldObjects[fieldIndex];
       if (!object) return false;
@@ -94,66 +95,91 @@ export default Vue.extend({
       this.direction = direction;
     },
 
-    controllAbove() {
+    checkAction(currentPosition: number, nextPosition: number, reversedirection: TDirection): boolean {
 
-      if (this.direction !== 'above') {
-        this.changeDirection('above');
-      } else {
-        const nextPosition = this.currentPosition - this.position.row;
-        if (nextPosition >= 0) {
-          this.currentPosition = nextPosition;
-          this.checkAppearWildPokemon();
-        }
+      let direction: TDirection = 'right';
+      switch (reversedirection) {
+        case 'left':
+          direction = 'right';
+          break;
+        case 'right':
+          direction = 'left';
+          break;
+        case 'above': 
+          direction = 'below';
+          break;
+        case 'below':
+          direction = 'above';
+          break;
       }
+
+      if ( this.fieldObjects[nextPosition] === null || 
+        this.fieldObjects[nextPosition].actions.length === 0 ) {
+        return false;
+      }
+
+      const action: TObjectAction | false = this.fieldObjects[nextPosition].actions?.find(
+        (action: TObjectAction) => action.direction === direction
+      );
+
+      if (!action) {
+        return false;
+      }
+
+      if (action.execute === 'stop') {
+        // 何もしない
+        return true;
+      }
+
+      return false;
     },
 
-    controllBelow() {
-      if (this.direction !== 'below') {
-        this.changeDirection('below');
-      } else {
-        const nextPosition = this.currentPosition + this.position.row;
-        if (nextPosition < this.allPositionLength) {
-          this.currentPosition = nextPosition;
-          this.checkAppearWildPokemon();
-        }
+    controllDirection(direction: TDirection) {
+
+      if (this.direction !== direction) {
+        this.changeDirection(direction);
+        return;
       }
+
+      let nextPosition: number = 0;
+      switch (direction) {
+        case 'above':
+          nextPosition = this.getNextAbovePosition();
+          break;
+        case 'below':
+          nextPosition = this.getNextBelowPosition();
+          break;
+        case 'left':
+          nextPosition = this.getNextLeftPosition();
+          break;
+        case 'right':
+          nextPosition = this.getNextRightPosition();
+      }
+
+      const action: boolean = this.checkAction(this.currentPosition, nextPosition, direction);
+
+      if (action) return;
+
+      this.currentPosition = nextPosition;
+      this.checkAppearWildPokemon();
     },
 
-    controllLeft() {
-      if (this.direction !== 'left') {
-        this.changeDirection('left');
-
-      } else {
-        const mostLefts: number[] = Array.from(new Array(this.allPositionLength))
-          .map((_, i) => i)
-          .filter((number: number) => {
-            if (number % this.position.row !== 0) return true;  
-          })
-        ;
-        if (mostLefts.includes(this.currentPosition)) {
-          this.currentPosition -= 1;
-          this.checkAppearWildPokemon();
-        }
-      }
+    getNextLeftPosition(): number {
+      return this.currentPosition - 1;
     },
 
-    controllRight() {
-      if (this.direction !== 'right') {
-        this.changeDirection('right');
-      } else {
-        const mostRights: number[] = Array.from(new Array(this.allPositionLength))
-          .map((_, i) => i)
-          .filter((number: number) => {
-            if (number % this.position.row !== this.position.row - 1) return true;
-          })
-        ;
-        if (mostRights.includes(this.currentPosition)) {
-          this.currentPosition += 1;      
-          this.checkAppearWildPokemon();
-        }
-      }
+    getNextRightPosition(): number {
+      return this.currentPosition + 1;
     },
 
+    getNextAbovePosition(): number {
+      return this.currentPosition - this.position.row;
+    },
+
+    getNextBelowPosition(): number {
+      return this.currentPosition + this.position.row;
+    },
+    
     async checkAppearWildPokemon() {
       // [note]: damy
       return;
