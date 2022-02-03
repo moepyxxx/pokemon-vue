@@ -131,6 +131,11 @@ export default Vue.extend({
         return true;
       }
 
+      if (action.execute === 'jumpdown') {
+        this.jumpDown();
+        return true;
+      }
+
       return false;
     },
 
@@ -164,6 +169,10 @@ export default Vue.extend({
       this.checkAppearWildPokemon();
     },
 
+    jumpDown() {
+      this.currentPosition = this.currentPosition + (this.position.row * 2);
+    },
+
     getNextLeftPosition(): number {
       return this.currentPosition - 1;
     },
@@ -179,7 +188,7 @@ export default Vue.extend({
     getNextBelowPosition(): number {
       return this.currentPosition + this.position.row;
     },
-    
+
     async checkAppearWildPokemon() {
       // [note]: damy
       return;
