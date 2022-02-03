@@ -1,15 +1,13 @@
 <template>
   <div>
     <p>フィールドを歩いてみよう</p>
-      {{ fields.length }}
-            <img class="grass" src="/assets/img/fieldobject/stonestep.svg" alt="くさむら">
 
     <div class="field">
       
       <span v-for="(field, fieldIndex) in fields" :key="fieldIndex" :class="field.type">
 
         <div v-if="fieldIndex === currentPosition">
-          <img :src="require(`~/assets/img/hero/girl-${direction}.gif`)" />
+          <img class="hero" :src="require(`~/assets/img/hero/girl-${direction}.gif`)" />
         </div>
 
         <img
@@ -19,10 +17,16 @@
           alt="くさむら"
         >
         <img
-          class="grass"
-          v-if="isFieldStoneStep(fieldIndex)"
+          class="stonestep"
+          v-if="isStoneStep(fieldIndex)"
           :src="require('@/assets/img/fieldobject/stonestep.svg')"
-          alt="くさむら"
+          alt="段差"
+        >
+        <img
+          class="forestwall"
+          v-if="isForestWall(fieldIndex)"
+          :src="require('@/assets/img/fieldobject/forestwall.svg')"
+          alt="木の壁"
         >
       </span>
     </div>
@@ -59,7 +63,7 @@ export default Vue.extend({
   name: 'StartPage',
   data(): TData {
     return {
-      currentPosition: 13,
+      currentPosition: 42,
       allPositionLength: 240,
       position: {
         col: 12,
@@ -72,26 +76,18 @@ export default Vue.extend({
   },
   methods: {
     isFieldGrass(fieldIndex: number): boolean {
-      const grassFieldObj: TFieldObject|false = this.fieldObjects.find((obj: TFieldObject) => {
-        return obj.objectType === 'grass';
-      })
-
-      if (!grassFieldObj) return false;
-      if (grassFieldObj.cordinateIndex.includes(fieldIndex)) {
-        return true;
-      }
-      return false;
+      return this.fields[fieldIndex].type === 'grass';
     },
-    isFieldStoneStep(fieldIndex: number): boolean {
-      const grassFieldObj: TFieldObject|false = this.fieldObjects.find((obj: TFieldObject) => {
-        return obj.objectType === 'stonestep';
-      })
 
-      if (!grassFieldObj) return false;
-      if (grassFieldObj.cordinateIndex.includes(fieldIndex)) {
-        return true;
-      }
-      return false;
+    isForestWall(fieldIndex: number): boolean {
+      const object: TFieldObject | null = this.fieldObjects[fieldIndex];
+      if (!object) return false;
+      return object.objectType === 'forestwall' && object.startMark;
+    },
+    isStoneStep(fieldIndex: number): boolean {
+      const object: TFieldObject | null = this.fieldObjects[fieldIndex];
+      if (!object) return false;
+      return object.objectType === 'stonestep';
     },
 
     changeDirection(direction: TDirection) {
@@ -191,6 +187,15 @@ export default Vue.extend({
   width: calc(800px / 20);
   height: calc(800px / 20);
   text-align: center;
+  position: relative;
+}
+
+.hero {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 15;
 }
 
 .grass {
@@ -198,7 +203,12 @@ export default Vue.extend({
   height: calc(800px / 20);
 }
 
-.grassplain {
+.forestwall {
+    width: calc(800px / 20 * 2);
+  height: calc(800px / 20 * 2);
+}
+
+.grassplain, .grass {
   background-color: #BCDDB6;
 }
 
@@ -227,6 +237,11 @@ export default Vue.extend({
   margin: 0 20px;
   font-weight: bold;
   color: #fff;
+}
+
+img {
+  z-index: 10;
+  position: relative;
 }
 
 </style>

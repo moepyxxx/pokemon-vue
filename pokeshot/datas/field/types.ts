@@ -1,17 +1,24 @@
 export type TField = {
-  type: 'river' | 'grassplain' | 'load';
+  type: 'river' | 'grassplain' | 'load' | 'grass';
 }
 
 export type TFieldObject = {
-  cordinateIndex: number[],
   objectType: 'human' | 'house' | 'forestwall' | 'grass' | 'stonestep',
-  // 要素の重なりを制御
-  // [note]: 草むらのなかにトレーナーがいる場合があるため
-  overLapping?: number,
-  action?: {
-    execute: 'talk' | 'enterbuilding' | 'gootherfield';
-    // そのアクションができる面（例：家系は下指定でないとだめ（下エリアからしか入れないため））
-    direction: 'top' | 'bottom' | 'left' | 'right';
-  }
+  objectId?: number,
+  startMark: boolean,
+  action?: [{
+    execute: 'talk' | 'enterbuilding' | 'gootherfield' | 'stop';
+    direction: 'above' | 'below' | 'left' | 'right';
+  }]
 }
 
+
+// export type TObjectBuilding = {
+
+// }
+// export type TObject = {
+
+// }
+// export type TField = {
+
+// }
