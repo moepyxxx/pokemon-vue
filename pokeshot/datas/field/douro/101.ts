@@ -513,6 +513,9 @@ null,
   actions: [{
     direction: 'above',
     execute: 'jumpdown'
+  }, {
+    direction: 'below',
+    execute: 'stop'
   }]
 }, {
   objectType: 'stonestep',
@@ -520,6 +523,9 @@ null,
   actions: [{
     direction: 'above',
     execute: 'jumpdown'
+  }, {
+    direction: 'below',
+    execute: 'stop'
   }]
 }, {
   objectType: 'stonestep',
@@ -527,6 +533,9 @@ null,
   actions: [{
     direction: 'above',
     execute: 'jumpdown'
+  }, {
+    direction: 'below',
+    execute: 'stop'
   }]
 },
 null,

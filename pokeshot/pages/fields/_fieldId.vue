@@ -31,10 +31,11 @@
       </span>
     </div>
     <div class="controller">
-      <button @click="controllDirection('above')">上</button>
-      <button @click="controllDirection('left')">左</button>
-      <button @click="controllDirection('right')">右</button>
-      <button @click="controllDirection('below')">下</button>
+      <p>コントローラー</p>
+      <button @click="controllDirection('above')">↑</button>
+      <button @click="controllDirection('left')">←</button>
+      <button @click="controllDirection('right')">→</button>
+      <button @click="controllDirection('below')">↓</button>
     </div>
   </div>
 </template>
@@ -190,8 +191,7 @@ export default Vue.extend({
     },
 
     async checkAppearWildPokemon() {
-      // [note]: damy
-      return;
+      if (this.fields[this.currentPosition].type !== 'grass') return;
       const rand = Math.random();
       const isAppear = rand < 0.3 ? true : false;
       if (!isAppear) return;
@@ -239,7 +239,7 @@ export default Vue.extend({
 }
 
 .forestwall {
-    width: calc(800px / 20 * 2);
+  width: calc(800px / 20 * 2);
   height: calc(800px / 20 * 2);
 }
 
@@ -260,18 +260,27 @@ export default Vue.extend({
 }
 
 .controller {
-  margin-top: 20px;
   text-align: center;
   width: 700px;
+  margin: 40px auto 0;
 }
+
 .controller button {
   width: 40px;
   height: 40px;
-  background: chocolate;
+  background: rgb(219, 100, 15);
+  box-shadow: 0 4px 0 rgb(129, 64, 17);
   border-radius: 50%;
   margin: 0 20px;
   font-weight: bold;
   color: #fff;
+  transition: .5s all;
+  font-weight: bold;
+}
+
+.controller button:active {
+  box-shadow: none;
+  transform: translateY(4px);
 }
 
 img {
