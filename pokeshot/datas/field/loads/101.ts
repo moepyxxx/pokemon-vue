@@ -1,6 +1,6 @@
 import { TField, TFieldObject } from "../types";
 
-export const douro101Fields: TField[] = 
+export const load101Fields: TField[] = 
 [
   { type: 'grassplain' },
   { type: 'grassplain' },
@@ -256,7 +256,7 @@ export const douro101Fields: TField[] =
 ];
 
 
-export const douro101Objects: (TFieldObject | null)[] = [
+export const load101Objects: (TFieldObject | null)[] = [
 {
   objectType: 'forestwall',
   startMark: true

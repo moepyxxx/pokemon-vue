@@ -51,8 +51,8 @@ import Vue from 'vue'
 import Screen from '../../component/games/Screen.vue';
 import Controller from '../../component/games/Controller.vue';
 
+import loads, { TLoad } from '../../datas/field/loads/index';
 import IPokemon from '../../config/types/pokemon';
-import { douro101Objects, douro101Fields } from '../../datas/field/douro/101';
 import { TDirection, TField, TFieldObject, TObjectAction } from '../../datas/field/types';
 
 type TData = {
@@ -86,8 +86,8 @@ export default Vue.extend({
         row: 20
       },
       direction: 'below',
-      fields: douro101Fields ?? null,
-      fieldObjects: douro101Objects ?? null
+      fields: null,
+      fieldObjects: null
     }
   },
   
@@ -242,6 +242,18 @@ export default Vue.extend({
       })
     },
   },
+
+  async fetch() {
+    const id: string = this.$nuxt.context.params.fieldId;
+    const load: TLoad | null = loads.find(load => load.id === Number(id));
+
+    if (!load) {
+      throw new Error('そんな道路はありません！');
+    }
+
+    this.fields = load.fields;
+    this.fieldObjects = load.objects;
+  }
 
 })
 
