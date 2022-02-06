@@ -1,44 +1,46 @@
 <template>
   <div>
-    <p>フィールドを歩いてみよう</p>
+    <Screen>
+      <div class="field">
+        <span v-for="(field, fieldIndex) in fields" :key="fieldIndex" :class="field.type">
 
-    <div class="field">
+          <div v-if="fieldIndex === currentPosition">
+            <img class="hero" :src="require(`~/assets/img/hero/girl-${direction}.gif`)" />
+          </div>
+
+          <img
+            class="grass"
+            v-if="isFieldGrass(fieldIndex)"
+            :src="require('@/assets/img/fieldobject/grass.svg')"
+            alt="くさむら"
+          >
+          <img
+            class="stonestep"
+            v-if="isStoneStep(fieldIndex)"
+            :src="require('@/assets/img/fieldobject/stonestep.svg')"
+            alt="段差"
+          >
+          <img
+            class="forestwall"
+            v-if="isForestWall(fieldIndex)"
+            :src="require('@/assets/img/fieldobject/forestwall.svg')"
+            alt="木の壁"
+          >
+
+          <span class="black" :class="{'is-active': fieldsIsBlacks[fieldIndex]}"></span>
+
+        </span>
+      </div>
       
-      <span v-for="(field, fieldIndex) in fields" :key="fieldIndex" :class="field.type">
+    </Screen>
 
-        <div v-if="fieldIndex === currentPosition">
-          <img class="hero" :src="require(`~/assets/img/hero/girl-${direction}.gif`)" />
-        </div>
-
-        <img
-          class="grass"
-          v-if="isFieldGrass(fieldIndex)"
-          :src="require('@/assets/img/fieldobject/grass.svg')"
-          alt="くさむら"
-        >
-        <img
-          class="stonestep"
-          v-if="isStoneStep(fieldIndex)"
-          :src="require('@/assets/img/fieldobject/stonestep.svg')"
-          alt="段差"
-        >
-        <img
-          class="forestwall"
-          v-if="isForestWall(fieldIndex)"
-          :src="require('@/assets/img/fieldobject/forestwall.svg')"
-          alt="木の壁"
-        >
-
-        <span class="black" :class="{'is-active': fieldsIsBlacks[fieldIndex]}"></span>
-
-      </span>
-    </div>
     <div class="controller">
-      <p>コントローラー</p>
-      <button @click="controllDirection('above')">↑</button>
-      <button @click="controllDirection('left')">←</button>
-      <button @click="controllDirection('right')">→</button>
-      <button @click="controllDirection('below')">↓</button>
+      <Controller
+        @controllAbove="controllDirection('above')"
+        @controllLeft="controllDirection('left')"
+        @controllRight="controllDirection('right')"
+        @controllBelow="controllDirection('below')"
+      />
     </div>
   </div>
 </template>
@@ -46,6 +48,9 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import Screen from '../../component/games/Screen.vue';
+import Controller from '../../component/games/Controller.vue';
+
 import IPokemon from '../../config/types/pokemon';
 import { douro101Objects, douro101Fields } from '../../datas/field/douro/101';
 import { TDirection, TField, TFieldObject, TObjectAction } from '../../datas/field/types';
@@ -67,6 +72,10 @@ const allPositionLength = 240;
 
 export default Vue.extend({
   name: 'StartPage',
+  components: {
+    Screen,
+    Controller
+  },
   data(): TData {
     return {
       currentPosition: 42,
@@ -306,30 +315,6 @@ export default Vue.extend({
 
 .field > span > p {
   margin-bottom: 0;
-}
-
-.controller {
-  text-align: center;
-  width: 700px;
-  margin: 40px auto 0;
-}
-
-.controller button {
-  width: 40px;
-  height: 40px;
-  background: rgb(219, 100, 15);
-  box-shadow: 0 4px 0 rgb(129, 64, 17);
-  border-radius: 50%;
-  margin: 0 20px;
-  font-weight: bold;
-  color: #fff;
-  transition: .5s all;
-  font-weight: bold;
-}
-
-.controller button:active {
-  box-shadow: none;
-  transform: translateY(4px);
 }
 
 img {

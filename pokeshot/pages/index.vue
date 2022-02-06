@@ -1,25 +1,31 @@
 <template>
-  <section class="field">
-    <div class="title">
-      <h1>ポケットモンスター</h1>
-      <p>POCKET MONSTER</p>
-    </div>
-    <div class="image">
-      <img src="~/assets/img/hero/girl.png" alt="はるか">
-      <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/255.png" alt="アチャモ">
-    </div>
-    <div class="command">
-      <button @click="start">つづきから</button>
-      <button @click="start">さいしょから</button>
-    </div>
+  <section>
+    <Screen>
+      <div class="title">
+        <h1>ポケットモンスター</h1>
+        <p>POCKET MONSTER</p>
+      </div>
+      <div class="image">
+        <img src="~/assets/img/hero/girl.png" alt="はるか">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/255.png" alt="アチャモ">
+      </div>
+      <div class="command">
+        <button @click="start">つづきから</button>
+        <button @click="start">さいしょから</button>
+      </div>
+    </Screen>
   </section>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
+import Screen from '../component/games/Screen.vue';
 
 export default Vue.extend({
   name: 'IndexPage',
+  components: {
+    Screen
+  },
   methods: {
     start() {
       this.$router.push("/start")
@@ -30,15 +36,6 @@ export default Vue.extend({
 </script>
 
 <style scoped>
-
-.field {
-  width: 800px;
-  min-height: 480px;
-  margin: 40px auto;
-  position: relative;
-  border: 2px solid #000;
-  border-radius: 4px;
-}
 
 .title {
   text-align: center;
