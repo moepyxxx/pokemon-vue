@@ -28,6 +28,9 @@
           :src="require('@/assets/img/fieldobject/forestwall.svg')"
           alt="木の壁"
         >
+
+        <span class="black" :class="{'is-active': fieldsIsBlacks[fieldIndex]}"></span>
+
       </span>
     </div>
     <div class="controller">
@@ -56,15 +59,19 @@ type TData = {
     row: number
   }
   fields: TField[],
+  fieldsIsBlacks: boolean[],
   fieldObjects: TFieldObject[]
 }
+
+const allPositionLength = 240;
 
 export default Vue.extend({
   name: 'StartPage',
   data(): TData {
     return {
       currentPosition: 42,
-      allPositionLength: 240,
+      allPositionLength,
+      fieldsIsBlacks: [...Array(allPositionLength)].map((_, i) => false),
       position: {
         col: 12,
         row: 20
@@ -196,10 +203,37 @@ export default Vue.extend({
       const isAppear = rand < 0.3 ? true : false;
       if (!isAppear) return;
 
+      await this.pokemonAppearAnimation();
       const pokemon: IPokemon = await this.$PokeApi.getPokemon(['normal', 'grass', 'poison', 'ground', 'bug']);
       this.$router.push(`/buttle?id=${pokemon.id}`)
-    }
-  }
+    },
+
+    shuffle([...array]) {
+      for (let i = array.length - 1; i >= 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    },
+
+    async pokemonAppearAnimation() {
+      const listNumes: number[] = [...Array(this.allPositionLength)].map((_, i) => i);
+      const shuffled: number[] = this.shuffle(listNumes);
+      for ( let index = 0; index < shuffled.length; index++ ) {
+        await this.addAsyncAnimationClass(shuffled[index]);
+      }
+    },
+
+    async addAsyncAnimationClass(index: number): Promise<void> {
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          this.$set(this.fieldsIsBlacks, index, true);
+          resolve();
+        }, 10);
+      })
+    },
+  },
+
 })
 
 </script>
@@ -213,8 +247,8 @@ export default Vue.extend({
   align-items: flex-start;
   justify-content: space-between;
   width: 800px;
-  /* border: 5px solid #000; */
   margin: 0 auto;
+  position: relative;
 }
 
 .field > span {
@@ -223,6 +257,21 @@ export default Vue.extend({
   height: calc(800px / 20);
   text-align: center;
   position: relative;
+}
+
+.field .black {
+  position: absolute;
+  width: calc(800px / 20);
+  height: calc(800px / 20);
+  top: 0;
+  left: 0;
+  z-index: -5;
+  display: none;
+}
+
+.field .black.is-active {
+  z-index: 20;
+  display: block;
 }
 
 .hero {
