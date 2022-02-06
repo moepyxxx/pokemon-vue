@@ -238,7 +238,7 @@ export default Vue.extend({
         setTimeout(() => {
           this.$set(this.fieldsIsBlacks, index, true);
           resolve();
-        }, 10);
+        }, 5);
       })
     },
   },
