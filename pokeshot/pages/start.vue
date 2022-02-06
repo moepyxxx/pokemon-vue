@@ -3,7 +3,7 @@
 
     <p v-if="isFixFirstPokemon">
       おめでとう、あなたは{{ selectPokemon.base.name }}{{ nickname ? '（' + nickname + '）' : '' }}を手に入れたよ
-      <NuxtLink to="/fields/aaaa">くさむらに行ってみよう</NuxtLink>
+      <NuxtLink to="/fields/101">くさむらに行ってみよう</NuxtLink>
     </p>
 
     <div v-else>
