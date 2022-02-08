@@ -1,32 +1,26 @@
 <template>
-  <div class="align-center">
-
-    <p v-if="isFixFirstPokemon">
-      おめでとう、あなたは{{ selectPokemon.base.name }}{{ nickname ? '（' + nickname + '）' : '' }}を手に入れたよ
-      <NuxtLink to="/fields/101">くさむらに行ってみよう</NuxtLink>
-    </p>
-
-    <div v-else>
-      <p>どのポケモンを選びますか？</p>
-      <br />
+  <Screen>
+    <div v-if="status === 'selectPokemon'">
       <div v-for="pokemon in pokemons" :key="pokemon.id">
         <button @click="changeSelectPokemon(pokemon)">{{ pokemon.base.name }}</button>
       </div>
-      <br />
-      <p>ニックネーム</p>
-      <input v-model="nickname" type="text" style="border: 1px solid #000"><br />
-      <p>現在の入力：{{ nickname }}</p>
-      <br />
-      <p>現在選んでいるポケモン：{{ selectPokemon ? selectPokemon.base.name : '' }}</p>
-      <br />
-      <button @click="fixFirstPokemon">きみにきめた！</button>
     </div>
-
-  </div>
+    <div v-else-if="status === 'confirm'">
+      <p>あなたが選んだポケモン：{{ selectPokemon.base.name }}</p>
+    </div>
+    <Serif
+      :serifs="serifs"
+      :isQuestion="isQuestion"
+      @next="next"
+      @back="back"
+    />
+  </Screen>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
+import Screen from '../component/games/Screen.vue'
+import Serif from '../component/games/Serif.vue'
 import { getModule } from 'vuex-module-decorators'
 import HandPokemons from "../store/modules/handPokemons"
 import { pokemonSelectableInFirst } from "../datas/pokemonSelectableInFirst"
@@ -41,17 +35,33 @@ type TData = {
   pokemons: IHandPokemon[],
   nickname: string,
   selectPokemon: IWildPokemon | null,
-  isFixFirstPokemon: boolean
+  isFixFirstPokemon: boolean,
+  serifs: string[],
+  isQuestion: boolean,
+  status: 'greeting' | 'selectPokemon' | 'confirm' | 'getFirstPokemon' | 'gotoField'
 }
 
 export default Vue.extend({
   name: 'StartPage',
+
+  components: {
+    Screen,
+    Serif
+  },
+
   data(): TData {
     return {
       pokemons,
       nickname: null,
       selectPokemon: null,
-      isFixFirstPokemon: false
+      isFixFirstPokemon: false,
+      status: 'greeting',
+      isQuestion: false,
+      serifs: [
+        'こんにちは ぼくのなまえは オダマキ博士',
+        'これから きみのあいぼうを えらんで たびに でよう',
+        'きみは どの ポケモンを えらぶかな？',
+      ]
     }
   },
 
@@ -59,16 +69,44 @@ export default Vue.extend({
     changeSelectPokemon() {
       return (pokemon: IWildPokemon) => {
         this.selectPokemon = pokemon;
+        this.status = 'confirm';
       }
     },
+
     checkGender(): TGender {
       return 'オス';
     },
   },
 
   methods: {
-    fixFirstPokemon() {
+    next() {
+      switch (this.status) {
+        case 'greeting':
+          this.serifs.splice(0);
+          this.status = 'selectPokemon';
+          break;
+        case 'confirm':
+          this.serifs.splice(0);
+          this.status = 'getFirstPokemon';
+          break;
+        case 'getFirstPokemon':
+          this.serifs.splice(0);
+          this.status = 'gotoField';
+          break;
+      }
+    },
 
+    back() {
+      switch (this.status) {
+        case 'confirm':
+          this.serifs.splice(0);
+          this.isQuestion = false;
+          this.status = 'selectPokemon';
+          break;
+      }
+    },
+
+    fixFirstPokemon() {
       if (!this.selectPokemon) return;
 
       const onHandPokemon: IHandPokemon = this.$Poke.getHandPokemon(this.selectPokemon, this.nickname);
@@ -76,6 +114,7 @@ export default Vue.extend({
       this.isFixFirstPokemon = true;
     }
   },
+
   async asyncData(ctx) {
     
   const pokemons = await Promise.all(pokemonSelectableInFirst.map(async id => {
@@ -88,6 +127,28 @@ export default Vue.extend({
     }
 
   },
+
+  watch: {
+    status() {
+      switch(this.status) {
+        case 'greeting':
+          break;
+        case 'confirm':
+          this.serifs.push(`ほんとうに この${this.selectPokemon.base.name}で良いのかな？`);
+          this.isQuestion = true;
+          break;
+        case 'getFirstPokemon':
+          this.isQuestion = false;
+          this.fixFirstPokemon();
+          this.serifs.push(`あなたは さいしょの あいぼうとして ${this.selectPokemon.base.name} を選んだね`);
+          this.serifs.push(`それでは 旅に でてみよう！`);
+          break;
+        case 'gotoField':
+          this.$router.push("/fields/101");
+          break;
+      }
+    },
+  }
 })
 
 </script>
