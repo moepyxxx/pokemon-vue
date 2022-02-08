@@ -18,7 +18,8 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import { Component, Vue, Watch } from 'vue-property-decorator';
+
 import Screen from '../component/games/Screen.vue'
 import Serif from '../component/games/Serif.vue'
 import { getModule } from 'vuex-module-decorators'
@@ -31,89 +32,16 @@ const handPokemonsModule = getModule(HandPokemons);
 const pokemons = handPokemonsModule.pokemons;
 
 type TStatus = 'greeting' | 'selectPokemon' | 'confirm' | 'getFirstPokemon' | 'gotoField';
-type TData = {
-  pokemons: IHandPokemon[],
-  nickname: string,
-  selectPokemon: IWildPokemon | null,
-  isFixFirstPokemon: boolean,
-  serifs: string[],
-  isQuestion: boolean,
-  status: TStatus
-}
 
-export default Vue.extend({
-  name: 'StartPage',
-
+@Component({
   components: {
     Screen,
     Serif
   },
 
-  data(): TData {
-    return {
-      pokemons,
-      nickname: null,
-      selectPokemon: null,
-      isFixFirstPokemon: false,
-      status: 'greeting',
-      isQuestion: false,
-      serifs: [
-        'こんにちは ぼくのなまえは オダマキ博士',
-        'これから きみのあいぼうを えらんで たびに でよう',
-        'きみは どの ポケモンを えらぶかな？',
-      ]
-    }
-  },
-
-  computed: {
-    changeSelectPokemon() {
-      return (pokemon: IWildPokemon) => {
-        this.selectPokemon = pokemon;
-        this.status = 'confirm';
-      }
-    },
-  },
-
-  methods: {
-    next() {
-      switch (this.status) {
-        case 'greeting':
-          this.serifs.splice(0);
-          this.status = 'selectPokemon';
-          break;
-        case 'confirm':
-          this.serifs.splice(0);
-          this.status = 'getFirstPokemon';
-          break;
-        case 'getFirstPokemon':
-          this.serifs.splice(0);
-          this.status = 'gotoField';
-          break;
-      }
-    },
-
-    back() {
-      switch (this.status) {
-        case 'confirm':
-          this.serifs.splice(0);
-          this.isQuestion = false;
-          this.status = 'selectPokemon';
-          break;
-      }
-    },
-
-    fixFirstPokemon() {
-      if (!this.selectPokemon) return;
-
-      const onHandPokemon: IHandPokemon = this.$Poke.getHandPokemon(this.selectPokemon, this.nickname);
-      handPokemonsModule.addToOnHandPokemon(onHandPokemon);
-      this.isFixFirstPokemon = true;
-    }
-  },
-
   async asyncData(ctx) {
     
-  const pokemons = await Promise.all(pokemonSelectableInFirst.map(async id => {
+    const pokemons = await Promise.all(pokemonSelectableInFirst.map(async id => {
       const wildPokemon: IWildPokemon = await ctx.$Poke.getWildPokemon(id, 10);
       return { ...wildPokemon };
     }))
@@ -122,29 +50,92 @@ export default Vue.extend({
       pokemons
     }
 
-  },
-
-  watch: {
-    status() {
-      switch(this.status) {
-        case 'greeting':
-          break;
-        case 'confirm':
-          this.serifs.push(`ほんとうに この${this.selectPokemon.base.name}で良いのかな？`);
-          this.isQuestion = true;
-          break;
-        case 'getFirstPokemon':
-          this.isQuestion = false;
-          this.fixFirstPokemon();
-          this.serifs.push(`あなたは さいしょの あいぼうとして ${this.selectPokemon.base.name} を選んだね`);
-          this.serifs.push(`それでは 旅に でてみよう！`);
-          break;
-        case 'gotoField':
-          this.$router.push("/fields/101");
-          break;
-      }
-    },
   }
 })
 
+export default class StartPage extends Vue {
+
+  pokemons: IHandPokemon[] = pokemons;
+
+  nickname: string = null;
+  selectPokemon: IWildPokemon | null = null;
+  isFixFirstPokemon: boolean = false;
+  status: TStatus = 'greeting';
+  isQuestion: boolean = false;
+  serifs: string[] = [
+    'こんにちは ぼくのなまえは オダマキ博士',
+    'これから きみのあいぼうを えらんで たびに でよう',
+    'きみは どの ポケモンを えらぶかな？',
+  ]
+
+  changeSelectPokemon(pokemon: IWildPokemon) {
+    this.selectPokemon = pokemon;
+    this.status = 'confirm';
+  }
+
+  next() {
+    switch (this.status) {
+      case 'greeting':
+        this.serifs.splice(0);
+        this.status = 'selectPokemon';
+        break;
+      case 'confirm':
+        this.serifs.splice(0);
+        this.status = 'getFirstPokemon';
+        break;
+      case 'getFirstPokemon':
+        this.serifs.splice(0);
+        this.status = 'gotoField';
+        break;
+    }
+  }
+
+  back() {
+    switch (this.status) {
+      case 'confirm':
+        this.serifs.splice(0);
+        this.isQuestion = false;
+        this.status = 'selectPokemon';
+        break;
+    }
+  }
+
+  fixFirstPokemon() {
+    if (!this.selectPokemon) return;
+
+    const onHandPokemon: IHandPokemon = this.$Poke.getHandPokemon(this.selectPokemon, this.nickname);
+    handPokemonsModule.addToOnHandPokemon(onHandPokemon);
+    this.isFixFirstPokemon = true;
+  }
+
+  @Watch('status')
+  private changeStatus(status: TStatus, oldStatus: TStatus) {
+    switch(status) {
+      case 'greeting':
+        break;
+      case 'confirm':
+        this.serifs.push(`ほんとうに この${this.selectPokemon.base.name}で良いのかな？`);
+        this.isQuestion = true;
+        break;
+      case 'getFirstPokemon':
+        this.isQuestion = false;
+        this.fixFirstPokemon();
+        this.serifs.push(`あなたは さいしょの あいぼうとして ${this.selectPokemon.base.name} を選んだね`);
+        this.serifs.push(`それでは 旅に でてみよう！`);
+        break;
+      case 'gotoField':
+        this.$router.push("/fields/101");
+        break;
+    }
+  }
+}
+
 </script>
+
+<style scoped lang="scss">
+.hoge {
+  & > .fuga {
+    color: red;
+  }
+}
+</style>

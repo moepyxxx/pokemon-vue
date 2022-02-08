@@ -4,7 +4,7 @@
   </div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 .screen {
   width: 800px;
   min-height: 480px;

@@ -18,50 +18,48 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
 import Screen from '../component/games/Screen.vue';
 
-export default Vue.extend({
-  name: 'IndexPage',
+import { Component, Vue } from 'vue-property-decorator';
+
+@Component({
   components: {
     Screen
   },
-  methods: {
-    start() {
-      this.$router.push("/start")
-    }
-  }
 })
+export default class IndexPage extends Vue {
+  start() {
+    this.$router.push("/start")
+  }
+}
 
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 
 .title {
   text-align: center;
   margin: 80px 0 40px;
+  h1 {
+    font-size: 3rem;
+    margin-bottom: 30px;
+    letter-spacing: .8rem;
+  }
+  p {
+    letter-spacing: .8rem;
+    font-size: 1.6rem;
+  }
 }
 
-.title h1 {
-  font-size: 3rem;
-  margin-bottom: 30px;
-  letter-spacing: .8rem;
-}
-
-.title p {
-  letter-spacing: .8rem;
-  font-size: 1.6rem;
-}
 
 .image {
   text-align: center;
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.image img {
-  margin: 0 -10px;
+  img {
+    margin: 0 -10px;
+  }
 }
 
 .command button {
@@ -69,5 +67,4 @@ export default Vue.extend({
   margin: 16px auto;
   font-size: 16px;
 }
-
 </style>

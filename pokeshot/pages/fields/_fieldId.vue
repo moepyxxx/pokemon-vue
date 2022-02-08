@@ -260,7 +260,7 @@ export default Vue.extend({
 </script>
 
 
-<style scoped>
+<style scoped lang="scss">
 
 .field {
   display: flex;
@@ -270,29 +270,31 @@ export default Vue.extend({
   width: 800px;
   margin: 0 auto;
   position: relative;
-}
+  & > span {
+    display: block;
+    width: calc(800px / 20);
+    height: calc(800px / 20);
+    text-align: center;
+    position: relative;
+    & > p {
+      margin-bottom: 0;
+    }
+  }
 
-.field > span {
-  display: block;
-  width: calc(800px / 20);
-  height: calc(800px / 20);
-  text-align: center;
-  position: relative;
-}
+  .black {
+    position: absolute;
+    width: calc(800px / 20);
+    height: calc(800px / 20);
+    top: 0;
+    left: 0;
+    z-index: -5;
+    display: none;
 
-.field .black {
-  position: absolute;
-  width: calc(800px / 20);
-  height: calc(800px / 20);
-  top: 0;
-  left: 0;
-  z-index: -5;
-  display: none;
-}
-
-.field .black.is-active {
-  z-index: 20;
-  display: block;
+    &.is-active {
+      z-index: 20;
+      display: block;
+    }
+  }
 }
 
 .hero {
@@ -323,10 +325,6 @@ export default Vue.extend({
 
 .river {
   background-color: #8BD6DB;
-}
-
-.field > span > p {
-  margin-bottom: 0;
 }
 
 img {

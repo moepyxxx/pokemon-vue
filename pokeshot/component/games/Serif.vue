@@ -12,41 +12,40 @@
 </template>
 
 <script lang="ts">
-import Vue, { PropType } from 'vue'
+import { PropType } from 'vue'
+import { Component, Vue, Prop } from 'vue-property-decorator';
 
 type TData = {
   currentIndex: number;
 }
 
-export default Vue.extend({
-  name: 'Serif',
-
+@Component({
   props: {
     serifs: { type: Array as PropType<string[]> },
     nextAction: { type: Function },
     isQuestion: { type: Boolean }
   },
-
-  data(): TData {
-    return {
-      currentIndex: 0
-    }
-  },
-
-  methods: {
-    next() {
-      if ( this.currentIndex < this.serifs.length - 1 ) {
-        this.currentIndex++;
-      } else {
-        this.$emit('next');
-        this.currentIndex = 0;
-      }
-    },
-  }
 })
+export default class Serif extends Vue {
+
+  currentIndex: number = 0;
+
+  @Prop({ type: Array as PropType<string[]> })
+  serifs: string[];
+
+  next() {
+    if ( this.currentIndex < this.serifs.length - 1 ) {
+      this.currentIndex++;
+    } else {
+      this.$emit('next');
+      this.currentIndex = 0;
+    }
+  }
+}
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+
 .question {
   position: absolute;
   bottom: 120px;
@@ -54,10 +53,10 @@ export default Vue.extend({
   border: 2px solid #000;
   border-radius: 4px;
   padding: 10px 20px;
-}
 
-.question button {
-  display: block;
+  button {
+    display: block;
+  }
 }
 
 .serif {
@@ -71,17 +70,17 @@ export default Vue.extend({
   transform: translateX(-50%);
   height: 100px;
   cursor: pointer;
+
+  p {
+    margin: 0;
+    line-height: 2;
+    font-size: 16px;
+  }
+  span {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+  }
 }
 
-.serif p {
-  margin: 0;
-  line-height: 2;
-  font-size: 16px;
-}
-
-.serif span {
-  position: absolute;
-  bottom: 10px;
-  right: 10px;
-}
 </style>
