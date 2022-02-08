@@ -47,7 +47,7 @@
 
 
 <script lang="ts">
-import Vue from 'vue'
+import { Component, Vue } from 'vue-property-decorator';
 import Screen from '../../component/games/Screen.vue';
 import Controller from '../../component/games/Controller.vue';
 
@@ -68,194 +68,212 @@ type TData = {
   fieldObjects: TFieldObject[]
 }
 
-const allPositionLength = 240;
-
-export default Vue.extend({
-  name: 'StartPage',
+@Component({
   components: {
     Screen,
     Controller
   },
-  data(): TData {
-    return {
-      currentPosition: 42,
-      allPositionLength,
-      fieldsIsBlacks: [...Array(allPositionLength)].map((_, i) => false),
-      position: {
-        col: 12,
-        row: 20
-      },
-      direction: 'below',
-      fields: null,
-      fieldObjects: null
-    }
-  },
   
-  methods: {
-    isFieldGrass(fieldIndex: number): boolean {
-      return this.fields[fieldIndex].type === 'grass';
-    },
-
-    isForestWall(fieldIndex: number): boolean {
-      const object: TFieldObject | null = this.fieldObjects[fieldIndex];
-      if (!object) return false;
-      return object.objectType === 'forestwall' && object.startMark;
-    },
-
-    isStoneStep(fieldIndex: number): boolean {
-      const object: TFieldObject | null = this.fieldObjects[fieldIndex];
-      if (!object) return false;
-      return object.objectType === 'stonestep';
-    },
-
-    changeDirection(direction: TDirection) {
-      this.direction = direction;
-    },
-
-    checkAction(currentPosition: number, nextPosition: number, reversedirection: TDirection): boolean {
-
-      let direction: TDirection = 'right';
-      switch (reversedirection) {
-        case 'left':
-          direction = 'right';
-          break;
-        case 'right':
-          direction = 'left';
-          break;
-        case 'above': 
-          direction = 'below';
-          break;
-        case 'below':
-          direction = 'above';
-          break;
-      }
-
-      if ( this.fieldObjects[nextPosition] === null || 
-        this.fieldObjects[nextPosition].actions.length === 0 ) {
-        return false;
-      }
-
-      const action: TObjectAction | false = this.fieldObjects[nextPosition].actions?.find(
-        (action: TObjectAction) => action.direction === direction
-      );
-
-      if (!action) {
-        return false;
-      }
-
-      if (action.execute === 'stop') {
-        // 何もしない
-        return true;
-      }
-
-      if (action.execute === 'jumpdown') {
-        this.jumpDown();
-        return true;
-      }
-
-      return false;
-    },
-
-    controllDirection(direction: TDirection) {
-
-      if (this.direction !== direction) {
-        this.changeDirection(direction);
-        return;
-      }
-
-      let nextPosition: number = 0;
-      switch (direction) {
-        case 'above':
-          nextPosition = this.getNextAbovePosition();
-          break;
-        case 'below':
-          nextPosition = this.getNextBelowPosition();
-          break;
-        case 'left':
-          nextPosition = this.getNextLeftPosition();
-          break;
-        case 'right':
-          nextPosition = this.getNextRightPosition();
-      }
-
-      const action: boolean = this.checkAction(this.currentPosition, nextPosition, direction);
-
-      if (action) return;
-
-      this.currentPosition = nextPosition;
-      this.checkAppearWildPokemon();
-    },
-
-    jumpDown() {
-      this.currentPosition = this.currentPosition + (this.position.row * 2);
-    },
-
-    getNextLeftPosition(): number {
-      return this.currentPosition - 1;
-    },
-
-    getNextRightPosition(): number {
-      return this.currentPosition + 1;
-    },
-
-    getNextAbovePosition(): number {
-      return this.currentPosition - this.position.row;
-    },
-
-    getNextBelowPosition(): number {
-      return this.currentPosition + this.position.row;
-    },
-
-    async checkAppearWildPokemon() {
-      if (this.fields[this.currentPosition].type !== 'grass') return;
-      const rand = Math.random();
-      const isAppear = rand < 0.3 ? true : false;
-      if (!isAppear) return;
-
-      await this.pokemonAppearAnimation();
-      const pokemon: IPokemon = await this.$PokeApi.getPokemon(['normal', 'grass', 'poison', 'ground', 'bug']);
-      this.$router.push(`/buttle?id=${pokemon.id}`)
-    },
-
-    shuffle([...array]) {
-      for (let i = array.length - 1; i >= 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-      }
-      return array;
-    },
-
-    async pokemonAppearAnimation() {
-      const listNumes: number[] = [...Array(this.allPositionLength)].map((_, i) => i);
-      const shuffled: number[] = this.shuffle(listNumes);
-      for ( let index = 0; index < shuffled.length; index++ ) {
-        await this.addAsyncAnimationClass(shuffled[index]);
-      }
-    },
-
-    async addAsyncAnimationClass(index: number): Promise<void> {
-      return new Promise((resolve) => {
-        setTimeout(() => {
-          this.$set(this.fieldsIsBlacks, index, true);
-          resolve();
-        }, 5);
-      })
-    },
-  },
-
-  async fetch() {
-    const id: string = this.$nuxt.context.params.fieldId;
-    const load: TLoad | null = loads.find(load => load.id === Number(id));
+  async asyncData(ctx) {
+    const id: string = ctx.params.fieldId;
+    const load: TLoad | null | undefined = loads.find(load => load.id === Number(id));
 
     if (!load) {
       throw new Error('そんな道路はありません！');
     }
 
-    this.fields = load.fields;
-    this.fieldObjects = load.objects;
+    return {
+      fields: load.fields,
+      fieldObjects: load.objects
+    }
+  }
+})
+
+export default class FieldPage extends Vue {
+  currentPosition: number = 42;
+  allPositionLength: number = 240;
+  fieldsIsBlacks: boolean[] = [...Array(this.allPositionLength)].map((_, i) => false);
+  position: {
+    col: number,
+    row: number
+  } = {
+    col: 12,
+    row: 20
+  };
+  direction: TDirection = 'below';
+
+  private fields?: TField[];
+  private fieldObjects?: TFieldObject[];
+  
+  isFieldGrass(fieldIndex: number): boolean|never {
+    if (!this.fields) {
+      throw new Error('フィールドがないよ');
+    }
+    return this.fields[fieldIndex].type === 'grass';
   }
 
-})
+  isForestWall(fieldIndex: number): boolean|never {
+    if (!this.fieldObjects) {
+      throw new Error('フィールドオブジェクトがないよ');
+    }
+
+    const object: TFieldObject | null = this.fieldObjects[fieldIndex];
+    if (!object) return false;
+    return object.objectType === 'forestwall' && object.startMark;
+  }
+
+  isStoneStep(fieldIndex: number): boolean {
+    if (!this.fields) {
+      throw new Error('フィールドがないよ');
+    }
+    const object: TFieldObject | null = this.fieldObjects[fieldIndex];
+    if (!object) return false;
+    return object.objectType === 'stonestep';
+  }
+
+  changeDirection(direction: TDirection) {
+    this.direction = direction;
+  }
+
+  checkAction(currentPosition: number, nextPosition: number, reversedirection: TDirection): boolean|never {
+    
+    let direction: TDirection = 'right';
+    switch (reversedirection) {
+      case 'left':
+        direction = 'right';
+        break;
+      case 'right':
+        direction = 'left';
+        break;
+      case 'above': 
+        direction = 'below';
+        break;
+      case 'below':
+        direction = 'above';
+        break;
+    }
+
+    if (!this.fieldObjects) {
+      throw new Error('フィールドオブジェクトがないよ');
+    }
+
+    if ( this.fieldObjects[nextPosition] === null || 
+    this.fieldObjects[nextPosition].actions === undefined ||
+      this.fieldObjects[nextPosition].actions.length === 0 ) {
+      return false;
+    }
+
+    const action: TObjectAction | undefined = this.fieldObjects[nextPosition].actions?.find(
+      (action: TObjectAction) => action.direction === direction
+    );
+
+    if (!action) {
+      return false;
+    }
+
+    if (action.execute === 'stop') {
+      // 何もしない
+      return true;
+    }
+
+    if (action.execute === 'jumpdown') {
+      this.jumpDown();
+      return true;
+    }
+
+    return false;
+  }
+
+  controllDirection(direction: TDirection) {
+
+    if (this.direction !== direction) {
+      this.changeDirection(direction);
+      return;
+    }
+
+    let nextPosition: number = 0;
+    switch (direction) {
+      case 'above':
+        nextPosition = this.getNextAbovePosition();
+        break;
+      case 'below':
+        nextPosition = this.getNextBelowPosition();
+        break;
+      case 'left':
+        nextPosition = this.getNextLeftPosition();
+        break;
+      case 'right':
+        nextPosition = this.getNextRightPosition();
+    }
+
+    const action: boolean = this.checkAction(this.currentPosition, nextPosition, direction);
+
+    if (action) return;
+
+    this.currentPosition = nextPosition;
+    this.checkAppearWildPokemon();
+  }
+
+  jumpDown() {
+    this.currentPosition = this.currentPosition + (this.position.row * 2);
+  }
+
+  getNextLeftPosition(): number {
+    return this.currentPosition - 1;
+  }
+
+  getNextRightPosition(): number {
+    return this.currentPosition + 1;
+  }
+
+  getNextAbovePosition(): number {
+    return this.currentPosition - this.position.row;
+  }
+
+  getNextBelowPosition(): number {
+    return this.currentPosition + this.position.row;
+  }
+
+  async checkAppearWildPokemon() {
+
+    if (!this.fields) return;
+
+    if (this.fields[this.currentPosition].type !== 'grass') return;
+    const rand = Math.random();
+    const isAppear = rand < 0.3 ? true : false;
+    if (!isAppear) return;
+
+    await this.pokemonAppearAnimation();
+    const pokemon: IPokemon = await this.$PokeApi.getPokemon(['normal', 'grass', 'poison', 'ground', 'bug']);
+    this.$router.push(`/buttle?id=${pokemon.id}`)
+  }
+
+  shuffle([...array]) {
+    for (let i = array.length - 1; i >= 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+  }
+
+  async pokemonAppearAnimation() {
+    const listNumes: number[] = [...Array(this.allPositionLength)].map((_, i) => i);
+    const shuffled: number[] = this.shuffle(listNumes);
+    for ( let index = 0; index < shuffled.length; index++ ) {
+      await this.addAsyncAnimationClass(shuffled[index]);
+    }
+  }
+
+  async addAsyncAnimationClass(index: number): Promise<void> {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        this.$set(this.fieldsIsBlacks, index, true);
+        resolve();
+      }, 5);
+    })
+  }
+
+}
 
 </script>
 

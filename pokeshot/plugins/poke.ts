@@ -17,7 +17,7 @@ const definePoke: Plugin = ( ctx: Context, inject: Inject ) => {
 }
 export default definePoke
 
-class Poke {
+export class Poke {
 
   pokeApi: PokeApi;
 
@@ -57,10 +57,10 @@ class Poke {
     }
   }
 
-  getHandPokemon(pokemon: IWildPokemon, nickname?: string) : IHandPokemon {
+  getHandPokemon(pokemon: IWildPokemon, nickname: string) : IHandPokemon {
     return {
       ...pokemon,
-      nickname: nickname ?? pokemon.base.name,
+      nickname: nickname === '' ? pokemon.base.name : nickname,
       // 初期の次までの経験値は必ずゼロになる
       currentExp: pokemon.level ** 2
     }

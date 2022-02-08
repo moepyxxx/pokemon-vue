@@ -31,7 +31,7 @@ export default class Serif extends Vue {
   currentIndex: number = 0;
 
   @Prop({ type: Array as PropType<string[]> })
-  serifs: string[];
+  serifs: string[] = [];
 
   next() {
     if ( this.currentIndex < this.serifs.length - 1 ) {

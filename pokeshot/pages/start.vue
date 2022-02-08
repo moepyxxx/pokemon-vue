@@ -55,10 +55,10 @@ type TStatus = 'greeting' | 'selectPokemon' | 'confirm' | 'getFirstPokemon' | 'g
 
 export default class StartPage extends Vue {
 
-  pokemons: IHandPokemon[] = pokemons;
+  pokemons?: IHandPokemon[];
 
-  nickname: string = null;
-  selectPokemon: IWildPokemon | null = null;
+  nickname: string = '';
+  selectPokemon: IWildPokemon|null = null;
   isFixFirstPokemon: boolean = false;
   status: TStatus = 'greeting';
   isQuestion: boolean = false;
@@ -114,13 +114,13 @@ export default class StartPage extends Vue {
       case 'greeting':
         break;
       case 'confirm':
-        this.serifs.push(`ほんとうに この${this.selectPokemon.base.name}で良いのかな？`);
+        this.serifs.push(`ほんとうに この${ this.selectPokemon ? this.selectPokemon.base.name : 'ダミー' }で良いのかな？`);
         this.isQuestion = true;
         break;
       case 'getFirstPokemon':
         this.isQuestion = false;
         this.fixFirstPokemon();
-        this.serifs.push(`あなたは さいしょの あいぼうとして ${this.selectPokemon.base.name} を選んだね`);
+        this.serifs.push(`あなたは さいしょの あいぼうとして ${ this.selectPokemon ? this.selectPokemon.base.name : 'ダミー' } を選んだね`);
         this.serifs.push(`それでは 旅に でてみよう！`);
         break;
       case 'gotoField':
@@ -131,11 +131,3 @@ export default class StartPage extends Vue {
 }
 
 </script>
-
-<style scoped lang="scss">
-.hoge {
-  & > .fuga {
-    color: red;
-  }
-}
-</style>
