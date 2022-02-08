@@ -24,13 +24,13 @@ import Serif from '../component/games/Serif.vue'
 import { getModule } from 'vuex-module-decorators'
 import HandPokemons from "../store/modules/handPokemons"
 import { pokemonSelectableInFirst } from "../datas/pokemonSelectableInFirst"
-import { TGender } from '../types/gender';
 import IWildPokemon from '../interface/IWildPokemon'
 import IHandPokemon from '../interface/IHandPokemon'
 
 const handPokemonsModule = getModule(HandPokemons);
 const pokemons = handPokemonsModule.pokemons;
 
+type TStatus = 'greeting' | 'selectPokemon' | 'confirm' | 'getFirstPokemon' | 'gotoField';
 type TData = {
   pokemons: IHandPokemon[],
   nickname: string,
@@ -38,7 +38,7 @@ type TData = {
   isFixFirstPokemon: boolean,
   serifs: string[],
   isQuestion: boolean,
-  status: 'greeting' | 'selectPokemon' | 'confirm' | 'getFirstPokemon' | 'gotoField'
+  status: TStatus
 }
 
 export default Vue.extend({
@@ -71,10 +71,6 @@ export default Vue.extend({
         this.selectPokemon = pokemon;
         this.status = 'confirm';
       }
-    },
-
-    checkGender(): TGender {
-      return 'オス';
     },
   },
 
