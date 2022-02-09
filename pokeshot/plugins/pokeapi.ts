@@ -32,7 +32,7 @@ export class PokeApi {
    * @param id number 指定IDのポケモンを取得する
    * @param type TPokemonType[] 指定タイプ群
    */
-  async getPokemon<T extends number|TPokemonType[]>(args?: T): Promise<IPokemon|void> {
+  async getPokemon<T extends number|TPokemonType[]>(args?: T): Promise<IPokemon> {
 
     if (!args) {
       return await this.getPokemonRandom();
@@ -45,6 +45,8 @@ export class PokeApi {
     if (isTPokemonType(args)) {
       return await this.getPokemonFromTypes(args);
     }
+
+    return await this.getPokemonRandom();
   }
 
   async getPokemonRandom(count: number = 1): Promise<IPokemon|never> {

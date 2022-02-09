@@ -110,8 +110,8 @@ export default class FieldPage extends Vue {
   }
 
   isStoneStep(fieldIndex: number): boolean {
-    if (!this.fields) {
-      throw new Error('フィールドがないよ');
+    if (!this.fieldObjects) {
+      throw new Error('フィールドオブジェクトがないよ');
     }
     const object: TFieldObject | null = this.fieldObjects[fieldIndex];
     if (!object) return false;
@@ -145,8 +145,7 @@ export default class FieldPage extends Vue {
     }
 
     if ( this.fieldObjects[nextPosition] === null || 
-    this.fieldObjects[nextPosition].actions === undefined ||
-      this.fieldObjects[nextPosition].actions.length === 0 ) {
+      this.fieldObjects[nextPosition].actions?.length === 0 ) {
       return false;
     }
 

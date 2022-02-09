@@ -52,7 +52,7 @@ import HandPokemons from "../../store/modules/handPokemons"
 import IHandPokemon from '../../interface/IHandPokemon';
 import IWildPokemon, { IMove, IStats } from '../../interface/IWildPokemon';
 import IOnButtle from '../../interface/IOnButtle';
-import { TBehave, TButtlePokemon, TEffect } from '../../plugins/buttleSys';
+import { TBehave, TButtlePokemon } from '../../plugins/buttleSys';
 import _ from 'lodash'
 
 const handPokemonsModule = getModule(HandPokemons);
@@ -66,10 +66,9 @@ type TController = {
 
 @Component({
   async asyncData(ctx) {
-    console.log(ctx);
     const { id } = ctx.query;
     const level: number = Math.floor( Math.random() * ( 5 - 2 ) ) + 2;
-    const wildPokemon: IWildPokemon = await ctx.$Poke.getWildPokemon(id, level);
+    const wildPokemon: IWildPokemon = await ctx.$Poke.getWildPokemon(Number(id), level);
 
     // バトル展開
     const opponent = ctx.$ButtleSys.prepareButtleRequired(wildPokemon);
@@ -98,8 +97,14 @@ export default class ButtlePage extends Vue {
   currentSerifIndex: number = 0;
   buttleStatus: TButtleStatus = 'buttleStart';
 
-  // 敵味方の保持
+  // [note]:
+  // asyncDataからのうまい渡し方がわからない。?をつけるとundefinedの可能性が高くなるため
+  // いたるところにリターン処理をする必要があり面倒。
+
+  // @ts-ignore
   onHand: IHandPokemon & IOnButtle;
+
+  // @ts-ignore
   opponent: IWildPokemon & IOnButtle;
   otherOnHands: (IHandPokemon & IOnButtle)[] = [];
 
@@ -169,7 +174,7 @@ export default class ButtlePage extends Vue {
    */
   excuteBehave() {
 
-    const opponentBehave: TBehave = this.$ButtleSys.selectBehave(this.onHand, this.opponent, 'opponent');
+    const opponentBehave: TBehave = this.$ButtleSys.selectBehave(this.onHand, this.opponent, 'opponent', null);
     this.behaves.push(opponentBehave);
 
     this.behaves = this.$ButtleSys.checkPriority(this.behaves);
@@ -215,6 +220,7 @@ export default class ButtlePage extends Vue {
       const { isLevelUp, level, currentExp } = this.$ButtleSys.saveExp(this.onHand.level, this.onHand.currentExp, exp);
 
       this.onHand = {
+        ...this.onHand,
         level,
         currentExp
       };
