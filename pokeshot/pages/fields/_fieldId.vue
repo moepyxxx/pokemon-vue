@@ -51,9 +51,14 @@ import { Component, Vue } from 'vue-property-decorator';
 import Screen from '../../component/games/Screen.vue';
 import Controller from '../../component/games/Controller.vue';
 
+import { getModule } from 'vuex-module-decorators';
+import HeroCurrent from '~/store/modules/heroCurrent';
+
 import loads, { TLoad } from '../../datas/field/loads/index';
 import IPokemon from '../../config/types/pokemon';
 import { TDirection, TField, TFieldObject, TObjectAction } from '../../datas/field/types';
+
+const heroCurrentModule = getModule(HeroCurrent);
 
 @Component({
   components: {
@@ -63,6 +68,7 @@ import { TDirection, TField, TFieldObject, TObjectAction } from '../../datas/fie
   
   async asyncData(ctx) {
     const id: string = ctx.params.fieldId;
+    const currentPosition: number = Number(ctx.query.position);
     const load: TLoad | null | undefined = loads.find(load => load.id === Number(id));
 
     if (!load) {
@@ -70,6 +76,7 @@ import { TDirection, TField, TFieldObject, TObjectAction } from '../../datas/fie
     }
 
     return {
+      currentPosition,
       fields: load.fields,
       fieldObjects: load.objects
     }
@@ -77,7 +84,7 @@ import { TDirection, TField, TFieldObject, TObjectAction } from '../../datas/fie
 })
 
 export default class FieldPage extends Vue {
-  currentPosition: number = 42;
+  currentPosition: number = 200;
   allPositionLength: number = 240;
   fieldsIsBlacks: boolean[] = [...Array(this.allPositionLength)].map((_, i) => false);
   position: {
@@ -228,6 +235,12 @@ export default class FieldPage extends Vue {
     const rand = Math.random();
     const isAppear = rand < 0.3 ? true : false;
     if (!isAppear) return;
+
+    // 現在地をストアへ保存
+    heroCurrentModule.updateCurrent({
+      ...heroCurrentModule.heroCurrent,
+      position: this.currentPosition
+    });
 
     await this.pokemonAppearAnimation();
     const pokemon: IPokemon = await this.$PokeApi.getPokemon(['normal', 'grass', 'poison', 'ground', 'bug']);

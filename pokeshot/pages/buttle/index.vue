@@ -47,8 +47,11 @@
 
 <script lang="ts">
 import { Component, Vue, Watch } from 'vue-property-decorator';
+
 import { getModule } from 'vuex-module-decorators'
 import HandPokemons from "../../store/modules/handPokemons"
+import HeroCurrent from '~/store/modules/heroCurrent';
+
 import IHandPokemon from '../../interface/IHandPokemon';
 import IWildPokemon, { IMove, IStats } from '../../interface/IWildPokemon';
 import IOnButtle from '../../interface/IOnButtle';
@@ -56,6 +59,7 @@ import { TBehave, TButtlePokemon } from '../../plugins/buttleSys';
 import _ from 'lodash'
 
 const handPokemonsModule = getModule(HandPokemons);
+const heroCurrentModule = getModule(HeroCurrent);
 
 type TButtleStatus = 'buttleStart' | 'isSelectBehave' | 'behaveExecute' | 'buttleEnd' | 'buttleSave';
 
@@ -242,7 +246,6 @@ export default class ButtlePage extends Vue {
       const savedPokemon: IHandPokemon = this.$ButtleSys.saveButtleStatusToOnHand(this.onHand);
       buttleEndedPokemons.push(savedPokemon);
 
-      // [note]: anyになるの直したい
       handPokemonsModule.updateOnHandPokemons(buttleEndedPokemons);
     }
   }
@@ -265,7 +268,8 @@ export default class ButtlePage extends Vue {
     }
     
     if (status === 'buttleSave') {
-      this.$router.push(`/fields/aaa`);
+      const { fieldId, position } = heroCurrentModule.heroCurrent;
+      this.$router.push(`/fields/${fieldId}?position=${position}`);
     } 
   }
 }

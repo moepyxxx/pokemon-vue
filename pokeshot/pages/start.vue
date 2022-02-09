@@ -27,9 +27,10 @@ import HandPokemons from "../store/modules/handPokemons"
 import { pokemonSelectableInFirst } from "../datas/pokemonSelectableInFirst"
 import IWildPokemon from '../interface/IWildPokemon'
 import IHandPokemon from '../interface/IHandPokemon'
+import HeroCurrent, { IHeroCurrent } from '~/store/modules/heroCurrent';
 
 const handPokemonsModule = getModule(HandPokemons);
-const pokemons = handPokemonsModule.pokemons;
+const heroCurrentModule = getModule(HeroCurrent);
 
 type TStatus = 'greeting' | 'selectPokemon' | 'confirm' | 'getFirstPokemon' | 'gotoField';
 
@@ -108,6 +109,15 @@ export default class StartPage extends Vue {
     this.isFixFirstPokemon = true;
   }
 
+  setFirstHeroCurrent() {
+    // storeの登録
+    const firstHeroCurrent: IHeroCurrent = {
+      fieldId: 101,
+      position: 50
+    }
+    heroCurrentModule.updateCurrent(firstHeroCurrent);
+  }
+
   @Watch('status')
   private changeStatus(status: TStatus, oldStatus: TStatus) {
     switch(status) {
@@ -122,9 +132,11 @@ export default class StartPage extends Vue {
         this.fixFirstPokemon();
         this.serifs.push(`あなたは さいしょの あいぼうとして ${ this.selectPokemon ? this.selectPokemon.base.name : 'ダミー' } を選んだね`);
         this.serifs.push(`それでは 旅に でてみよう！`);
+        this.setFirstHeroCurrent();
         break;
       case 'gotoField':
-        this.$router.push("/fields/101");
+        const { fieldId, position } = heroCurrentModule.heroCurrent;
+        this.$router.push(`/fields/${fieldId}?position=${position}`);
         break;
     }
   }
