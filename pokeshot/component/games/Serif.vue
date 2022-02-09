@@ -21,7 +21,6 @@ type TData = {
 
 @Component({
   props: {
-    serifs: { type: Array as PropType<string[]> },
     nextAction: { type: Function },
     isQuestion: { type: Boolean }
   },
@@ -31,7 +30,7 @@ export default class Serif extends Vue {
   currentIndex: number = 0;
 
   @Prop({ type: Array as PropType<string[]> })
-  serifs: string[] = [];
+  serifs: string[];
 
   next() {
     if ( this.currentIndex < this.serifs.length - 1 ) {

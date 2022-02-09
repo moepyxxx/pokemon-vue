@@ -55,19 +55,6 @@ import loads, { TLoad } from '../../datas/field/loads/index';
 import IPokemon from '../../config/types/pokemon';
 import { TDirection, TField, TFieldObject, TObjectAction } from '../../datas/field/types';
 
-type TData = {
-  currentPosition: number,
-  allPositionLength: number,
-  direction: TDirection,
-  position: {
-    col: number,
-    row: number
-  }
-  fields: TField[],
-  fieldsIsBlacks: boolean[],
-  fieldObjects: TFieldObject[]
-}
-
 @Component({
   components: {
     Screen,
