@@ -55,13 +55,13 @@ export const load101Fields: TField[] =
   { type: 'grassplain' },
   { type: 'grassplain' },
   { type: 'grassplain' },
-  { type: 'grassplain' },
-  { type: 'grassplain' },
-  { type: 'grassplain' },
-  { type: 'grassplain' },
-  { type: 'grassplain' },
-  { type: 'grassplain' },
-  { type: 'grassplain' },
+  { type: 'grass' },
+  { type: 'grass' },
+  { type: 'grass' },
+  { type: 'grass' },
+  { type: 'grass' },
+  { type: 'grass' },
+  { type: 'grass' },
   { type: 'grassplain' },
   { type: 'grassplain' },
 
@@ -77,12 +77,12 @@ export const load101Fields: TField[] =
   { type: 'grassplain' },
   { type: 'grassplain' },
   { type: 'grassplain' },
-  { type: 'grassplain' },
-  { type: 'grassplain' },
-  { type: 'grassplain' },
-  { type: 'grassplain' },
-  { type: 'grassplain' },
-  { type: 'grassplain' },
+  { type: 'grass' },
+  { type: 'grass' },
+  { type: 'grass' },
+  { type: 'grass' },
+  { type: 'grass' },
+  { type: 'grass' },
   { type: 'grassplain' },
   { type: 'grassplain' },
 
@@ -784,48 +784,100 @@ null,
   startMark: false
 }, {
   objectType: 'forestwall',
-  startMark: true
+  startMark: true,
+  actions: [{
+    direction: 'above',
+    execute: 'stop'
+  }]
 }, {
   objectType: 'forestwall',
-  startMark: false
+  startMark: false,
+  actions: [{
+    direction: 'above',
+    execute: 'stop'
+  }]
 },
 null,
 null, {
   objectType: 'forestwall',
+  startMark: true,
+  actions: [{
+    direction: 'above',
+    execute: 'stop'
+  }]
+}, {
+  objectType: 'forestwall',
+  startMark: false,
+  actions: [{
+    direction: 'above',
+    execute: 'stop'
+  }]
+}, {
+  objectType: 'forestwall',
+  startMark: true,
+  actions: [{
+    direction: 'above',
+    execute: 'stop'
+  }]
+}, {
+  objectType: 'forestwall',
+  startMark: false,
+  actions: [{
+    direction: 'above',
+    execute: 'stop'
+  }]
+}, {
+  objectType: 'forestwall',
+  startMark: true,
+  actions: [{
+    direction: 'above',
+    execute: 'stop'
+  }]
+}, {
+  objectType: 'forestwall',
+  startMark: false,
+  actions: [{
+    direction: 'above',
+    execute: 'stop'
+  }]
+}, {
+  objectType: 'forestwall',
   startMark: true
 }, {
   objectType: 'forestwall',
-  startMark: false
+  startMark: false,
+  actions: [{
+    direction: 'above',
+    execute: 'stop'
+  }]
 }, {
   objectType: 'forestwall',
-  startMark: true
+  startMark: true,
+  actions: [{
+    direction: 'above',
+    execute: 'stop'
+  }]
 }, {
   objectType: 'forestwall',
-  startMark: false
+  startMark: false,
+  actions: [{
+    direction: 'above',
+    execute: 'stop'
+  }]
 }, {
   objectType: 'forestwall',
-  startMark: true
+  startMark: true,
+  actions: [{
+    direction: 'above',
+    execute: 'stop'
+  }]
 }, {
   objectType: 'forestwall',
-  startMark: false
-}, {
-  objectType: 'forestwall',
-  startMark: true
-}, {
-  objectType: 'forestwall',
-  startMark: false
-}, {
-  objectType: 'forestwall',
-  startMark: true
-}, {
-  objectType: 'forestwall',
-  startMark: false
-}, {
-  objectType: 'forestwall',
-  startMark: true
-}, {
-  objectType: 'forestwall',
-  startMark: false
+  startMark: false,
+  actions: [{
+    direction: 'above',
+    execute: 'stop'
+  }]
 }, {
   objectType: 'forestwall',
   startMark: true
@@ -842,118 +894,54 @@ null, {
   startMark: false
 }, {
   objectType: 'forestwall',
-  startMark: false,
-  actions: [{
-    direction: 'below',
-    execute: 'stop'
-  }]
+  startMark: false
 }, {
   objectType: 'forestwall',
-  startMark: false,
-  actions: [{
-    direction: 'below',
-    execute: 'stop'
-  }]
+  startMark: false
 },
 null,
 null,
 {
   objectType: 'forestwall',
-  startMark: false,
-  actions: [{
-    direction: 'below',
-    execute: 'stop'
-  }]
+  startMark: false
 }, {
   objectType: 'forestwall',
-  startMark: false,
-  actions: [{
-    direction: 'below',
-    execute: 'stop'
-  }]
+  startMark: false
 }, {
   objectType: 'forestwall',
-  startMark: false,
-  actions: [{
-    direction: 'below',
-    execute: 'stop'
-  }]
+  startMark: false
 }, {
   objectType: 'forestwall',
-  startMark: false,
-  actions: [{
-    direction: 'below',
-    execute: 'stop'
-  }]
+  startMark: false
 }, {
   objectType: 'forestwall',
-  startMark: false,
-  actions: [{
-    direction: 'below',
-    execute: 'stop'
-  }]
+  startMark: false
 }, {
   objectType: 'forestwall',
-  startMark: false,
-  actions: [{
-    direction: 'below',
-    execute: 'stop'
-  }]
+  startMark: false
 }, {
   objectType: 'forestwall',
-  startMark: false,
-  actions: [{
-    direction: 'below',
-    execute: 'stop'
-  }]
+  startMark: false
 }, {
   objectType: 'forestwall',
-  startMark: false,
-  actions: [{
-    direction: 'below',
-    execute: 'stop'
-  }]
+  startMark: false
 }, {
   objectType: 'forestwall',
-  startMark: false,
-  actions: [{
-    direction: 'below',
-    execute: 'stop'
-  }]
+  startMark: false
 }, {
   objectType: 'forestwall',
-  startMark: false,
-  actions: [{
-    direction: 'below',
-    execute: 'stop'
-  }]
+  startMark: false
 }, {
   objectType: 'forestwall',
-  startMark: false,
-  actions: [{
-    direction: 'below',
-    execute: 'stop'
-  }]
+  startMark: false
 }, {
   objectType: 'forestwall',
-  startMark: false,
-  actions: [{
-    direction: 'below',
-    execute: 'stop'
-  }]
+  startMark: false
 }, {
   objectType: 'forestwall',
-  startMark: false,
-  actions: [{
-    direction: 'below',
-    execute: 'stop'
-  }]
+  startMark: false
 }, {
   objectType: 'forestwall',
-  startMark: false,
-  actions: [{
-    direction: 'below',
-    execute: 'stop'
-  }]
+  startMark: false
 },
 ];
