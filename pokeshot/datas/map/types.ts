@@ -10,7 +10,7 @@ export type TObjectAction = {
   fieldId?: string;
 }
 export type TFieldObject = {
-  objectType: 'human' | 'house' | 'forestwall' | 'grass' | 'stonestep',
+  objectType: 'human' | 'privatehouse' | 'pokemoncenter' | 'forestwall' | 'grass' | 'stonestep',
   objectId?: number,
   startMark: boolean,
   actions?: TObjectAction[]

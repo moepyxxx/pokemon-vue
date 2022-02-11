@@ -26,6 +26,18 @@
             :src="require('@/assets/img/fieldobject/forestwall.svg')"
             alt="木の壁"
           >
+          <img
+            class="pokemoncenter"
+            v-if="isPokemonCenter(fieldIndex)"
+            :src="require('@/assets/img/fieldobject/pokemoncenter.svg')"
+            alt="ポケモンセンター"
+          >
+          <img
+            class="privatehouse"
+            v-if="isPrivateHouse(fieldIndex)"
+            :src="require('@/assets/img/fieldobject/privatehouse.svg')"
+            alt="民家"
+          >
 
           <span class="black" :class="{'is-active': fieldsIsBlacks[fieldIndex]}"></span>
 
@@ -114,6 +126,26 @@ export default class FieldPage extends Vue {
     const object: TFieldObject | null = this.fieldObjects[fieldIndex];
     if (!object) return false;
     return object.objectType === 'forestwall' && object.startMark;
+  }
+
+  isPokemonCenter(fieldIndex: number): boolean|never {
+    if (!this.fieldObjects) {
+      throw new Error('フィールドオブジェクトがないよ');
+    }
+
+    const object: TFieldObject | null = this.fieldObjects[fieldIndex];
+    if (!object) return false;
+    return object.objectType === 'pokemoncenter' && object.startMark;
+  }
+
+  isPrivateHouse(fieldIndex: number): boolean|never {
+    if (!this.fieldObjects) {
+      throw new Error('フィールドオブジェクトがないよ');
+    }
+
+    const object: TFieldObject | null = this.fieldObjects[fieldIndex];
+    if (!object) return false;
+    return object.objectType === 'privatehouse' && object.startMark;
   }
 
   isStoneStep(fieldIndex: number): boolean {
@@ -330,6 +362,11 @@ export default class FieldPage extends Vue {
 .forestwall {
   width: calc(800px / 20 * 2);
   height: calc(800px / 20 * 2);
+}
+
+.pokemoncenter, .privatehouse {
+  width: calc(800px / 20 * 3);
+  height: calc(800px / 20 * 3);
 }
 
 .grassplain, .grass {

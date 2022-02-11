@@ -1,0 +1,21 @@
+<svg width="95" height="94" viewBox="0 0 95 94" fill="none" xmlns="http://www.w3.org/2000/svg">
+<mask id="path-1-inside-1_104_3010" fill="white">
+<path d="M6 43H89V91.5122L65.5 94H29.5L6 91.5122V43Z"/>
+</mask>
+<path d="M6 43H89V91.5122L65.5 94H29.5L6 91.5122V43Z" fill="#EAEAEA"/>
+<path d="M6 43V42.5H5.5V43H6ZM89 43H89.5V42.5H89V43ZM89 91.5122L89.0526 92.0094L89.5 91.9621V91.5122H89ZM6 91.5122H5.5V91.9621L5.94736 92.0094L6 91.5122ZM29.5 94L29.4474 94.4972L29.4736 94.5H29.5V94ZM65.5 94V94.5H65.5264L65.5526 94.4972L65.5 94ZM6 43.5H89V42.5H6V43.5ZM88.5 43V91.5122H89.5V43H88.5ZM6.5 91.5122V43H5.5V91.5122H6.5ZM29.5526 93.5028L6.05264 91.015L5.94736 92.0094L29.4474 94.4972L29.5526 93.5028ZM88.9474 91.015L65.4474 93.5028L65.5526 94.4972L89.0526 92.0094L88.9474 91.015ZM65.5 93.5H29.5V94.5H65.5V93.5Z" fill="black" fill-opacity="0.45" mask="url(#path-1-inside-1_104_3010)"/>
+<path d="M6.53439 15H88.4656L95 54.3684L67.8571 59H27.6455L0 54.3684L6.53439 15Z" fill="#AB1C1C"/>
+<rect x="33" y="73" width="29" height="21" fill="url(#paint0_linear_104_3010)"/>
+<rect x="33.25" y="73.25" width="28.5" height="20.5" stroke="black" stroke-opacity="0.21" stroke-width="0.5"/>
+<circle cx="48" cy="58" r="6.5" fill="#D5CDCD"/>
+<circle cx="48" cy="58" r="6.5" stroke="#AB1C1C"/>
+<circle cx="48" cy="58" r="6.5" stroke="black" stroke-opacity="0.2"/>
+<circle cx="48" cy="58" r="2" fill="#AB1C1C"/>
+<rect x="25" width="44" height="20" fill="#AB1C1C"/>
+<defs>
+<linearGradient id="paint0_linear_104_3010" x1="47.5" y1="73" x2="47.5" y2="94" gradientUnits="userSpaceOnUse">
+<stop stop-color="#8BD6DB"/>
+<stop offset="1" stop-color="#8BD6DB" stop-opacity="0"/>
+</linearGradient>
+</defs>
+</svg>
