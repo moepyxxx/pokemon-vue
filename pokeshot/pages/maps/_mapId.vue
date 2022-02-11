@@ -54,9 +54,9 @@ import Controller from '../../component/games/Controller.vue';
 import { getModule } from 'vuex-module-decorators';
 import HeroCurrent from '~/store/modules/heroCurrent';
 
-import loads, { TLoad } from '../../datas/field/loads/index';
+import loads, { TMap } from '../../datas/map/index';
 import IPokemon from '../../config/types/pokemon';
-import { TDirection, TField, TFieldObject, TObjectAction } from '../../datas/field/types';
+import { TDirection, TField, TFieldObject, TObjectAction } from '../../datas/map/types';
 
 const heroCurrentModule = getModule(HeroCurrent);
 
@@ -67,9 +67,9 @@ const heroCurrentModule = getModule(HeroCurrent);
   },
   
   async asyncData(ctx) {
-    const id: string = ctx.params.fieldId;
+    const id: string = ctx.params.mapId;
     const currentPosition: number = Number(ctx.query.position);
-    const load: TLoad | null | undefined = loads.find(load => load.id === Number(id));
+    const load: TMap | null | undefined = loads.find(load => load.id === id);
 
     if (!load) {
       throw new Error('そんな道路はありません！');

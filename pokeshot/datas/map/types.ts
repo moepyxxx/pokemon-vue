@@ -7,6 +7,7 @@ export type TField = {
 export type TObjectAction = {
   execute: 'enterbuilding' | 'gootherfield' | 'stop' | 'jumpdown';
   direction: TDirection;
+  fieldId?: string;
 }
 export type TFieldObject = {
   objectType: 'human' | 'house' | 'forestwall' | 'grass' | 'stonestep',
