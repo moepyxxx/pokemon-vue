@@ -503,13 +503,31 @@ null,
 null,
 null, {
   objectType: 'pokemoncenter',
-  startMark: true
+  startMark: true,
+  actions: [{
+    direction: 'left',
+    execute: 'stop'
+  }, {
+    direction: 'above',
+    execute: 'stop'
+  }]
 }, {
   objectType: 'pokemoncenter',
-  startMark: false
+  startMark: false,
+  actions: [{
+    direction: 'above',
+    execute: 'stop'
+  }]
 }, {
   objectType: 'pokemoncenter',
-  startMark: false
+  startMark: false,
+  actions: [{
+    direction: 'right',
+    execute: 'stop'
+  }, {
+    direction: 'above',
+    execute: 'stop'
+  }]
 }, null,
 null,
 null,
@@ -547,13 +565,21 @@ null,
 null,
 null, {
   objectType: 'pokemoncenter',
-  startMark: false
+  startMark: false,
+  actions: [{
+    direction: 'left',
+    execute: 'stop'
+  }]
 }, {
   objectType: 'pokemoncenter',
   startMark: false
 }, {
   objectType: 'pokemoncenter',
-  startMark: false
+  startMark: false,
+  actions: [{
+    direction: 'right',
+    execute: 'stop'
+  }]
 }, null,
 null,
 null,
@@ -581,29 +607,65 @@ null, {
   }]
 }, {
   objectType: 'privatehouse',
-  startMark: true
+  startMark: true,
+  actions: [{
+    direction: 'left',
+    execute: 'stop'
+  }, {
+    direction: 'above',
+    execute: 'stop'
+  }]
 }, {
   objectType: 'privatehouse',
-  startMark: false
+  startMark: false,
+  actions: [{
+    direction: 'above',
+    execute: 'stop'
+  }]
 }, {
   objectType: 'privatehouse',
-  startMark: false
+  startMark: false,
+  actions: [{
+    direction: 'right',
+    execute: 'stop'
+  }, {
+    direction: 'above',
+    execute: 'stop'
+  }]
 }, null,
-null,
 null,
 null,
 null,
 null,
 null, {
   objectType: 'pokemoncenter',
-  startMark: false
+  startMark: false,
+  actions: [{
+    direction: 'left',
+    execute: 'stop'
+  }, {
+    direction: 'below',
+    execute: 'stop'
+  }]
 }, {
   objectType: 'pokemoncenter',
-  startMark: false
+  startMark: false,
+  actions: [{
+    direction: 'below',
+    execute: 'stop'
+  }]
 }, {
   objectType: 'pokemoncenter',
-  startMark: false
+  startMark: false,
+  actions: [{
+    direction: 'right',
+    execute: 'stop'
+  }, {
+    direction: 'below',
+    execute: 'stop'
+  }]
 }, null,
+null,
 null,
 null, {
   objectType: 'forestwall',
@@ -629,13 +691,21 @@ null, {
   }]
 }, {
   objectType: 'privatehouse',
-  startMark: false
+  startMark: false,
+  actions: [{
+    direction: 'left',
+    execute: 'stop'
+  }]
 }, {
   objectType: 'privatehouse',
   startMark: false
 }, {
   objectType: 'privatehouse',
-  startMark: false
+  startMark: false,
+  actions: [{
+    direction: 'right',
+    execute: 'stop'
+  }]
 }, null,
 null,
 null,
@@ -672,13 +742,31 @@ null, {
   }]
 }, {
   objectType: 'privatehouse',
-  startMark: false
+  startMark: false,
+  actions: [{
+    direction: 'left',
+    execute: 'stop'
+  }, {
+    direction: 'below',
+    execute: 'stop'
+  }]
 }, {
   objectType: 'privatehouse',
-  startMark: false
+  startMark: false,
+  actions: [{
+    direction: 'below',
+    execute: 'stop'
+  }]
 }, {
   objectType: 'privatehouse',
-  startMark: false
+  startMark: false,
+  actions: [{
+    direction: 'below',
+    execute: 'stop'
+  }, {
+    direction: 'right',
+    execute: 'stop'
+  }]
 }, null,
 null,
 null,
