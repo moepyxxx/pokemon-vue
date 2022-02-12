@@ -1,4 +1,4 @@
-import { TField, TFieldObject } from "../types";
+import { TField, TFieldObject } from "../../types";
 
 export const toukaFields: TField[] = 
 [
