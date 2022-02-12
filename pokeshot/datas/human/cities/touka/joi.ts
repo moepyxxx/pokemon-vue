@@ -5,7 +5,7 @@ export const toukaJoi: THuman = {
   name: 'トウカシティのジョーイさん',
   imagename: 'joi',
   actions: [{
-    actionId: 'initialQuestion',
+    actionId: 'recoverPokemonQuestion',
     question: {
       selects: ['はい','いいえ'],
       result: [{
@@ -14,6 +14,14 @@ export const toukaJoi: THuman = {
         nextActionId: 'talkRecoverComplete'
       }]
     }
+  }, {
+    actionId: 'recoverPokemon',
+    execute: 'recoverPokemon',
+    nextActionId: 'talkRecoverComplete'
+  }, {
+    actionId: 'firstGreeging',
+    talk: ['こんにちは ポケモンセンターです。', 'お手持ちのポケモンを 回復 させますか？'],
+    nextActionId: 'recoverPokemonQuestion'
   }, {
     actionId: 'talkRecoverComplete',
     talk: ['お手持ちの ポケモンは みんな 元気になりましたよ'],

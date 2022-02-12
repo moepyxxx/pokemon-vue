@@ -69,6 +69,8 @@ export default class Serif extends Vue {
   transform: translateX(-50%);
   height: 100px;
   cursor: pointer;
+  background: #fff;
+  z-index: 10;
 
   p {
     margin: 0;

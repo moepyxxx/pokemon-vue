@@ -36,7 +36,13 @@
 
         </span>
       </div>
-      
+
+      <Serif
+        :serifs="serifs"
+        :isQuestion="isQuestion"
+        @next="next"
+        @back="back"
+      />
     </Screen>
 
     <div class="controller">
@@ -64,7 +70,7 @@ import HeroCurrent from '~/store/modules/heroCurrent';
 import maps, { TMap } from '../../datas/map/index';
 import IPokemon from '../../config/types/pokemon';
 import { TDirection, TField, TFieldObject, TObjectAction, TObjectType } from '../../datas/map/types';
-import { THuman } from '@/datas/human/types';
+import { THuman, THumanAction } from '@/datas/human/types';
 import humans from '@/datas/human/index';
 
 const heroCurrentModule = getModule(HeroCurrent);
@@ -109,6 +115,11 @@ export default class MapPage extends Vue {
     row: 20
   };
   direction: TDirection = 'below';
+
+  isQuestion: boolean = false;
+  serifs: string[] = []
+  next?: () => void
+  back?: () => void
 
   fieldObjectTypes: { key: TObjectType, directory: TImgDirectory, alt: string }[] = [{
     key: 'privatehouse',
@@ -182,13 +193,48 @@ export default class MapPage extends Vue {
       }
     );
 
-    if (action?.execute === 'talk') {
-      this.talk(action);
+    if (action?.execute === 'talk' && action.talk) {
+      this.action(action.talk.humanId, action.talk.actionId);
     }
   }
 
-  talk(action: TObjectAction): void {
+  action(humanId: string, actionId: string): void {
 
+    const human: THuman = humans.find(_human => _human.id === humanId) as THuman;
+    const action: THumanAction = human.actions.find(action => action.actionId === actionId) as THumanAction;
+
+    switch (action.execute) {
+      case 'recoverPokemon':
+        this.recoverPokemon(human, action);
+      // case 'question':
+      //   this.talkQuestion(human, action);
+      default:
+        this.talkAction(human, action);
+    }
+
+  }
+
+  recoverPokemon(human: THuman, action: THumanAction) {
+    // ポケモン回復処理
+    console.log('ポケモンが回復した！');
+
+    if (action.nextActionId) {
+      this.action(human.id, action.nextActionId);
+    }
+  }
+
+  talkAction(human: THuman, action: THumanAction) {
+
+    if (!action.talk) return;
+
+    this.serifs = action.talk;
+    
+    this.next = () => {
+      this.serifs.splice(0);
+      if (action.nextActionId) {
+        this.action(human.id, action.nextActionId);
+      }
+    }
   }
 
   isFieldGrass(fieldIndex: number): boolean|never {

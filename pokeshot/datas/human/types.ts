@@ -14,17 +14,19 @@ type TQuestion = {
 // [note]: いつか実装のため
 type TButtle = any;
 
+export type THumanAction = {
+  actionId: string,
+  talk?: TTalk,
+  question?: TQuestion,
+  execute?: TExecute,
+  buttle?: TButtle,
+  nextActionId?: string
+}
+
 export type THuman = {
   id: string,
   name: string,
   imagename: string,
-  actions: {
-    actionId: string,
-    talk?: TTalk,
-    question?: TQuestion,
-    execute?: TExecute,
-    buttle?: TButtle,
-    nextActionId?: string
-  }[],
+  actions: THumanAction[],
 
 };

@@ -631,7 +631,7 @@ null, {
     execute: 'talk',
     talk: {
       humanId: 'toukaJoi',
-      actionId: 'initialQuestion'
+      actionId: 'recoverPokemon'
     }
   }]
 }, {
