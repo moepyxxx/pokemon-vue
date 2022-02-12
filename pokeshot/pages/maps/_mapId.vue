@@ -56,6 +56,7 @@
 import { Component, Vue } from 'vue-property-decorator';
 import Screen from '../../component/games/Screen.vue';
 import Controller from '../../component/games/Controller.vue';
+import Serif from '../../component/games/Serif.vue';
 
 import { getModule } from 'vuex-module-decorators';
 import HeroCurrent from '~/store/modules/heroCurrent';
@@ -75,7 +76,8 @@ type TImgDirectory = 'building' | 'interior' | 'load' | 'pokemoncenter';
 
   components: {
     Screen,
-    Controller
+    Controller,
+    Serif
   },
   
   async asyncData(ctx) {
@@ -161,8 +163,32 @@ export default class MapPage extends Vue {
   private fields?: TField[];
   private fieldObjects?: TFieldObject[];
 
-  controllAPush() {
-    // 
+  controllAPush(): void {
+    if (!this.fieldObjects) {
+      throw new Error('フィールドオブジェクトがないよ');
+    }
+
+    const nextPosition: number = this.getNextPosition(this.direction);
+    const reverseDirection: TDirection = this.getReverseDirection(this.direction);
+
+    if ( this.fieldObjects[nextPosition] === null || 
+      this.fieldObjects[nextPosition].actions?.length === 0 ) {
+      return;
+    }
+
+    const action: TObjectAction | undefined = this.fieldObjects[nextPosition].actions?.find(
+      (action: TObjectAction) => {
+        return action.direction === reverseDirection && action.trigger === 'push-a';
+      }
+    );
+
+    if (action?.execute === 'talk') {
+      this.talk(action);
+    }
+  }
+
+  talk(action: TObjectAction): void {
+
   }
 
   isFieldGrass(fieldIndex: number): boolean|never {
@@ -230,7 +256,7 @@ export default class MapPage extends Vue {
     }
 
     const action: TObjectAction | undefined = this.fieldObjects[nextPosition].actions?.find(
-      (action: TObjectAction) => action.direction === reverseDirection
+      (action: TObjectAction) => action.direction === reverseDirection && action.trigger === 'move'
     );
 
     if (!action) {
