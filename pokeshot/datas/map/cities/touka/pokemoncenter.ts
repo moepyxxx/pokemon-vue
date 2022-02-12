@@ -330,6 +330,7 @@ export const toukaPcObjects: (TFieldObject | null)[] = [
   startMark: true,
   actions: [{
     direction: 'below',
+    trigger: 'move',
     execute: 'stop'
   }]
 }, {
@@ -337,6 +338,7 @@ export const toukaPcObjects: (TFieldObject | null)[] = [
   startMark: true,
   actions: [{
     direction: 'below',
+    trigger: 'move',
     execute: 'stop'
   }]
 }, {
@@ -344,6 +346,7 @@ export const toukaPcObjects: (TFieldObject | null)[] = [
   startMark: true,
   actions: [{
     direction: 'below',
+    trigger: 'move',
     execute: 'stop'
   }]
 }, {
@@ -351,6 +354,7 @@ export const toukaPcObjects: (TFieldObject | null)[] = [
   startMark: true,
   actions: [{
     direction: 'below',
+    trigger: 'move',
     execute: 'stop'
   }]
 }, {
@@ -358,6 +362,7 @@ export const toukaPcObjects: (TFieldObject | null)[] = [
   startMark: true,
   actions: [{
     direction: 'below',
+    trigger: 'move',
     execute: 'stop'
   }]
 }, {
@@ -365,6 +370,7 @@ export const toukaPcObjects: (TFieldObject | null)[] = [
   startMark: true,
   actions: [{
     direction: 'below',
+    trigger: 'move',
     execute: 'stop'
   }]
 }, {
@@ -372,6 +378,7 @@ export const toukaPcObjects: (TFieldObject | null)[] = [
   startMark: true,
   actions: [{
     direction: 'below',
+    trigger: 'move',
     execute: 'stop'
   }]
 }, {
@@ -379,6 +386,7 @@ export const toukaPcObjects: (TFieldObject | null)[] = [
   startMark: true,
   actions: [{
     direction: 'below',
+    trigger: 'move',
     execute: 'stop'
   }]
 }, {
@@ -386,6 +394,7 @@ export const toukaPcObjects: (TFieldObject | null)[] = [
   startMark: true,
   actions: [{
     direction: 'below',
+    trigger: 'move',
     execute: 'stop'
   }]
 }, {
@@ -393,6 +402,7 @@ export const toukaPcObjects: (TFieldObject | null)[] = [
   startMark: true,
   actions: [{
     direction: 'below',
+    trigger: 'move',
     execute: 'stop'
   }]
 }, {
@@ -400,6 +410,7 @@ export const toukaPcObjects: (TFieldObject | null)[] = [
   startMark: true,
   actions: [{
     direction: 'below',
+    trigger: 'move',
     execute: 'stop'
   }]
 }, {
@@ -407,6 +418,7 @@ export const toukaPcObjects: (TFieldObject | null)[] = [
   startMark: true,
   actions: [{
     direction: 'below',
+    trigger: 'move',
     execute: 'stop'
   }]
 }, {
@@ -414,6 +426,7 @@ export const toukaPcObjects: (TFieldObject | null)[] = [
   startMark: true,
   actions: [{
     direction: 'below',
+    trigger: 'move',
     execute: 'stop'
   }]
 }, {
@@ -421,6 +434,7 @@ export const toukaPcObjects: (TFieldObject | null)[] = [
   startMark: true,
   actions: [{
     direction: 'below',
+    trigger: 'move',
     execute: 'stop'
   }]
 }, {
@@ -428,6 +442,7 @@ export const toukaPcObjects: (TFieldObject | null)[] = [
   startMark: true,
   actions: [{
     direction: 'below',
+    trigger: 'move',
     execute: 'stop'
   }]
 }, {
@@ -435,6 +450,7 @@ export const toukaPcObjects: (TFieldObject | null)[] = [
   startMark: true,
   actions: [{
     direction: 'below',
+    trigger: 'move',
     execute: 'stop'
   }]
 }, {
@@ -442,6 +458,7 @@ export const toukaPcObjects: (TFieldObject | null)[] = [
   startMark: true,
   actions: [{
     direction: 'below',
+    trigger: 'move',
     execute: 'stop'
   }]
 }, {
@@ -449,6 +466,7 @@ export const toukaPcObjects: (TFieldObject | null)[] = [
   startMark: true,
   actions: [{
     direction: 'below',
+    trigger: 'move',
     execute: 'stop'
   }]
 },
@@ -461,6 +479,7 @@ export const toukaPcObjects: (TFieldObject | null)[] = [
   startMark: true,
   actions: [{
     direction: 'right',
+    trigger: 'move',
     execute: 'stop'
   }]
 },
@@ -470,9 +489,11 @@ null,
   startMark: true,
   actions: [{
     direction: 'below',
+    trigger: 'move',
     execute: 'stop'
   }, {
     direction: 'left',
+    trigger: 'move',
     execute: 'stop'
   }]
 },
@@ -481,17 +502,20 @@ null,
   startMark: true,
   actions: [{
     direction: 'below',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 },{
   objectType: 'bookshelf',
   startMark: false,
   actions: [{
     direction: 'below',
+    trigger: 'move',
     execute: 'stop'
   }, {
     direction: 'right',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 },
 null, {
@@ -499,6 +523,7 @@ null, {
   startMark: true,
   actions: [{
     direction: 'left',
+    trigger: 'move',
     execute: 'stop'
   }]
 }, {
@@ -507,8 +532,14 @@ null, {
 }, {
   objectType: 'recoverysystem',
   startMark: false,
-},
-null, {
+}, {
+  objectType: 'human',
+  startMark: true,
+  objectDetail: {
+    humanId: 'toukaJoi',
+    direction: 'below'
+  }
+}, {
   objectType: 'recoverysystem',
   startMark: false,
 }, {
@@ -519,9 +550,11 @@ null, {
   startMark: true,
   actions: [{
     direction: 'right',
+    trigger: 'move',
     execute: 'stop'
   }, {
     direction: 'below',
+    trigger: 'move',
     execute: 'stop'
   }]
 },
@@ -533,6 +566,7 @@ null, {
   startMark: true,
   actions: [{
     direction: 'left',
+    trigger: 'move',
     execute: 'stop'
   }]
 }, {
@@ -548,6 +582,7 @@ null, {
   startMark: true,
   actions: [{
     direction: 'right',
+    trigger: 'move',
     execute: 'stop'
   }]
 },
@@ -560,47 +595,63 @@ null, {
   startMark: false,
   actions: [{
     direction: 'left',
+    trigger: 'move',
+    execute: 'stop'
+  }, {
+    trigger: 'move',
+    direction: 'below',
+    execute: 'stop'
+  }]
+}, {
+  objectType: 'recoverysystem',
+  startMark: false,
+  actions: [{
+    direction: 'below',
+    trigger: 'move',
+    execute: 'stop'
+  }]
+}, {
+  objectType: 'recoverysystem',
+  startMark: false,
+  actions: [{
+    direction: 'below',
+    trigger: 'move',
+    execute: 'stop'
+  }]
+}, {
+  objectType: 'recoverysystem',
+  startMark: false,
+  actions: [{
+    direction: 'below',
+    trigger: 'move',
     execute: 'stop'
   }, {
     direction: 'below',
-    execute: 'stop'
+    trigger: 'push-a',
+    execute: 'talk',
+    talk: {
+      humanId: 'toukaJoi',
+      actionId: 'initialQuestion'
+    }
   }]
 }, {
   objectType: 'recoverysystem',
   startMark: false,
   actions: [{
     direction: 'below',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 }, {
   objectType: 'recoverysystem',
   startMark: false,
   actions: [{
     direction: 'below',
-    execute: 'stop'
-  }]
-}, {
-  objectType: 'recoverysystem',
-  startMark: false,
-  actions: [{
-    direction: 'below',
-    execute: 'stop'
-  }]
-}, {
-  objectType: 'recoverysystem',
-  startMark: false,
-  actions: [{
-    direction: 'below',
-    execute: 'stop'
-  }]
-}, {
-  objectType: 'recoverysystem',
-  startMark: false,
-  actions: [{
-    direction: 'below',
+    trigger: 'move',
     execute: 'stop'
   }, {
     direction: 'right',
+    trigger: 'move',
     execute: 'stop'
   }]
 }, null,
@@ -611,6 +662,7 @@ null, {
   objectType: 'buildingwall',
   startMark: true,
   actions: [{
+    trigger: 'move',
     direction: 'left',
     execute: 'stop'
   }]
@@ -627,6 +679,7 @@ null, {
   startMark: true,
   actions: [{
     direction: 'right',
+    trigger: 'move',
     execute: 'stop'
   }]
 },
@@ -654,6 +707,7 @@ null, {
   startMark: true,
   actions: [{
     direction: 'left',
+    trigger: 'move',
     execute: 'stop'
   }]
 }, {
@@ -669,6 +723,7 @@ null, {
   startMark: true,
   actions: [{
     direction: 'right',
+    trigger: 'move',
     execute: 'stop'
   }]
 },
@@ -692,6 +747,7 @@ null, {
   startMark: true,
   actions: [{
     direction: 'left',
+    trigger: 'move',
     execute: 'stop'
   }]
 }, {
@@ -707,6 +763,7 @@ null, {
   startMark: true,
   actions: [{
     direction: 'right',
+    trigger: 'move',
     execute: 'stop'
   }]
 }, 
@@ -731,6 +788,7 @@ null,
   startMark: true,
   actions: [{
     direction: 'left',
+    trigger: 'move',
     execute: 'stop'
   }]
 }, {
@@ -746,6 +804,7 @@ null,
   startMark: true,
   actions: [{
     direction: 'right',
+    trigger: 'move',
     execute: 'stop'
   }]
 },
@@ -768,9 +827,11 @@ null, {
   startMark: true,
   actions: [{
     direction: 'above',
+    trigger: 'move',
     execute: 'stop'
   }, {
     direction: 'left',
+    trigger: 'move',
     execute: 'stop'
   }]
 }, {
@@ -778,9 +839,11 @@ null, {
   startMark: false,
   actions: [{
     direction: 'above',
+    trigger: 'move',
     execute: 'stop'
   }, {
     direction: 'right',
+    trigger: 'move',
     execute: 'stop'
   }]
 }, null,
@@ -789,6 +852,7 @@ null, {
   startMark: true,
   actions: [{
     direction: 'left',
+    trigger: 'move',
     execute: 'stop'
   }]
 }, {
@@ -804,6 +868,7 @@ null, {
   startMark: true,
   actions: [{
     direction: 'right',
+    trigger: 'move',
     execute: 'stop'
   }]
 },
@@ -826,9 +891,11 @@ null, {
   startMark: false,
   actions: [{
     direction: 'below',
+    trigger: 'move',
     execute: 'stop'
   }, {
     direction: 'left',
+    trigger: 'move',
     execute: 'stop'
   }]
 }, {
@@ -836,9 +903,11 @@ null, {
   startMark: false,
   actions: [{
     direction: 'below',
+    trigger: 'move',
     execute: 'stop'
   }, {
     direction: 'right',
+    trigger: 'move',
     execute: 'stop'
   }]
 }, null, {
@@ -846,6 +915,7 @@ null, {
   startMark: true,
   actions: [{
     direction: 'left',
+    trigger: 'move',
     execute: 'stop'
   }]
 }, {
@@ -861,6 +931,7 @@ null, {
   startMark: true,
   actions: [{
     direction: 'right',
+    trigger: 'move',
     execute: 'stop'
   }]
 },
@@ -887,6 +958,7 @@ null, {
   startMark: true,
   actions: [{
     direction: 'left',
+    trigger: 'move',
     execute: 'stop'
   }]
 }, {
@@ -905,6 +977,7 @@ null, {
   startMark: true,
   actions: [{
     direction: 'above',
+    trigger: 'move',
     execute: 'stop'
   }]
 }, {
@@ -912,6 +985,7 @@ null, {
   startMark: true,
   actions: [{
     direction: 'above',
+    trigger: 'move',
     execute: 'stop'
   }]
 }, {
@@ -919,6 +993,7 @@ null, {
   startMark: true,
   actions: [{
     direction: 'above',
+    trigger: 'move',
     execute: 'stop'
   }]
 }, {
@@ -926,6 +1001,7 @@ null, {
   startMark: true,
   actions: [{
     direction: 'above',
+    trigger: 'move',
     execute: 'stop'
   }]
 }, {
@@ -933,6 +1009,7 @@ null, {
   startMark: true,
   actions: [{
     direction: 'above',
+    trigger: 'move',
     execute: 'stop'
   }]
 }, {
@@ -940,6 +1017,7 @@ null, {
   startMark: true,
   actions: [{
     direction: 'above',
+    trigger: 'move',
     execute: 'stop'
   }]
 }, {
@@ -947,6 +1025,7 @@ null, {
   startMark: true,
   actions: [{
     direction: 'above',
+    trigger: 'move',
     execute: 'stop'
   }]
 }, {
@@ -954,6 +1033,7 @@ null, {
   startMark: true,
   actions: [{
     direction: 'above',
+    trigger: 'move',
     execute: 'stop'
   }]
 }, {
@@ -961,6 +1041,7 @@ null, {
   startMark: true,
   actions: [{
     direction: 'above',
+    trigger: 'move',
     execute: 'stop'
   }]
 }, {
@@ -968,6 +1049,7 @@ null, {
   startMark: true,
   actions: [{
     direction: 'above',
+    trigger: 'move',
     execute: 'stop'
   }]
 },null,
@@ -976,6 +1058,7 @@ null, {
   startMark: true,
   actions: [{
     direction: 'above',
+    trigger: 'move',
     execute: 'stop'
   }]
 }, {
@@ -983,6 +1066,7 @@ null, {
   startMark: true,
   actions: [{
     direction: 'above',
+    trigger: 'move',
     execute: 'stop'
   }]
 }, {
@@ -990,6 +1074,7 @@ null, {
   startMark: true,
   actions: [{
     direction: 'above',
+    trigger: 'move',
     execute: 'stop'
   }]
 }, {
@@ -997,6 +1082,7 @@ null, {
   startMark: true,
   actions: [{
     direction: 'above',
+    trigger: 'move',
     execute: 'stop'
   }]
 }, {

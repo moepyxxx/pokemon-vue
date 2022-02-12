@@ -326,14 +326,16 @@ null, {
   startMark: false,
   actions: [{
     direction: 'below',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 }, {
   objectType: 'forestwall',
   startMark: false,
   actions: [{
     direction: 'below',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 },
 null, {
@@ -341,105 +343,120 @@ null, {
   startMark: false,
   actions: [{
     direction: 'below',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 }, {
   objectType: 'forestwall',
   startMark: false,
   actions: [{
     direction: 'below',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 }, {
   objectType: 'forestwall',
   startMark: false,
   actions: [{
     direction: 'below',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 }, {
   objectType: 'forestwall',
   startMark: false,
   actions: [{
     direction: 'below',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 }, {
   objectType: 'forestwall',
   startMark: false,
   actions: [{
     direction: 'below',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 }, {
   objectType: 'forestwall',
   startMark: false,
   actions: [{
     direction: 'below',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 }, {
   objectType: 'forestwall',
   startMark: false,
   actions: [{
     direction: 'below',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 }, {
   objectType: 'forestwall',
   startMark: false,
   actions: [{
     direction: 'below',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 }, {
   objectType: 'forestwall',
   startMark: false,
   actions: [{
     direction: 'below',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 }, {
   objectType: 'forestwall',
   startMark: false,
   actions: [{
     direction: 'below',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 }, {
   objectType: 'forestwall',
   startMark: false,
   actions: [{
     direction: 'below',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 }, {
   objectType: 'forestwall',
   startMark: false,
   actions: [{
     direction: 'below',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 }, {
   objectType: 'forestwall',
   startMark: false,
   actions: [{
     direction: 'below',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 }, {
   objectType: 'forestwall',
   startMark: false,
   actions: [{
     direction: 'below',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 }, {
   objectType: 'forestwall',
   startMark: false,
   actions: [{
     direction: 'below',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 },
 
@@ -451,7 +468,8 @@ null, {
   startMark: false,
   actions: [{
     direction: 'right',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 },
 null,
@@ -475,7 +493,8 @@ null,
   startMark: true,
   actions: [{
     direction: 'left',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 }, {
   objectType: 'forestwall',
@@ -490,7 +509,8 @@ null,
   startMark: false,
   actions: [{
     direction: 'right',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 },
 null,
@@ -506,27 +526,32 @@ null, {
   startMark: true,
   actions: [{
     direction: 'left',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }, {
     direction: 'above',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 }, {
   objectType: 'pokemoncenter',
   startMark: false,
   actions: [{
     direction: 'above',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 }, {
   objectType: 'pokemoncenter',
   startMark: false,
   actions: [{
     direction: 'right',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }, {
     direction: 'above',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 }, null,
 null,
@@ -537,142 +562,8 @@ null,
   startMark: false,
   actions: [{
     direction: 'left',
-    execute: 'stop'
-  }]
-}, {
-  objectType: 'forestwall',
-  startMark: false
-},
-
-{
-  objectType: 'forestwall',
-  startMark: true
-}, {
-  objectType: 'forestwall',
-  startMark: false,
-  actions: [{
-    direction: 'right',
-    execute: 'stop'
-  }]
-},
-null,
-null,
-null,
-null,
-null,
-null,
-null,
-null,
-null, {
-  objectType: 'pokemoncenter',
-  startMark: false,
-  actions: [{
-    direction: 'left',
-    execute: 'stop'
-  }]
-}, {
-  objectType: 'pokemoncenter',
-  startMark: false
-}, {
-  objectType: 'pokemoncenter',
-  startMark: false,
-  actions: [{
-    direction: 'right',
-    execute: 'stop'
-  }]
-}, null,
-null,
-null,
-null, {
-  objectType: 'forestwall',
-  startMark: true,
-  actions: [{
-    direction: 'left',
-    execute: 'stop'
-  }]
-}, {
-  objectType: 'forestwall',
-  startMark: false
-},
-
-{
-  objectType: 'forestwall',
-  startMark: false
-}, {
-  objectType: 'forestwall',
-  startMark: false,
-  actions: [{
-    direction: 'right',
-    execute: 'stop'
-  }]
-}, {
-  objectType: 'privatehouse',
-  startMark: true,
-  actions: [{
-    direction: 'left',
-    execute: 'stop'
-  }, {
-    direction: 'above',
-    execute: 'stop'
-  }]
-}, {
-  objectType: 'privatehouse',
-  startMark: false,
-  actions: [{
-    direction: 'above',
-    execute: 'stop'
-  }]
-}, {
-  objectType: 'privatehouse',
-  startMark: false,
-  actions: [{
-    direction: 'right',
-    execute: 'stop'
-  }, {
-    direction: 'above',
-    execute: 'stop'
-  }]
-}, null,
-null,
-null,
-null,
-null,
-null, {
-  objectType: 'pokemoncenter',
-  startMark: false,
-  actions: [{
-    direction: 'left',
-    execute: 'stop'
-  }, {
-    direction: 'below',
-    execute: 'stop'
-  }]
-}, {
-  objectType: 'pokemoncenter',
-  startMark: false,
-  actions: [{
-    direction: 'below',
-    execute: 'stop'
-  }]
-}, {
-  objectType: 'pokemoncenter',
-  startMark: false,
-  actions: [{
-    direction: 'right',
-    execute: 'stop'
-  }, {
-    direction: 'below',
-    execute: 'stop'
-  }]
-}, null,
-null,
-null,
-null, {
-  objectType: 'forestwall',
-  startMark: false,
-  actions: [{
-    direction: 'left',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 }, {
   objectType: 'forestwall',
@@ -687,14 +578,167 @@ null, {
   startMark: false,
   actions: [{
     direction: 'right',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
+  }]
+},
+null,
+null,
+null,
+null,
+null,
+null,
+null,
+null,
+null, {
+  objectType: 'pokemoncenter',
+  startMark: false,
+  actions: [{
+    direction: 'left',
+    execute: 'stop',
+    trigger: 'move'
+  }]
+}, {
+  objectType: 'pokemoncenter',
+  startMark: false
+}, {
+  objectType: 'pokemoncenter',
+  startMark: false,
+  actions: [{
+    direction: 'right',
+    execute: 'stop',
+    trigger: 'move'
+  }]
+}, null,
+null,
+null,
+null, {
+  objectType: 'forestwall',
+  startMark: true,
+  actions: [{
+    direction: 'left',
+    execute: 'stop',
+    trigger: 'move'
+  }]
+}, {
+  objectType: 'forestwall',
+  startMark: false
+},
+
+{
+  objectType: 'forestwall',
+  startMark: false
+}, {
+  objectType: 'forestwall',
+  startMark: false,
+  actions: [{
+    direction: 'right',
+    execute: 'stop',
+    trigger: 'move'
+  }]
+}, {
+  objectType: 'privatehouse',
+  startMark: true,
+  actions: [{
+    direction: 'left',
+    execute: 'stop',
+    trigger: 'move'
+  }, {
+    direction: 'above',
+    execute: 'stop',
+    trigger: 'move'
+  }]
+}, {
+  objectType: 'privatehouse',
+  startMark: false,
+  actions: [{
+    direction: 'above',
+    execute: 'stop',
+    trigger: 'move'
+  }]
+}, {
+  objectType: 'privatehouse',
+  startMark: false,
+  actions: [{
+    direction: 'right',
+    execute: 'stop',
+    trigger: 'move'
+  }, {
+    direction: 'above',
+    execute: 'stop',
+    trigger: 'move'
+  }]
+}, null,
+null,
+null,
+null,
+null,
+null, {
+  objectType: 'pokemoncenter',
+  startMark: false,
+  actions: [{
+    direction: 'left',
+    execute: 'stop',
+    trigger: 'move'
+  }, {
+    direction: 'below',
+    execute: 'stop',
+    trigger: 'move'
+  }]
+}, {
+  objectType: 'pokemoncenter',
+  startMark: false,
+  actions: [{
+    direction: 'below',
+    execute: 'stop',
+    trigger: 'move'
+  }]
+}, {
+  objectType: 'pokemoncenter',
+  startMark: false,
+  actions: [{
+    direction: 'right',
+    execute: 'stop',
+    trigger: 'move'
+  }, {
+    direction: 'below',
+    execute: 'stop',
+    trigger: 'move'
+  }]
+}, null,
+null,
+null,
+null, {
+  objectType: 'forestwall',
+  startMark: false,
+  actions: [{
+    direction: 'left',
+    execute: 'stop',
+    trigger: 'move'
+  }]
+}, {
+  objectType: 'forestwall',
+  startMark: false
+},
+
+{
+  objectType: 'forestwall',
+  startMark: true
+}, {
+  objectType: 'forestwall',
+  startMark: false,
+  actions: [{
+    direction: 'right',
+    execute: 'stop',
+    trigger: 'move'
   }]
 }, {
   objectType: 'privatehouse',
   startMark: false,
   actions: [{
     direction: 'left',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 }, {
   objectType: 'privatehouse',
@@ -704,7 +748,8 @@ null, {
   startMark: false,
   actions: [{
     direction: 'right',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 }, null,
 null,
@@ -723,7 +768,8 @@ null, {
   startMark: true,
   actions: [{
     direction: 'left',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 }, {
   objectType: 'forestwall',
@@ -738,34 +784,40 @@ null, {
   startMark: false,
   actions: [{
     direction: 'right',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 }, {
   objectType: 'privatehouse',
   startMark: false,
   actions: [{
     direction: 'left',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }, {
     direction: 'below',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 }, {
   objectType: 'privatehouse',
   startMark: false,
   actions: [{
     direction: 'below',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 }, {
   objectType: 'privatehouse',
   startMark: false,
   actions: [{
     direction: 'below',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }, {
     direction: 'right',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 }, null,
 null,
@@ -785,7 +837,8 @@ null,
   startMark: false,
   actions: [{
     direction: 'left',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 }, {
   objectType: 'forestwall',
@@ -800,7 +853,8 @@ null,
   startMark: false,
   actions: [{
     direction: 'right',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 },
 null,
@@ -824,7 +878,8 @@ null,
   startMark: true,
   actions: [{
     direction: 'left',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 }, {
   objectType: 'forestwall',
@@ -839,7 +894,8 @@ null,
   startMark: false,
   actions: [{
     direction: 'right',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 },
 null,
@@ -863,7 +919,8 @@ null,
   startMark: false,
   actions: [{
     direction: 'left',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 }, {
   objectType: 'forestwall',
@@ -881,70 +938,80 @@ null,
   startMark: true,
   actions: [{
     direction: 'above',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 }, {
   objectType: 'forestwall',
   startMark: false,
   actions: [{
     direction: 'above',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 }, {
   objectType: 'forestwall',
   startMark: true,
   actions: [{
     direction: 'above',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 }, {
   objectType: 'forestwall',
   startMark: false,
   actions: [{
     direction: 'above',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 }, {
   objectType: 'forestwall',
   startMark: true,
   actions: [{
     direction: 'above',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 }, {
   objectType: 'forestwall',
   startMark: false,
   actions: [{
     direction: 'above',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 }, {
   objectType: 'forestwall',
   startMark: true,
   actions: [{
     direction: 'above',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 }, {
   objectType: 'forestwall',
   startMark: false,
   actions: [{
     direction: 'above',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 }, {
   objectType: 'forestwall',
   startMark: true,
   actions: [{
     direction: 'above',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 }, {
   objectType: 'forestwall',
   startMark: false,
   actions: [{
     direction: 'above',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 },null,
 null, {
@@ -952,28 +1019,32 @@ null, {
   startMark: true,
   actions: [{
     direction: 'above',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 }, {
   objectType: 'forestwall',
   startMark: false,
   actions: [{
     direction: 'above',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 }, {
   objectType: 'forestwall',
   startMark: true,
   actions: [{
     direction: 'above',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 }, {
   objectType: 'forestwall',
   startMark: false,
   actions: [{
     direction: 'above',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 }, {
   objectType: 'forestwall',

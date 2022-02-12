@@ -330,126 +330,144 @@ export const load101Objects: (TFieldObject | null)[] = [
   startMark: false,
   actions: [{
     direction: 'below',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 }, {
   objectType: 'forestwall',
   startMark: false,
   actions: [{
     direction: 'below',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 }, {
   objectType: 'forestwall',
   startMark: false,
   actions: [{
     direction: 'below',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 }, {
   objectType: 'forestwall',
   startMark: false,
   actions: [{
     direction: 'below',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 }, {
   objectType: 'forestwall',
   startMark: false,
   actions: [{
     direction: 'below',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 }, {
   objectType: 'forestwall',
   startMark: false,
   actions: [{
     direction: 'below',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 }, {
   objectType: 'forestwall',
   startMark: false,
   actions: [{
     direction: 'below',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 }, {
   objectType: 'forestwall',
   startMark: false,
   actions: [{
     direction: 'below',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 }, {
   objectType: 'forestwall',
   startMark: false,
   actions: [{
     direction: 'below',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 }, {
   objectType: 'forestwall',
   startMark: false,
   actions: [{
     direction: 'below',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 }, {
   objectType: 'forestwall',
   startMark: false,
   actions: [{
     direction: 'below',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 }, {
   objectType: 'forestwall',
   startMark: false,
   actions: [{
     direction: 'below',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 }, {
   objectType: 'forestwall',
   startMark: false,
   actions: [{
     direction: 'below',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 }, {
   objectType: 'forestwall',
   startMark: false,
   actions: [{
     direction: 'below',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 }, {
   objectType: 'forestwall',
   startMark: false,
   actions: [{
     direction: 'below',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 }, {
   objectType: 'forestwall',
   startMark: false,
   actions: [{
     direction: 'below',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 }, {
   objectType: 'forestwall',
   startMark: false,
   actions: [{
     direction: 'below',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 }, {
   objectType: 'forestwall',
   startMark: false,
   actions: [{
     direction: 'below',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 },
 
@@ -461,7 +479,8 @@ export const load101Objects: (TFieldObject | null)[] = [
   startMark: false,
   actions: [{
     direction: 'right',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 },
 null,
@@ -485,7 +504,8 @@ null,
   startMark: true,
   actions: [{
     direction: 'left',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 }, {
   objectType: 'forestwall',
@@ -500,7 +520,8 @@ null,
   startMark: false,
   actions: [{
     direction: 'right',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 },
 null,
@@ -512,30 +533,36 @@ null,
   startMark: true,
   actions: [{
     direction: 'above',
-    execute: 'jumpdown'
+    execute: 'jumpdown',
+    trigger: 'move'
   }, {
     direction: 'below',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 }, {
   objectType: 'stonestep',
   startMark: true,
   actions: [{
     direction: 'above',
-    execute: 'jumpdown'
+    execute: 'jumpdown',
+    trigger: 'move'
   }, {
     direction: 'below',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 }, {
   objectType: 'stonestep',
   startMark: true,
   actions: [{
     direction: 'above',
-    execute: 'jumpdown'
+    execute: 'jumpdown',
+    trigger: 'move'
   }, {
     direction: 'below',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 },
 null,
@@ -552,7 +579,8 @@ null,
   startMark: false,
   actions: [{
     direction: 'left',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 }, {
   objectType: 'forestwall',
@@ -567,7 +595,8 @@ null,
   startMark: false,
   actions: [{
     direction: 'right',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 },
 null,
@@ -597,7 +626,8 @@ null,
   startMark: false,
   actions: [{
     direction: 'right',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 },
 null,
@@ -628,7 +658,8 @@ null,
   startMark: false,
   actions: [{
     direction: 'right',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 },
 null,
@@ -652,7 +683,8 @@ null,
   startMark: true,
   actions: [{
     direction: 'left',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 }, {
   objectType: 'forestwall',
@@ -667,7 +699,8 @@ null,
   startMark: false,
   actions: [{
     direction: 'right',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 },
 null,
@@ -691,7 +724,8 @@ null,
   startMark: false,
   actions: [{
     direction: 'left',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 }, {
   objectType: 'forestwall',
@@ -706,7 +740,8 @@ null,
   startMark: false,
   actions: [{
     direction: 'right',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 },
 null,
@@ -730,7 +765,8 @@ null,
   startMark: true,
   actions: [{
     direction: 'left',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 }, {
   objectType: 'forestwall',
@@ -745,7 +781,8 @@ null,
   startMark: false,
   actions: [{
     direction: 'right',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 },
 null,
@@ -769,7 +806,8 @@ null,
   startMark: false,
   actions: [{
     direction: 'left',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 }, {
   objectType: 'forestwall',
@@ -787,14 +825,16 @@ null,
   startMark: true,
   actions: [{
     direction: 'above',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 }, {
   objectType: 'forestwall',
   startMark: false,
   actions: [{
     direction: 'above',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 },
 null,
@@ -803,42 +843,48 @@ null, {
   startMark: true,
   actions: [{
     direction: 'above',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 }, {
   objectType: 'forestwall',
   startMark: false,
   actions: [{
     direction: 'above',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 }, {
   objectType: 'forestwall',
   startMark: true,
   actions: [{
     direction: 'above',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 }, {
   objectType: 'forestwall',
   startMark: false,
   actions: [{
     direction: 'above',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 }, {
   objectType: 'forestwall',
   startMark: true,
   actions: [{
     direction: 'above',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 }, {
   objectType: 'forestwall',
   startMark: false,
   actions: [{
     direction: 'above',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 }, {
   objectType: 'forestwall',
@@ -848,35 +894,40 @@ null, {
   startMark: false,
   actions: [{
     direction: 'above',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 }, {
   objectType: 'forestwall',
   startMark: true,
   actions: [{
     direction: 'above',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 }, {
   objectType: 'forestwall',
   startMark: false,
   actions: [{
     direction: 'above',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 }, {
   objectType: 'forestwall',
   startMark: true,
   actions: [{
     direction: 'above',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 }, {
   objectType: 'forestwall',
   startMark: false,
   actions: [{
     direction: 'above',
-    execute: 'stop'
+    execute: 'stop',
+    trigger: 'move'
   }]
 }, {
   objectType: 'forestwall',

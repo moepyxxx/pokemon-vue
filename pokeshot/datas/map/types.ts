@@ -5,9 +5,14 @@ export type TField = {
 }
 
 export type TObjectAction = {
-  execute: 'enterbuilding' | 'gootherfield' | 'stop' | 'jumpdown';
-  direction: TDirection;
-  fieldId?: string;
+  execute: 'enterbuilding' | 'gootherfield' | 'stop' | 'jumpdown' | 'talk';
+  direction?: TDirection;
+  otherFieldId?: string;
+  trigger: 'move' | 'push-a';
+  talk?: {
+    humanId: string,
+    actionId: string
+  }
 }
 
 export type TObjectType = 'human' | 'privatehouse' | 'pokemoncenter' |
@@ -16,7 +21,11 @@ export type TObjectType = 'human' | 'privatehouse' | 'pokemoncenter' |
 
 export type TFieldObject = {
   objectType: TObjectType,
+  objectDetail?: {
+    humanId: string,
+    direction: TDirection
+  },
   objectId?: number,
   startMark: boolean,
-  actions?: TObjectAction[]
+  actions?: TObjectAction[],
 }
