@@ -25,6 +25,13 @@
             :alt="fieldObjectType.alt"
           />
 
+          <img
+            v-for="(fieldObject, index) in matchHumansObjects(fieldIndex)"
+            :key="index"
+            :src="require(`@/assets/img/fieldobject/human/${fieldObject.human.imagename}/${fieldObject.direction}.png`)"
+            :alt="fieldObject.human.name"
+          />
+
           <span class="black" :class="{'is-active': fieldsIsBlacks[fieldIndex]}"></span>
 
         </span>
@@ -55,6 +62,8 @@ import HeroCurrent from '~/store/modules/heroCurrent';
 import maps, { TMap } from '../../datas/map/index';
 import IPokemon from '../../config/types/pokemon';
 import { TDirection, TField, TFieldObject, TObjectAction, TObjectType } from '../../datas/map/types';
+import { THuman } from '@/datas/human/types';
+import humans from '@/datas/human/index';
 
 const heroCurrentModule = getModule(HeroCurrent);
 
@@ -156,6 +165,34 @@ export default class MapPage extends Vue {
       throw new Error('フィールドがないよ');
     }
     return this.fields[fieldIndex].type === 'grass';
+  }
+
+  matchHumansObjects(index: number): {
+    human: THuman,
+    direction: TDirection  
+  }[] {
+    if (!this.fieldObjects) {
+      throw new Error('フィールドオブジェクトがないよ');
+    }
+
+    const object: TFieldObject | null = this.fieldObjects[index];
+    if (!object) return [];
+
+    const isHumanObject = (object.objectType === 'human') && object.startMark;
+    if (!isHumanObject) return [];
+
+    const id = object.objectDetail?.humanId;
+    const direction = object.objectDetail?.direction;
+
+    if (!id || !direction) return [];
+
+    const human = humans.find(
+      human => human.id === id);
+
+    return human ? [{
+      direction,
+      human,
+    }] : [];
   }
 
   matchFieldObjectTypes(index: number) {
