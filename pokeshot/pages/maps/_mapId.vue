@@ -162,7 +162,7 @@ export default class MapPage extends Vue {
   private fieldObjects?: TFieldObject[];
 
   controllAPush() {
-    console.log('発火');
+    // 
   }
 
   isFieldGrass(fieldIndex: number): boolean|never {
@@ -216,23 +216,9 @@ export default class MapPage extends Vue {
     this.direction = direction;
   }
 
-  checkAction(currentPosition: number, nextPosition: number, reversedirection: TDirection): boolean|never {
+  checkMoveAction(currentPosition: number, nextPosition: number, direction: TDirection): boolean|never {
     
-    let direction: TDirection = 'right';
-    switch (reversedirection) {
-      case 'left':
-        direction = 'right';
-        break;
-      case 'right':
-        direction = 'left';
-        break;
-      case 'above': 
-        direction = 'below';
-        break;
-      case 'below':
-        direction = 'above';
-        break;
-    }
+    const reverseDirection: TDirection = this.getReverseDirection(direction);
 
     if (!this.fieldObjects) {
       throw new Error('フィールドオブジェクトがないよ');
@@ -244,7 +230,7 @@ export default class MapPage extends Vue {
     }
 
     const action: TObjectAction | undefined = this.fieldObjects[nextPosition].actions?.find(
-      (action: TObjectAction) => action.direction === direction
+      (action: TObjectAction) => action.direction === reverseDirection
     );
 
     if (!action) {
@@ -264,6 +250,32 @@ export default class MapPage extends Vue {
     return false;
   }
 
+  getNextPosition(direction: TDirection): number {
+    switch (direction) {
+      case 'above':
+        return this.getNextAbovePosition();
+      case 'below':
+        return this.getNextBelowPosition();
+      case 'left':
+        return this.getNextLeftPosition();
+      case 'right':
+        return this.getNextRightPosition();
+    }
+  }
+
+  getReverseDirection(direction: TDirection): TDirection {
+    switch (direction) {
+      case 'left':
+        return 'right';
+      case 'right':
+        return 'left';
+      case 'above': 
+        return 'below';
+      case 'below':
+        return 'above';
+    }
+  }
+
   controllDirection(direction: TDirection) {
 
     if (this.direction !== direction) {
@@ -271,22 +283,9 @@ export default class MapPage extends Vue {
       return;
     }
 
-    let nextPosition: number = 0;
-    switch (direction) {
-      case 'above':
-        nextPosition = this.getNextAbovePosition();
-        break;
-      case 'below':
-        nextPosition = this.getNextBelowPosition();
-        break;
-      case 'left':
-        nextPosition = this.getNextLeftPosition();
-        break;
-      case 'right':
-        nextPosition = this.getNextRightPosition();
-    }
+    const nextPosition: number = this.getNextPosition(direction);
 
-    const action: boolean = this.checkAction(this.currentPosition, nextPosition, direction);
+    const action: boolean = this.checkMoveAction(this.currentPosition, nextPosition, direction);
 
     if (action) return;
 
