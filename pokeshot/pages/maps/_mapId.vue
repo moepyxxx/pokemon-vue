@@ -14,83 +14,15 @@
             :src="require('@/assets/img/fieldobject/load/grass.svg')"
             alt="くさむら"
           >
+
           <img
-            class="stonestep"
-            v-if="isStoneStep(fieldIndex)"
-            :src="require('@/assets/img/fieldobject/load/stonestep.svg')"
-            alt="段差"
-          >
-          <img
-            class="forestwall"
-            v-if="isForestWall(fieldIndex)"
-            :src="require('@/assets/img/fieldobject/load/forestwall.svg')"
-            alt="木の壁"
-          >
-          <span
-            class="buildingwall"
-            v-if="isBuildingWall(fieldIndex)"
+            v-for="(fieldObjectType, index) in matchFieldObjectTypes(fieldIndex)"
+            :key="index"
+            :src="require(
+              `@/assets/img/fieldobject/${fieldObjectType.directory}/${fieldObjectType.key}.svg`
+            )"
+            :alt="fieldObjectType.alt"
           />
-          <img
-            class="pokemoncenter"
-            v-if="isPokemonCenter(fieldIndex)"
-            :src="require('@/assets/img/fieldobject/building/pokemoncenter.svg')"
-            alt="ポケモンセンター"
-          >
-          <img
-            class="privatehouse"
-            v-if="isPrivateHouse(fieldIndex)"
-            :src="require('@/assets/img/fieldobject/building/privatehouse.svg')"
-            alt="民家"
-          >
-
-          <img
-            class="yellowchair"
-            v-if="isYellowChair(fieldIndex)"
-            :src="require('@/assets/img/fieldobject/interior/yellowchair.svg')"
-            alt="黄色い椅子"
-          >
-
-          <img
-            class="pinkchair"
-            v-if="isPinkChair(fieldIndex)"
-            :src="require('@/assets/img/fieldobject/interior/pinkchair.svg')"
-            alt="ピンクの椅子"
-          >
-
-          <img
-            class="table"
-            v-if="isTable(fieldIndex)"
-            :src="require('@/assets/img/fieldobject/interior/table.svg')"
-            alt="テーブル"
-          >
-
-          <img
-            class="plant"
-            v-if="isPlant(fieldIndex)"
-            :src="require('@/assets/img/fieldobject/interior/plant.svg')"
-            alt="鉢植え"
-          >
-
-          <img
-            class="bookshelf"
-            v-if="isBookshelf(fieldIndex)"
-            :src="require('@/assets/img/fieldobject/interior/bookshelf.svg')"
-            alt="本棚"
-          >
-
-          <img
-            class="computer"
-            v-if="isComputer(fieldIndex)"
-            :src="require('@/assets/img/fieldobject/pokemoncenter/computer.svg')"
-            alt="パソコン"
-          >
-
-          <img
-            class="recoverysystem"
-            v-if="isRecoverySystem(fieldIndex)"
-            :src="require('@/assets/img/fieldobject/pokemoncenter/recoverysystem.svg')"
-            alt="ポケモン回復システム"
-          >
 
           <span class="black" :class="{'is-active': fieldsIsBlacks[fieldIndex]}"></span>
 
@@ -121,11 +53,15 @@ import HeroCurrent from '~/store/modules/heroCurrent';
 
 import loads, { TMap } from '../../datas/map/index';
 import IPokemon from '../../config/types/pokemon';
-import { TDirection, TField, TFieldObject, TObjectAction } from '../../datas/map/types';
+import { TDirection, TField, TFieldObject, TObjectAction, TObjectType } from '../../datas/map/types';
 
 const heroCurrentModule = getModule(HeroCurrent);
 
+type TImgDirectory = 'building' | 'interior' | 'load' | 'pokemoncenter';
+
 @Component({
+  name: 'MapPage',
+
   components: {
     Screen,
     Controller
@@ -148,7 +84,7 @@ const heroCurrentModule = getModule(HeroCurrent);
   }
 })
 
-export default class FieldPage extends Vue {
+export default class MapPage extends Vue {
   currentPosition: number = 200;
   allPositionLength: number = 240;
   fieldsIsBlacks: boolean[] = [...Array(this.allPositionLength)].map((_, i) => false);
@@ -161,6 +97,56 @@ export default class FieldPage extends Vue {
   };
   direction: TDirection = 'below';
 
+  fieldObjectTypes: { key: TObjectType, directory: TImgDirectory, alt: string }[] = [{
+    key: 'privatehouse',
+    directory: 'building',
+    alt:  '民家',
+  }, {
+    key: 'pokemoncenter',
+    directory: 'building',
+    alt: 'ポケモンセンター'
+  }, {
+    key: 'table',
+    directory: 'interior',
+    alt: 'テーブル',
+  }, {
+    key: 'yellowchair',
+    directory: 'interior',
+    alt: '黄色い椅子'
+  }, {
+    key: 'pinkchair',
+    directory: 'interior',
+    alt: 'ピンクの椅子'
+  }, {
+    key: 'grass',
+    directory: 'load',
+    alt: '草むら'
+  }, {
+    key: 'stonestep',
+    directory: 'load',
+    alt: '段差',
+  }, {
+    key: 'forestwall',
+    directory: 'load',
+    alt: '木の壁',
+  }, {
+    key: 'bookshelf',
+    directory: 'interior',
+    alt: '本棚'
+  }, {
+    key: 'plant',
+    directory: 'interior',
+    alt: '植木鉢',
+  }, {
+    key: 'computer',
+    directory: 'pokemoncenter',
+    alt: 'パソコン'
+  }, {
+    key: 'recoverysystem',
+    directory: 'pokemoncenter',
+    alt: 'ポケモン回復システム'
+  }];
+
   private fields?: TField[];
   private fieldObjects?: TFieldObject[];
   
@@ -171,123 +157,16 @@ export default class FieldPage extends Vue {
     return this.fields[fieldIndex].type === 'grass';
   }
 
-  isForestWall(fieldIndex: number): boolean|never {
+  matchFieldObjectTypes(index: number) {
     if (!this.fieldObjects) {
       throw new Error('フィールドオブジェクトがないよ');
     }
-
-    const object: TFieldObject | null = this.fieldObjects[fieldIndex];
+    
+    const object: TFieldObject | null = this.fieldObjects[index];
     if (!object) return false;
-    return object.objectType === 'forestwall' && object.startMark;
-  }
 
-  isBuildingWall(fieldIndex: number): boolean|never {
-    if (!this.fieldObjects) {
-      throw new Error('フィールドオブジェクトがないよ');
-    }
-
-    const object: TFieldObject | null = this.fieldObjects[fieldIndex];
-    if (!object) return false;
-    return object.objectType === 'buildingwall' && object.startMark;
-  }
-
-  isPokemonCenter(fieldIndex: number): boolean|never {
-    if (!this.fieldObjects) {
-      throw new Error('フィールドオブジェクトがないよ');
-    }
-
-    const object: TFieldObject | null = this.fieldObjects[fieldIndex];
-    if (!object) return false;
-    return object.objectType === 'pokemoncenter' && object.startMark;
-  }
-
-  isPrivateHouse(fieldIndex: number): boolean|never {
-    if (!this.fieldObjects) {
-      throw new Error('フィールドオブジェクトがないよ');
-    }
-
-    const object: TFieldObject | null = this.fieldObjects[fieldIndex];
-    if (!object) return false;
-    return object.objectType === 'privatehouse' && object.startMark;
-  }
-
-  isPinkChair(fieldIndex: number): boolean|never {
-    if (!this.fieldObjects) {
-      throw new Error('フィールドオブジェクトがないよ');
-    }
-
-    const object: TFieldObject | null = this.fieldObjects[fieldIndex];
-    if (!object) return false;
-    return object.objectType === 'pinkchair' && object.startMark;
-  }
-
-  isYellowChair(fieldIndex: number): boolean|never {
-    if (!this.fieldObjects) {
-      throw new Error('フィールドオブジェクトがないよ');
-    }
-
-    const object: TFieldObject | null = this.fieldObjects[fieldIndex];
-    if (!object) return false;
-    return object.objectType === 'yellowchair' && object.startMark;
-  }
-
-  isPlant(fieldIndex: number): boolean|never {
-    if (!this.fieldObjects) {
-      throw new Error('フィールドオブジェクトがないよ');
-    }
-
-    const object: TFieldObject | null = this.fieldObjects[fieldIndex];
-    if (!object) return false;
-    return object.objectType === 'plant' && object.startMark;
-  }
-
-  isBookshelf(fieldIndex: number): boolean|never {
-    if (!this.fieldObjects) {
-      throw new Error('フィールドオブジェクトがないよ');
-    }
-
-    const object: TFieldObject | null = this.fieldObjects[fieldIndex];
-    if (!object) return false;
-    return object.objectType === 'bookshelf' && object.startMark;
-  }
-
-  isTable(fieldIndex: number): boolean|never {
-    if (!this.fieldObjects) {
-      throw new Error('フィールドオブジェクトがないよ');
-    }
-
-    const object: TFieldObject | null = this.fieldObjects[fieldIndex];
-    if (!object) return false;
-    return object.objectType === 'table' && object.startMark;
-  }
-
-  isComputer(fieldIndex: number): boolean|never {
-    if (!this.fieldObjects) {
-      throw new Error('フィールドオブジェクトがないよ');
-    }
-
-    const object: TFieldObject | null = this.fieldObjects[fieldIndex];
-    if (!object) return false;
-    return object.objectType === 'computer' && object.startMark;
-  }
-
-  isRecoverySystem(fieldIndex: number): boolean|never {
-    if (!this.fieldObjects) {
-      throw new Error('フィールドオブジェクトがないよ');
-    }
-
-    const object: TFieldObject | null = this.fieldObjects[fieldIndex];
-    if (!object) return false;
-    return object.objectType === 'recoverysystem' && object.startMark;
-  }
-
-  isStoneStep(fieldIndex: number): boolean {
-    if (!this.fieldObjects) {
-      throw new Error('フィールドオブジェクトがないよ');
-    }
-    const object: TFieldObject | null = this.fieldObjects[fieldIndex];
-    if (!object) return false;
-    return object.objectType === 'stonestep';
+    return this.fieldObjectTypes.filter(fieldObjectType => 
+      fieldObjectType.key === object.objectType && object.startMark);
   }
 
   changeDirection(direction: TDirection) {
