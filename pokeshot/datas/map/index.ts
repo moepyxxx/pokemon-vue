@@ -9,7 +9,7 @@ export type TMap = {
   objects: (TFieldObject | null)[]
 };
 
-const loads: TMap[] = [{
+const maps: TMap[] = [{
   id: 'load101',
   fields: load101Fields,
   objects: load101Objects
@@ -23,4 +23,4 @@ const loads: TMap[] = [{
   objects: toukaPcObjects
 }];
 
-export default loads;
+export default maps;

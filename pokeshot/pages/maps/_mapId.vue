@@ -18,6 +18,7 @@
           <img
             v-for="(fieldObjectType, index) in matchFieldObjectTypes(fieldIndex)"
             :key="index"
+            :class="fieldObjectType.key"
             :src="require(
               `@/assets/img/fieldobject/${fieldObjectType.directory}/${fieldObjectType.key}.svg`
             )"
@@ -51,7 +52,7 @@ import Controller from '../../component/games/Controller.vue';
 import { getModule } from 'vuex-module-decorators';
 import HeroCurrent from '~/store/modules/heroCurrent';
 
-import loads, { TMap } from '../../datas/map/index';
+import maps, { TMap } from '../../datas/map/index';
 import IPokemon from '../../config/types/pokemon';
 import { TDirection, TField, TFieldObject, TObjectAction, TObjectType } from '../../datas/map/types';
 
@@ -70,7 +71,7 @@ type TImgDirectory = 'building' | 'interior' | 'load' | 'pokemoncenter';
   async asyncData(ctx) {
     const id: string = ctx.params.mapId;
     const currentPosition: number = Number(ctx.query.position);
-    const load: TMap | null | undefined = loads.find(load => load.id === id);
+    const load: TMap | null | undefined = maps.find(map => map.id === id);
 
     if (!load) {
       throw new Error('そんな道路はありません！');
