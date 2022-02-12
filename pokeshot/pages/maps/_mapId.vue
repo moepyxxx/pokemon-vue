@@ -45,6 +45,7 @@
         @controllLeft="controllDirection('left')"
         @controllRight="controllDirection('right')"
         @controllBelow="controllDirection('below')"
+        @controllAPush="controllAPush"
       />
     </div>
   </div>
@@ -159,7 +160,11 @@ export default class MapPage extends Vue {
 
   private fields?: TField[];
   private fieldObjects?: TFieldObject[];
-  
+
+  controllAPush() {
+    console.log('発火');
+  }
+
   isFieldGrass(fieldIndex: number): boolean|never {
     if (!this.fields) {
       throw new Error('フィールドがないよ');
