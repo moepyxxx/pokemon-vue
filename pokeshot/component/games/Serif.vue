@@ -15,10 +15,6 @@
 import { PropType } from 'vue'
 import { Component, Vue, Prop } from 'vue-property-decorator';
 
-type TData = {
-  currentIndex: number;
-}
-
 @Component({
   props: {
     nextAction: { type: Function },

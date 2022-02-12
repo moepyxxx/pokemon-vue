@@ -118,8 +118,8 @@ export default class MapPage extends Vue {
 
   isQuestion: boolean = false;
   serifs: string[] = []
-  next?: () => void
-  back?: () => void
+  next?: () => void = this.empty;
+  back?: () => void = this.empty;
 
   fieldObjectTypes: { key: TObjectType, directory: TImgDirectory, alt: string }[] = [{
     key: 'privatehouse',
@@ -174,6 +174,12 @@ export default class MapPage extends Vue {
   private fields?: TField[];
   private fieldObjects?: TFieldObject[];
 
+  empty() {
+    // [note]: 良いやり方模索したい
+    // next back の関数にとりあえず
+    // デフォルトを入れないとならないため
+  }
+
   controllAPush(): void {
     if (!this.fieldObjects) {
       throw new Error('フィールドオブジェクトがないよ');
@@ -227,7 +233,9 @@ export default class MapPage extends Vue {
 
     if (!action.talk) return;
 
-    this.serifs = action.talk;
+    for (let i = 0; i < action.talk.length; i++) {
+      this.serifs.push(action.talk[i]);
+    }
     
     this.next = () => {
       this.serifs.splice(0);
