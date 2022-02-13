@@ -162,4 +162,16 @@ export class MapController {
   isNextPositionvalid(nextPosition: number, allPosition: number) {
     return nextPosition >= 0 && nextPosition < allPosition;
   }
+
+  // this.$MapController.humanChangeDirection(this.fieldObjects[this.currentPosition], this.direction);
+  humanChangeDirection(fieldObjects: TFieldObject[], currentPosition: number, heroDirection: TDirection, position: TPosition) {
+
+    const nextPosition = this.getNextPosition(currentPosition, heroDirection, position);
+    const humanObject: TFieldObject = fieldObjects[nextPosition];
+    if (humanObject.objectType !== 'human') return;
+
+    const humanDirection = this.getReverseDirection(heroDirection);
+
+    humanObject.objectDetail!.direction = humanDirection;
+  }
 }

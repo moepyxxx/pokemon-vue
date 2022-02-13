@@ -248,9 +248,8 @@ export default class MapPage extends Vue {
 
     for (let i = 0; i < actions.length; i++) {
       if (actions[i].execute === 'talk' && actions[i].talk) {
-        // [note]: どうしてもObject is possibly 'undefined' が倒せない
-        // 仕方なくキャスト（object型の問題なきがする）
-        this.humanAction(actions[i].talk?.humanId as string, actions[i].talk?.actionId as string);
+        // [note]: どうしてもObject is possibly 'undefined' が倒せない !で対応
+        this.humanAction(actions[i].talk!.humanId, actions[i].talk!.actionId);
       }
     }
   }
@@ -266,6 +265,7 @@ export default class MapPage extends Vue {
       // case 'question':
       //   this.talkQuestion(human, action);
       default:
+        this.$MapController.humanChangeDirection(this.fieldObjects, this.currentPosition, this.direction, this.position);
         this.talkAction(human, action);
     }
 
