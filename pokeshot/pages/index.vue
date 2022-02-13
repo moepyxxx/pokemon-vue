@@ -6,7 +6,7 @@
         <p>POCKET MONSTER</p>
       </div>
       <div class="image">
-        <img src="~/assets/img/hero/girl.png" alt="はるか">
+        <img src="~/assets/img/scenario/girl.png" alt="はるか">
         <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/255.png" alt="アチャモ">
       </div>
       <div class="command">
