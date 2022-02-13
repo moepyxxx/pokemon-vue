@@ -10,7 +10,7 @@
   min-height: 480px;
   margin: 40px auto;
   position: relative;
-  border: 2px solid #000;
+  border: 1px solid rgba(0, 0, 0, .2);
   border-radius: 4px;
   overflow: hidden;
 }

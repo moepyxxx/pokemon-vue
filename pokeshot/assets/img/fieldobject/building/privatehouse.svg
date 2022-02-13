@@ -1,25 +1,25 @@
-<svg width="96" height="99" viewBox="0 0 96 99" fill="none" xmlns="http://www.w3.org/2000/svg">
-<rect x="6" y="51" width="82" height="48" fill="#EAEAEA"/>
-<rect x="6.25" y="51.25" width="81.5" height="47.5" stroke="black" stroke-opacity="0.38" stroke-width="0.5"/>
-<path d="M5 0H91L96 59H0L5 0Z" fill="#9A5A2C"/>
-<rect x="35" y="72" width="24" height="27" fill="#8E3F3F"/>
-<rect x="35.25" y="72.25" width="23.5" height="26.5" stroke="black" stroke-opacity="0.43" stroke-width="0.5"/>
-<rect x="64" y="68" width="19" height="16" fill="url(#paint0_linear_104_3038)"/>
-<rect x="64.25" y="68.25" width="18.5" height="15.5" stroke="black" stroke-opacity="0.21" stroke-width="0.5"/>
-<line x1="73.25" y1="68" x2="73.25" y2="84" stroke="black" stroke-opacity="0.28" stroke-width="0.5"/>
-<line x1="83" y1="76.25" x2="64" y2="76.25" stroke="black" stroke-opacity="0.28" stroke-width="0.5"/>
-<rect x="11" y="68" width="19" height="16" fill="url(#paint1_linear_104_3038)"/>
-<rect x="11.25" y="68.25" width="18.5" height="15.5" stroke="black" stroke-opacity="0.21" stroke-width="0.5"/>
-<line x1="20.25" y1="68" x2="20.25" y2="84" stroke="black" stroke-opacity="0.28" stroke-width="0.5"/>
-<line x1="30" y1="76.25" x2="11" y2="76.25" stroke="black" stroke-opacity="0.28" stroke-width="0.5"/>
+<svg width="108" height="108" viewBox="0 0 108 108" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect x="11.25" y="60.25" width="86.5" height="43.5" fill="#C28F5F" stroke="black" stroke-width="0.5"/>
+<rect x="9.25" y="4.25" width="90.5" height="15.5" fill="#C23535" stroke="black" stroke-width="0.5"/>
+<rect x="9.25" y="20.25" width="90.5" height="43.5" fill="#A63D3D" stroke="black" stroke-width="0.5"/>
+<rect x="9.25" y="19.25" width="90.5" height="4.5" fill="#D64F4F" stroke="black" stroke-width="0.5"/>
+<rect x="72.25" y="76.25" width="18.5" height="15.5" fill="url(#paint0_linear_232_471)" stroke="black" stroke-width="0.5"/>
+<line x1="81.25" y1="76" x2="81.25" y2="92" stroke="black" stroke-width="0.5"/>
+<line x1="91" y1="84.25" x2="72" y2="84.25" stroke="black" stroke-width="0.5"/>
+<rect x="18.25" y="76.25" width="18.5" height="15.5" fill="url(#paint1_linear_232_471)" stroke="black" stroke-width="0.5"/>
+<line x1="27.25" y1="76" x2="27.25" y2="92" stroke="black" stroke-width="0.5"/>
+<line x1="37" y1="84.25" x2="18" y2="84.25" stroke="black" stroke-width="0.5"/>
+<rect x="42.25" y="76.25" width="24.5" height="27.5" fill="#993939" stroke="black" stroke-width="0.5"/>
+<rect x="45" y="79" width="19" height="10" fill="#7D2828"/>
+<circle cx="62.5" cy="92.5" r="1.5" fill="#C28F5F"/>
 <defs>
-<linearGradient id="paint0_linear_104_3038" x1="73.5" y1="68" x2="73.5" y2="84" gradientUnits="userSpaceOnUse">
+<linearGradient id="paint0_linear_232_471" x1="81.5" y1="76" x2="81.5" y2="92" gradientUnits="userSpaceOnUse">
 <stop stop-color="#8BD6DB"/>
-<stop offset="1" stop-color="#8BD6DB" stop-opacity="0"/>
+<stop offset="1" stop-color="white"/>
 </linearGradient>
-<linearGradient id="paint1_linear_104_3038" x1="20.5" y1="68" x2="20.5" y2="84" gradientUnits="userSpaceOnUse">
+<linearGradient id="paint1_linear_232_471" x1="27.5" y1="76" x2="27.5" y2="92" gradientUnits="userSpaceOnUse">
 <stop stop-color="#8BD6DB"/>
-<stop offset="1" stop-color="#8BD6DB" stop-opacity="0"/>
+<stop offset="1" stop-color="white"/>
 </linearGradient>
 </defs>
 </svg>

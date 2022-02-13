@@ -45,8 +45,8 @@ export default class Serif extends Vue {
   position: absolute;
   bottom: 120px;
   right: 10px;
-  border: 2px solid #000;
-  border-radius: 4px;
+  border: 4px solid #31A4AB;
+  border-radius: 12px;
   padding: 10px 20px;
 
   button {
@@ -57,26 +57,42 @@ export default class Serif extends Vue {
 .serif {
   position: absolute;
   width: 780px;
-  border: 2px solid #000;
-  border-radius: 4px;
-  padding: 20px;
+  border-radius: 32px;
+  padding: 20px 48px;
   bottom: 10px;
   left: 50%;
   transform: translateX(-50%);
   height: 100px;
   cursor: pointer;
-  background: #fff;
+  background: #31A4AB;
   z-index: 10;
+
+  &:after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 92%;
+    height: 90%;
+    background: #fff;
+    z-index: 11;
+    border-radius: 24px;
+  }
 
   p {
     margin: 0;
     line-height: 2;
     font-size: 16px;
+    position: relative;
+    z-index: 12;
   }
+
   span {
     position: absolute;
-    bottom: 10px;
-    right: 10px;
+    bottom: 12px;
+    right: 48px;
+    z-index: 12;
   }
 }
 
