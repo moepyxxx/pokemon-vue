@@ -1,12 +1,12 @@
 <template>
   <Screen>
 
-    <div v-if="status === 'greeting' || status === 'getFirstPokemon'" :class="status">
+    <div v-if="status === 'greeting' || status === 'getFirstPokemon'" class="center">
       <img src="~/assets/img/scenario/odamaki.png" alt="オダマキ博士">
     </div>
 
-    <div v-else-if="status === 'selectGender'" :class="status">
-      <div v-for="(gender, index) in genders" :key="index">
+    <div v-else-if="status === 'selectGender'" class="center flex">
+      <div v-for="(gender, index) in genders" :key="index" class="card">
         <button @click="registerGender(gender)">
           <img
             :src="require(`@/assets/img/scenario/${gender.english}.png`)"
@@ -17,8 +17,8 @@
       </div>
     </div>
 
-    <div v-else-if="status === 'registerName'" :class="status">
-      <div class="selected">
+    <div v-else-if="status === 'registerName'"  class="center">
+      <div class="card">
         <img
           :src="require(`@/assets/img/scenario/${selectedGender.english}.png`)"
           :alt="selectedGender.japanese"
@@ -27,12 +27,12 @@
       </div>
       <div class="form">
         <input type="text" placeholder="5文字いないのなまえ" :v-model="heroName" />
-        <button @click="registerHeroName">これで決定</button>
+        <button class="submit" @click="registerHeroName">これで決定</button>
       </div>
     </div>
 
-    <div v-else-if="status === 'selectPokemon'" :class="status">
-      <div v-for="pokemon in pokemons" :key="pokemon.base.id">
+    <div v-else-if="status === 'selectPokemon'" class="center flex">
+      <div v-for="pokemon in pokemons" :key="pokemon.base.id" class="card">
         <button @click="changeSelectPokemon(pokemon)">
           <img
             :src="require(`@/assets/img/scenario/pokemon/${pokemon.base.id}.png`)"
@@ -43,7 +43,7 @@
       </div>
     </div>
     
-    <div v-else-if="status === 'confirm'" class="selectPokemon">
+    <div v-else-if="status === 'confirm'" class="center card">
       <img
         :src="require(`@/assets/img/scenario/pokemon/${selectPokemon.base.id}.png`)"
         :alt="selectPokemon.base.name"
@@ -51,18 +51,22 @@
       <p>{{ selectPokemon.base.name }}</p>
     </div>
 
-    <div v-else-if="status === 'registerNickname'" class="selectPokemon">
-      <div class="selected">
+    <div v-else-if="status === 'registerNickname'" class="center">
+      <div class="card">
         <img
           :src="require(`@/assets/img/scenario/pokemon/${selectPokemon.base.id}.png`)"
           :alt="selectPokemon.base.name"
         >
         <p>{{ selectPokemon.base.name }}</p>
       </div>
-      <div class="form">
-        <input type="text" placeholder="5文字いないのなまえ" :v-model="pokemonNickname" />
-        <button @click="fixFirstPokemon(true)">これで決定</button>
-        <button @click="fixFirstPokemon(false)">ニックネームはつけない</button>
+      <div class="form flex flex-column">
+        <div>
+          <input type="text" placeholder="5文字いないのなまえ" :v-model="pokemonNickname" />
+          <button class="submit" @click="fixFirstPokemon(true)">これで決定</button>
+        </div>
+        <div>
+          <button class="cancel" @click="fixFirstPokemon(false)">ニックネームはつけない</button>
+        </div>
       </div>
     </div>
 
@@ -268,3 +272,63 @@ export default class StartPage extends Vue {
 }
 
 </script>
+
+<style scoped lang="scss">
+
+.center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.flex {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  & > div {
+    margin: 0 20px;
+  }
+
+  &.flex-column {
+    flex-direction: column;
+  }
+}
+
+.card {
+  img {
+    width: 80px;
+  }
+
+  p {
+    font-size: 14px;
+  }
+}
+
+.form {
+  input {
+    background: #eee;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+
+  .submit {
+    background: #31A4AB;
+    padding: 4px 8px;
+    border-radius: 4px;
+    color: #fff;
+    font-weight: bold;
+    font-size: 14px;
+  }
+
+  .cancel {
+    color: #8f8b8b;
+    font-size: 13px;
+    margin-top: 10px;
+  }
+}
+
+</style>
