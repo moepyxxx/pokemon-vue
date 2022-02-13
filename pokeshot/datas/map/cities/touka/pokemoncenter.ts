@@ -699,8 +699,47 @@ null,
 null,
 null,
 null,
-null,
-null,
+null, {
+  objectType: 'human',
+  startMark: true,
+  objectDetail: {
+    humanId: 'kaori',
+    direction: 'left'
+  },
+  actions: [{
+    direction: 'below',
+    trigger: 'push-a',
+    execute: 'talk',
+    talk: {
+      humanId: 'kaori',
+      actionId: 'greeting'
+    }
+  }, {
+    direction: 'left',
+    trigger: 'push-a',
+    execute: 'talk',
+    talk: {
+      humanId: 'kaori',
+      actionId: 'greeting'
+    }
+  }, {
+    direction: 'right',
+    trigger: 'push-a',
+    execute: 'talk',
+    talk: {
+      humanId: 'kaori',
+      actionId: 'greeting'
+    }
+  }, {
+    direction: 'above',
+    trigger: 'push-a',
+    execute: 'talk',
+    talk: {
+      humanId: 'kaori',
+      actionId: 'greeting'
+    }
+  }]
+},
 null,
 null, {
   objectType: 'buildingwall',
@@ -768,8 +807,47 @@ null, {
   }]
 }, 
 null,
-null,
-null,
+null, {
+  objectType: 'human',
+  startMark: true,
+  objectDetail: {
+    humanId: 'yoshihiko',
+    direction: 'below'
+  },
+  actions: [{
+    direction: 'below',
+    trigger: 'push-a',
+    execute: 'talk',
+    talk: {
+      humanId: 'yoshihiko',
+      actionId: 'greeting'
+    }
+  }, {
+    direction: 'left',
+    trigger: 'push-a',
+    execute: 'talk',
+    talk: {
+      humanId: 'yoshihiko',
+      actionId: 'greeting'
+    }
+  }, {
+    direction: 'right',
+    trigger: 'push-a',
+    execute: 'talk',
+    talk: {
+      humanId: 'yoshihiko',
+      actionId: 'greeting'
+    }
+  }, {
+    direction: 'above',
+    trigger: 'push-a',
+    execute: 'talk',
+    talk: {
+      humanId: 'yoshihiko',
+      actionId: 'greeting'
+    }
+  }]
+},
 null,
 null,
 null,
