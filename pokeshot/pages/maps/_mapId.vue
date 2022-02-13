@@ -303,7 +303,7 @@ export default class MapPage extends Vue {
 
   recoverPokemonAction(human: THuman, action: THumanAction) {
     // ポケモン回復処理
-    console.log('ポケモンが回復した！');
+    this.$Hero.getRecoveryPokemon();
 
     if (action.nextActionId) {
       this.humanAction(human.id, action.nextActionId);

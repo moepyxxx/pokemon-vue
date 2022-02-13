@@ -1,7 +1,5 @@
 <template>
   <div>
-    <!-- <button @click="confirm">確認</button> -->
-
 
     <div v-if="this.serifs.length !== 0">
       <p> -------------------------------------- </p>
@@ -29,7 +27,7 @@
         <div>
           <p>{{ this.opponent.base.name }}（Lv. {{ this.opponent.level }}）</p>
           <img :src="this.opponent.base.imageUrl" alt="">
-          <p>HP残り：{{ this.opponent.stats.hp }}</p>
+          <p>HP残り：{{ this.opponent.remainHp }}</p>
         </div>
       </div>
       <div>
@@ -37,7 +35,7 @@
         <div>
           <p>{{ this.onHand.nickname }}（Lv. {{ this.onHand.level }}）</p>
           <img :src="this.onHand.base.imageUrl" alt="">
-          <p>HP残り：{{ this.onHand.stats.hp }}</p>
+          <p>HP残り：{{ this.onHand.remainHp }}</p>
         </div>
       </div>
     </div>
@@ -110,6 +108,7 @@ export default class ButtlePage extends Vue {
 
   // @ts-ignore
   opponent: IWildPokemon & IOnButtle;
+
   otherOnHands: (IHandPokemon & IOnButtle)[] = [];
 
   // バトル結果を保持
@@ -189,16 +188,16 @@ export default class ButtlePage extends Vue {
       this.serifs.push(...messages);
       
       const { behavor, target } : {
-        behavor: IStats,
-        target: IStats
+        behavor: (IHandPokemon|IWildPokemon) & IOnButtle,
+        target: (IHandPokemon|IWildPokemon) & IOnButtle
       } = this.$ButtleSys.changeStats(effect, this.behaves[i].pokemon, this.behaves[i].target);
 
       if (this.behaves[i].buttlePokemon === 'onHand') {
-        this.onHand.stats = {...behavor};
-        this.opponent.stats = {...target};
+        this.onHand = behavor as IHandPokemon & IOnButtle;
+        this.opponent = target;
       } else {
-        this.onHand.stats = {...target};
-        this.opponent.stats = {...behavor};
+        this.onHand = target as IHandPokemon & IOnButtle;
+        this.opponent = behavor;
       }
 
       this.winner = this.$ButtleSys.checkButtlePokemonStats(this.onHand, this.opponent);
@@ -269,7 +268,7 @@ export default class ButtlePage extends Vue {
     
     if (status === 'buttleSave') {
       const { fieldId, position } = heroCurrentModule.heroCurrent;
-      this.$router.push(`/fields/${fieldId}?position=${position}`);
+      this.$router.push(`/maps/${fieldId}?position=${position}`);
     } 
   }
 }

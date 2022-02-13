@@ -137,7 +137,7 @@ export default class StartPage extends Vue {
         break;
       case 'gotoField':
         const { fieldId, position } = heroCurrentModule.heroCurrent;
-        this.$router.push(`/fields/${fieldId}?position=${position}`);
+        this.$router.push(`/maps/${fieldId}?position=${position}`);
         break;
     }
   }

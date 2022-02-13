@@ -139,23 +139,20 @@ export class ButtleSystem {
   changeStats
     <T extends (IHandPokemon|IWildPokemon) & IOnButtle>
     (effect: TEffect, behavor: T, target: T) 
-    : { behavor: IStats, target: IStats }
+    : { behavor: T, target: T }
   {
-    const behavorStats = {...behavor.stats};
-    const targetStats = {...target.stats};
-
     // [note]: もっと条件分岐あるが一旦割愛
     if ( effect.type === 'damage' ) {
-      targetStats.hp = effect.raiseOrLower === 'lower' ? targetStats.hp - effect.changeValue : targetStats.hp + effect.changeValue;
+      target.remainHp = effect.raiseOrLower === 'lower' ? target.remainHp - effect.changeValue : target.remainHp + effect.changeValue;
     }
 
-    if (targetStats.hp <= 0) {
-      targetStats.hp = 0;
+    if (target.remainHp <= 0) {
+      target.remainHp = 0;
     }
 
     return {
-      behavor: behavorStats,
-      target: targetStats
+      behavor,
+      target
     }
   }
 
@@ -170,10 +167,10 @@ export class ButtleSystem {
 
     let winner: null|TButtlePokemon = null;
 
-    if (onHand.stats.hp <= 0) {
+    if (onHand.remainHp <= 0) {
       winner = 'opponent';
     }
-    if (opponent.stats.hp <= 0) {
+    if (opponent.remainHp <= 0) {
       winner = 'onHand';
     }
 
