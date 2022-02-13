@@ -14,6 +14,8 @@ interface IHandPokemon {
   level: number;
 
   stats: IStats;
+  
+  remainHp: number;
 
   // 個体値
   individualStats: number;

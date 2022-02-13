@@ -52,6 +52,8 @@ interface IWildPokemon {
 
   stats: IStats;
 
+  remainHp: number;
+
   // 個体値
   individualStats: number;
 

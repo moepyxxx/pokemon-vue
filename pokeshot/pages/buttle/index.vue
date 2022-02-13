@@ -72,7 +72,7 @@ type TController = {
   async asyncData(ctx) {
     const { id } = ctx.query;
     const level: number = Math.floor( Math.random() * ( 5 - 2 ) ) + 2;
-    const wildPokemon: IWildPokemon = await ctx.$Poke.getWildPokemon(Number(id), level);
+    const wildPokemon: IWildPokemon = await ctx.$Poke.createWildPokemon(Number(id), level);
 
     // バトル展開
     const opponent = ctx.$ButtleSys.prepareButtleRequired(wildPokemon);

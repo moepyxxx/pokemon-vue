@@ -43,7 +43,7 @@ type TStatus = 'greeting' | 'selectPokemon' | 'confirm' | 'getFirstPokemon' | 'g
   async asyncData(ctx) {
     
     const pokemons = await Promise.all(pokemonSelectableInFirst.map(async id => {
-      const wildPokemon: IWildPokemon = await ctx.$Poke.getWildPokemon(id, 10);
+      const wildPokemon: IWildPokemon = await ctx.$Poke.createWildPokemon(id, 10);
       return { ...wildPokemon };
     }))
 
@@ -112,8 +112,9 @@ export default class StartPage extends Vue {
   setFirstHeroCurrent() {
     // storeの登録
     const firstHeroCurrent: IHeroCurrent = {
-      fieldId: 101,
-      position: 50
+      fieldId: 'touka',
+      position: 163,
+      direction: 'below'
     }
     heroCurrentModule.updateCurrent(firstHeroCurrent);
   }

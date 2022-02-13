@@ -27,7 +27,7 @@ export class Poke {
     this.pokeApi = pokeApi;
   }
 
-  async getWildPokemon(pokemonId: number, level: number) : Promise<IWildPokemon> {
+  async createWildPokemon(pokemonId: number, level: number) : Promise<IWildPokemon> {
     const pokemon: IApiPokemon = await this.pokeApi.getPokemonFromId(pokemonId);
     const pokemonSpecies: IApiPokemonSpecies = await this.pokeApi.getPokemonSpeciesFromId(pokemonId);
 
@@ -48,6 +48,7 @@ export class Poke {
         gender
       },
       moves,
+      remainHp: stats.hp,
       stats,
       individualStats,
       effortStats: 0,

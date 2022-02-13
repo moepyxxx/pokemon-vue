@@ -35,6 +35,7 @@ export default {
     '~/plugins/poke',
     '~/plugins/buttleSys',
     '~/plugins/mapController',
+    '~/plugins/hero',
     '~/plugins/vendor/lodash.ts'
   ],
 
