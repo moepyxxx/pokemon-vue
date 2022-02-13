@@ -941,10 +941,31 @@ null,
 null,
 null,
 null,
-null,
-null,
-null,
-null,
+null, {
+  objectType: 'none',
+  startMark: false,
+  actions: [{
+    trigger: 'move',
+    execute: 'gootherfield',
+    otherField: {
+      id: 'touka',
+      direction: 'below',
+      position: 132
+    }
+  }]
+}, {
+  objectType: 'none',
+  startMark: false,
+  actions: [{
+    trigger: 'move',
+    execute: 'gootherfield',
+    otherField: {
+      id: 'touka',
+      direction: 'below',
+      position: 132
+    }
+  }]
+}, null,
 null,
 null,
 null, {

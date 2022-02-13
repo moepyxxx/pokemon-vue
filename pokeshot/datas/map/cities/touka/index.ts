@@ -269,9 +269,31 @@ export const toukaObjects: (TFieldObject | null)[] = [
 }, {
   objectType: 'forestwall',
   startMark: false
-},
-null,
-null, {
+}, {
+  objectType: 'none',
+  startMark: false,
+  actions: [{
+    trigger: 'move',
+    execute: 'gootherfield',
+    otherField: {
+      id: 'load101',
+      position: 224,
+      direction: 'above'
+    }
+  }]
+}, {
+  objectType: 'none',
+  startMark: false,
+  actions: [{
+    trigger: 'move',
+    execute: 'gootherfield',
+    otherField: {
+      id: 'load101',
+      position: 225,
+      direction: 'above'
+    }
+  }]
+}, {
   objectType: 'forestwall',
   startMark: true
 }, {
@@ -338,15 +360,8 @@ null, {
     trigger: 'move'
   }]
 },
+null,
 null, {
-  objectType: 'forestwall',
-  startMark: false,
-  actions: [{
-    direction: 'below',
-    execute: 'stop',
-    trigger: 'move'
-  }]
-}, {
   objectType: 'forestwall',
   startMark: false,
   actions: [{
@@ -692,6 +707,15 @@ null, {
     direction: 'below',
     execute: 'stop',
     trigger: 'move'
+  }, {
+    direction: 'above',
+    execute: 'gootherfield',
+    trigger: 'move',
+    otherField: {
+      id: 'toukapokemoncenter',
+      position: 190,
+      direction: 'above'
+    }
   }]
 }, {
   objectType: 'pokemoncenter',

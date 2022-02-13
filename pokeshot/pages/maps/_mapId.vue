@@ -114,7 +114,7 @@ export default class MapPage extends Vue {
     col: 12,
     row: 20
   };
-  direction: TDirection = 'below';
+  direction: TDirection = heroCurrentModule.heroCurrent.direction;
 
   isQuestion: boolean = false;
   serifs: string[] = []
@@ -171,8 +171,8 @@ export default class MapPage extends Vue {
     alt: 'ポケモン回復システム'
   }];
 
-  private fields?: TField[];
-  private fieldObjects?: TFieldObject[];
+  private fields: TField[] = [];
+  private fieldObjects: TFieldObject[] = [];
 
   empty() {
     // [note]: 良いやり方模索したい
@@ -304,8 +304,16 @@ export default class MapPage extends Vue {
       throw new Error('フィールドオブジェクトがないよ');
     }
 
+
+    // そもそも道路がないとき（端）
+    if (this.fieldObjects[nextPosition] === undefined) {
+      return false;
+    }
+
+    // 道路のオブジェクトがnullのとき
     if ( this.fieldObjects[nextPosition] === null || 
       this.fieldObjects[nextPosition].actions?.length === 0 ) {
+      this.currentPosition = nextPosition;
       return false;
     }
 
@@ -314,6 +322,7 @@ export default class MapPage extends Vue {
     );
 
     if (!action) {
+      this.currentPosition = nextPosition;
       return false;
     }
 
@@ -365,11 +374,10 @@ export default class MapPage extends Vue {
 
     const nextPosition: number = this.getNextPosition(direction);
 
+    this.checkGoOtherField(nextPosition);
     const action: boolean = this.checkMoveAction(this.currentPosition, nextPosition, direction);
 
     if (action) return;
-
-    this.currentPosition = nextPosition;
     this.checkAppearWildPokemon();
   }
 
@@ -393,6 +401,27 @@ export default class MapPage extends Vue {
     return this.currentPosition + this.position.row;
   }
 
+  checkGoOtherField(nextPosition: number): void|never {
+    const nextFieldObject: TFieldObject = this.fieldObjects[nextPosition];
+    if (!nextFieldObject || !nextFieldObject.actions) return;
+
+    const otherFieldObject: TObjectAction | undefined = nextFieldObject.actions.
+      find(action => action.execute === 'gootherfield' && action.otherField?.direction === this.direction);
+
+    if (!otherFieldObject || !otherFieldObject.otherField) return;
+
+    const { id, direction, position } = otherFieldObject.otherField;
+
+    // 現在地をストアへ保存
+    heroCurrentModule.updateCurrent({
+      position,
+      fieldId: id,
+      direction
+    });
+
+    this.$router.push(`${id}?position=${position}`)
+  }
+
   async checkAppearWildPokemon() {
 
     if (!this.fields) return;
@@ -405,7 +434,8 @@ export default class MapPage extends Vue {
     // 現在地をストアへ保存
     heroCurrentModule.updateCurrent({
       ...heroCurrentModule.heroCurrent,
-      position: this.currentPosition
+      position: this.currentPosition,
+      direction: this.direction
     });
 
     await this.pokemonAppearAnimation();

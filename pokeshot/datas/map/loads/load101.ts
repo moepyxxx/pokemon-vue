@@ -949,10 +949,31 @@ null, {
 }, {
   objectType: 'forestwall',
   startMark: false
-},
-null,
-null,
-{
+}, {
+  objectType: 'none',
+  startMark: false,
+  actions: [{
+    execute: 'gootherfield',
+    trigger: 'move',
+    otherField: {
+      id: 'touka',
+      direction: 'below',
+      position: 4
+    }
+  }]
+}, {
+  objectType: 'none',
+  startMark: false,
+  actions: [{
+    execute: 'gootherfield',
+    trigger: 'move',
+    otherField: {
+      id: 'touka',
+      direction: 'below',
+      position: 5
+    }
+  }]
+}, {
   objectType: 'forestwall',
   startMark: false
 }, {
