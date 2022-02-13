@@ -145,14 +145,8 @@ export class MapController {
 
     let isActions: false | TObjectAction[] = false;
 
-    // そもそも道路がないとき（端）
-    if (fieldObjects[nextPosition] === undefined) {
-      isActions = false;
-    }
-
     // 道路のオブジェクトがnullのとき
-    if ( fieldObjects[nextPosition] === null || 
-      fieldObjects[nextPosition].actions?.length === 0 ) {
+    if ( !fieldObjects[nextPosition] ) {
       isActions = false;
     } else {
 
@@ -163,5 +157,9 @@ export class MapController {
     }
 
     return isActions
+  }
+
+  isNextPositionvalid(nextPosition: number, allPosition: number) {
+    return nextPosition >= 0 && nextPosition < allPosition;
   }
 }

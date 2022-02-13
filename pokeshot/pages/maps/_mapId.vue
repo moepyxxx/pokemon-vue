@@ -220,6 +220,9 @@ export default class MapPage extends Vue {
 
   moveAction(actions: TObjectAction[] | false, nextPosition: number): void {
 
+    const isNextPositionValid = this.$MapController.isNextPositionvalid(nextPosition, this.allPositionLength);
+    if (!isNextPositionValid) return;
+    
     if (!actions) {
       this.currentPosition = nextPosition;
       return;
