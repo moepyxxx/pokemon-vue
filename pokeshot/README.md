@@ -1,4 +1,4 @@
-# pokeshot
+# pokemon-vue
 
 ## Build Setup
 
