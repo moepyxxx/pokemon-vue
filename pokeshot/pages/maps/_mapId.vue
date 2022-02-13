@@ -45,7 +45,7 @@
       />
     </Screen>
 
-    <div class="controller">
+    <div class="controller" v-if="!isPokemonAppear">
       <Controller
         @controllAbove="controllDirection('above')"
         @controllLeft="controllDirection('left')"
@@ -112,8 +112,10 @@ export default class MapPage extends Vue {
   };
   direction: TDirection = heroCurrentModule.heroCurrent.direction;
 
+  isPokemonAppear: boolean = false;
+
   isQuestion: boolean = false;
-  serifs: string[] = []
+  serifs: string[] = [];
   next: () => void = this.empty;
   back: () => void = this.empty;
 
@@ -157,6 +159,7 @@ export default class MapPage extends Vue {
     // ポケモンの出現チェック
     const isPokemonAppear = await this.$MapController.checkAppearWildPokemon(this.fields, this.currentPosition);
     if (isPokemonAppear) {
+      this.isPokemonAppear = true;
       await this.pokemonAppearAction();
     }
   }
