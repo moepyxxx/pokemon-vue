@@ -34,6 +34,7 @@ export default {
     '~/plugins/pokeapi',
     '~/plugins/poke',
     '~/plugins/buttleSys',
+    '~/plugins/mapController',
     '~/plugins/vendor/lodash.ts'
   ],
 

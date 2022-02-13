@@ -1,4 +1,4 @@
-type TExecute = 'getItem' | 'buttle' | 'recoverPokemon' | 'question';
+type THumanExecute = 'getItem' | 'buttle' | 'recoverPokemon' | 'question';
 
 type TTalk = string[];
 
@@ -6,7 +6,7 @@ type TQuestion = {
   selects: string[],
   result: {
     selects: string,
-    execute?: TExecute,
+    execute?: THumanExecute,
     nextActionId?: string
   }[]
 };
@@ -18,7 +18,7 @@ export type THumanAction = {
   actionId: string,
   talk?: TTalk,
   question?: TQuestion,
-  execute?: TExecute,
+  execute?: THumanExecute,
   buttle?: TButtle,
   nextActionId?: string
 }

@@ -4,6 +4,8 @@ export type TField = {
   type: 'river' | 'grassplain' | 'load' | 'grass' | 'nofield' | 'floora' | 'floorb' | 'carpet';
 }
 
+export type TTrigger = 'move' | 'push-a';
+
 export type TObjectAction = {
   execute: 'gootherfield' | 'stop' | 'jumpdown' | 'talk';
   direction?: TDirection;
@@ -12,7 +14,7 @@ export type TObjectAction = {
     direction: TDirection;
     position: number;
   }
-  trigger: 'move' | 'push-a';
+  trigger: TTrigger;
   talk?: {
     humanId: string,
     actionId: string

@@ -10,13 +10,13 @@
 
           <img
             class="grass"
-            v-if="isFieldGrass(fieldIndex)"
+            v-if="fields[fieldIndex].type === 'grass'"
             :src="require('@/assets/img/fieldobject/load/grass.svg')"
             alt="くさむら"
           >
 
           <img
-            v-for="(fieldObjectType, index) in matchFieldObjectTypes(fieldIndex)"
+            v-for="(fieldObjectType, index) in filterFieldObject(fieldIndex)"
             :key="index"
             :class="fieldObjectType.key"
             :src="require(
@@ -26,7 +26,7 @@
           />
 
           <img
-            v-for="(fieldObject, index) in matchHumansObjects(fieldIndex)"
+            v-for="(fieldObject, index) in filterHumanObject(fieldIndex)"
             :key="index"
             :src="require(`@/assets/img/fieldobject/human/${fieldObject.human.imagename}/${fieldObject.direction}.png`)"
             :alt="fieldObject.human.name"
@@ -72,10 +72,9 @@ import IPokemon from '../../config/types/pokemon';
 import { TDirection, TField, TFieldObject, TObjectAction, TObjectType } from '../../datas/map/types';
 import { THuman, THumanAction } from '@/datas/human/types';
 import humans from '@/datas/human/index';
+import { TPosition } from '@/types/position';
 
 const heroCurrentModule = getModule(HeroCurrent);
-
-type TImgDirectory = 'building' | 'interior' | 'load' | 'pokemoncenter';
 
 @Component({
   name: 'MapPage',
@@ -107,10 +106,7 @@ export default class MapPage extends Vue {
   currentPosition: number = 200;
   allPositionLength: number = 240;
   fieldsIsBlacks: boolean[] = [...Array(this.allPositionLength)].map((_, i) => false);
-  position: {
-    col: number,
-    row: number
-  } = {
+  position: TPosition = {
     col: 12,
     row: 20
   };
@@ -118,61 +114,52 @@ export default class MapPage extends Vue {
 
   isQuestion: boolean = false;
   serifs: string[] = []
-  next?: () => void = this.empty;
-  back?: () => void = this.empty;
-
-  fieldObjectTypes: { key: TObjectType, directory: TImgDirectory, alt: string }[] = [{
-    key: 'privatehouse',
-    directory: 'building',
-    alt:  '民家',
-  }, {
-    key: 'pokemoncenter',
-    directory: 'building',
-    alt: 'ポケモンセンター'
-  }, {
-    key: 'table',
-    directory: 'interior',
-    alt: 'テーブル',
-  }, {
-    key: 'yellowchair',
-    directory: 'interior',
-    alt: '黄色い椅子'
-  }, {
-    key: 'pinkchair',
-    directory: 'interior',
-    alt: 'ピンクの椅子'
-  }, {
-    key: 'grass',
-    directory: 'load',
-    alt: '草むら'
-  }, {
-    key: 'stonestep',
-    directory: 'load',
-    alt: '段差',
-  }, {
-    key: 'forestwall',
-    directory: 'load',
-    alt: '木の壁',
-  }, {
-    key: 'bookshelf',
-    directory: 'interior',
-    alt: '本棚'
-  }, {
-    key: 'plant',
-    directory: 'interior',
-    alt: '植木鉢',
-  }, {
-    key: 'computer',
-    directory: 'pokemoncenter',
-    alt: 'パソコン'
-  }, {
-    key: 'recoverysystem',
-    directory: 'pokemoncenter',
-    alt: 'ポケモン回復システム'
-  }];
+  next: () => void = this.empty;
+  back: () => void = this.empty;
 
   private fields: TField[] = [];
   private fieldObjects: TFieldObject[] = [];
+
+  /**
+   * Aボタンを押した時の挙動
+   */
+  controllAPush(): void {
+    const nextPosition: number = this.$MapController.getNextPosition(this.currentPosition, this.direction, this.position);
+
+    // アクションのチェック
+    const actionChecked: false | TObjectAction[] = this.$MapController.checkAction('push-a', this.fieldObjects, nextPosition, this.direction);
+    this.aPushAction(actionChecked);
+  }
+
+  /**
+   * ↑↓→←ボタンを押した時の挙動
+   */
+  async controllDirection(direction: TDirection) {
+
+    if (this.direction !== direction) {
+      this.changeDirection(direction);
+      return;
+    }
+
+    const nextPosition: number = this.$MapController.getNextPosition(this.currentPosition, this.direction, this.position);
+
+    // ほかフィールドへの遷移チェック
+    const goOtherFieldChecked = this.$MapController.checkGoOtherField(this.fieldObjects, nextPosition, this.direction);
+    if (goOtherFieldChecked) {
+      this.goOtherFieldAction(goOtherFieldChecked);
+    }
+
+    // アクションのチェック
+    const actionChecked: false | TObjectAction[] = this.$MapController.checkAction('move', this.fieldObjects, nextPosition, direction);
+    
+    this.moveAction(actionChecked, nextPosition);
+
+    // ポケモンの出現チェック
+    const isPokemonAppear = await this.$MapController.checkAppearWildPokemon(this.fields, this.currentPosition);
+    if (isPokemonAppear) {
+      await this.pokemonAppearAction();
+    }
+  }
 
   empty() {
     // [note]: 良いやり方模索したい
@@ -180,86 +167,18 @@ export default class MapPage extends Vue {
     // デフォルトを入れないとならないため
   }
 
-  controllAPush(): void {
-    if (!this.fieldObjects) {
-      throw new Error('フィールドオブジェクトがないよ');
-    }
-
-    const nextPosition: number = this.getNextPosition(this.direction);
-    const reverseDirection: TDirection = this.getReverseDirection(this.direction);
-
-    if ( this.fieldObjects[nextPosition] === null || 
-      this.fieldObjects[nextPosition].actions?.length === 0 ) {
-      return;
-    }
-
-    const action: TObjectAction | undefined = this.fieldObjects[nextPosition].actions?.find(
-      (action: TObjectAction) => {
-        return action.direction === reverseDirection && action.trigger === 'push-a';
-      }
-    );
-
-    if (action?.execute === 'talk' && action.talk) {
-      this.action(action.talk.humanId, action.talk.actionId);
-    }
+  jumpDown() {
+    this.currentPosition = this.currentPosition + (this.position.row * 2);
   }
 
-  action(humanId: string, actionId: string): void {
-
-    const human: THuman = humans.find(_human => _human.id === humanId) as THuman;
-    const action: THumanAction = human.actions.find(action => action.actionId === actionId) as THumanAction;
-
-    switch (action.execute) {
-      case 'recoverPokemon':
-        this.recoverPokemon(human, action);
-      // case 'question':
-      //   this.talkQuestion(human, action);
-      default:
-        this.talkAction(human, action);
-    }
-
-  }
-
-  recoverPokemon(human: THuman, action: THumanAction) {
-    // ポケモン回復処理
-    console.log('ポケモンが回復した！');
-
-    if (action.nextActionId) {
-      this.action(human.id, action.nextActionId);
-    }
-  }
-
-  talkAction(human: THuman, action: THumanAction) {
-
-    if (!action.talk) return;
-
-    for (let i = 0; i < action.talk.length; i++) {
-      this.serifs.push(action.talk[i]);
-    }
-    
-    this.next = () => {
-      this.serifs.splice(0);
-      if (action.nextActionId) {
-        this.action(human.id, action.nextActionId);
-      }
-    }
-  }
-
-  isFieldGrass(fieldIndex: number): boolean|never {
-    if (!this.fields) {
-      throw new Error('フィールドがないよ');
-    }
-    return this.fields[fieldIndex].type === 'grass';
-  }
-
-  matchHumansObjects(index: number): {
+  /**
+   * フィールドの人表示のため
+   * computed
+   */
+  filterHumanObject(index: number): {
     human: THuman,
     direction: TDirection  
   }[] {
-    if (!this.fieldObjects) {
-      throw new Error('フィールドオブジェクトがないよ');
-    }
-
     const object: TFieldObject | null = this.fieldObjects[index];
     if (!object) return [];
 
@@ -280,137 +199,78 @@ export default class MapPage extends Vue {
     }] : [];
   }
 
-  matchFieldObjectTypes(index: number) {
-    if (!this.fieldObjects) {
-      throw new Error('フィールドオブジェクトがないよ');
-    }
-    
+  /**
+   * フィールドのオブジェクト表示のため
+   * computed
+   */
+  filterFieldObject(index: number) {
     const object: TFieldObject | null = this.fieldObjects[index];
     if (!object) return false;
 
-    return this.fieldObjectTypes.filter(fieldObjectType => 
+    return this.$MapController.fieldObjectTypes.filter(fieldObjectType => 
       fieldObjectType.key === object.objectType && object.startMark);
   }
 
+  /**
+   * 主人公の向きを変更
+   */
   changeDirection(direction: TDirection) {
     this.direction = direction;
   }
 
-  checkMoveAction(currentPosition: number, nextPosition: number, direction: TDirection): boolean|never {
-    
-    const reverseDirection: TDirection = this.getReverseDirection(direction);
+  moveAction(actions: TObjectAction[] | false, nextPosition: number): void {
 
-    if (!this.fieldObjects) {
-      throw new Error('フィールドオブジェクトがないよ');
-    }
-
-
-    // そもそも道路がないとき（端）
-    if (this.fieldObjects[nextPosition] === undefined) {
-      return false;
-    }
-
-    // 道路のオブジェクトがnullのとき
-    if ( this.fieldObjects[nextPosition] === null || 
-      this.fieldObjects[nextPosition].actions?.length === 0 ) {
+    if (!actions) {
       this.currentPosition = nextPosition;
-      return false;
-    }
-
-    const action: TObjectAction | undefined = this.fieldObjects[nextPosition].actions?.find(
-      (action: TObjectAction) => action.direction === reverseDirection && action.trigger === 'move'
-    );
-
-    if (!action) {
-      this.currentPosition = nextPosition;
-      return false;
-    }
-
-    if (action.execute === 'stop') {
-      // 何もしない
-      return true;
-    }
-
-    if (action.execute === 'jumpdown') {
-      this.jumpDown();
-      return true;
-    }
-
-    return false;
-  }
-
-  getNextPosition(direction: TDirection): number {
-    switch (direction) {
-      case 'above':
-        return this.getNextAbovePosition();
-      case 'below':
-        return this.getNextBelowPosition();
-      case 'left':
-        return this.getNextLeftPosition();
-      case 'right':
-        return this.getNextRightPosition();
-    }
-  }
-
-  getReverseDirection(direction: TDirection): TDirection {
-    switch (direction) {
-      case 'left':
-        return 'right';
-      case 'right':
-        return 'left';
-      case 'above': 
-        return 'below';
-      case 'below':
-        return 'above';
-    }
-  }
-
-  controllDirection(direction: TDirection) {
-
-    if (this.direction !== direction) {
-      this.changeDirection(direction);
       return;
     }
 
-    const nextPosition: number = this.getNextPosition(direction);
-
-    this.checkGoOtherField(nextPosition);
-    const action: boolean = this.checkMoveAction(this.currentPosition, nextPosition, direction);
-
-    if (action) return;
-    this.checkAppearWildPokemon();
+    for (let i = 0; i < actions.length ;i++) {
+      switch (actions[i].execute) {
+        case 'jumpdown':
+          this.jumpDown();
+          break;
+        case 'stop':
+          // 何もしない
+          break;
+      }
+    }
   }
 
-  jumpDown() {
-    this.currentPosition = this.currentPosition + (this.position.row * 2);
+  aPushAction(actions: TObjectAction[] | false) {
+    if (!actions) return;
+
+    for (let i = 0; i < actions.length; i++) {
+      if (actions[i].execute === 'talk' && actions[i].talk) {
+        // [note]: どうしてもObject is possibly 'undefined' が倒せない
+        // 仕方なくキャスト（object型の問題なきがする）
+        this.humanAction(actions[i].talk?.humanId as string, actions[i].talk?.actionId as string);
+      }
+    }
   }
 
-  getNextLeftPosition(): number {
-    return this.currentPosition - 1;
+  humanAction(humanId: string, actionId: string): void {
+
+    const human: THuman = humans.find(_human => _human.id === humanId) as THuman;
+    const action: THumanAction = human.actions.find(action => action.actionId === actionId) as THumanAction;
+
+    switch (action.execute) {
+      case 'recoverPokemon':
+        this.recoverPokemonAction(human, action);
+      // case 'question':
+      //   this.talkQuestion(human, action);
+      default:
+        this.talkAction(human, action);
+    }
+
   }
 
-  getNextRightPosition(): number {
-    return this.currentPosition + 1;
-  }
-
-  getNextAbovePosition(): number {
-    return this.currentPosition - this.position.row;
-  }
-
-  getNextBelowPosition(): number {
-    return this.currentPosition + this.position.row;
-  }
-
-  checkGoOtherField(nextPosition: number): void|never {
-    const nextFieldObject: TFieldObject = this.fieldObjects[nextPosition];
-    if (!nextFieldObject || !nextFieldObject.actions) return;
-
-    const otherFieldObject: TObjectAction | undefined = nextFieldObject.actions.
-      find(action => action.execute === 'gootherfield' && action.otherField?.direction === this.direction);
-
-    if (!otherFieldObject || !otherFieldObject.otherField) return;
-
-    const { id, direction, position } = otherFieldObject.otherField;
+  goOtherFieldAction(goOtherField: {
+    id: string,
+    position: number,
+    direction: TDirection
+  }) : void {
+    const { id, position, direction } = goOtherField;
 
     // 現在地をストアへ保存
     heroCurrentModule.updateCurrent({
@@ -419,18 +279,35 @@ export default class MapPage extends Vue {
       direction
     });
 
-    this.$router.push(`${id}?position=${position}`)
+    this.$router.push(`${id}?position=${position}`);
   }
 
-  async checkAppearWildPokemon() {
+  talkAction(human: THuman, action: THumanAction) {
 
-    if (!this.fields) return;
+    if (!action.talk) return;
 
-    if (this.fields[this.currentPosition].type !== 'grass') return;
-    const rand = Math.random();
-    const isAppear = rand < 0.3 ? true : false;
-    if (!isAppear) return;
+    for (let i = 0; i < action.talk.length; i++) {
+      this.serifs.push(action.talk[i]);
+    }
+    
+    this.next = () => {
+      this.serifs.splice(0);
+      if (action.nextActionId) {
+        this.humanAction(human.id, action.nextActionId);
+      }
+    }
+  }
 
+  recoverPokemonAction(human: THuman, action: THumanAction) {
+    // ポケモン回復処理
+    console.log('ポケモンが回復した！');
+
+    if (action.nextActionId) {
+      this.humanAction(human.id, action.nextActionId);
+    }
+  }
+
+  async pokemonAppearAction() {
     // 現在地をストアへ保存
     heroCurrentModule.updateCurrent({
       ...heroCurrentModule.heroCurrent,
