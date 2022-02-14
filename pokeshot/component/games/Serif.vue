@@ -1,6 +1,6 @@
 <template>
   <section>
-    <div v-if="questions.length !== 0" class="question">
+    <div v-if="questions && questions.length !== 0" class="question">
       <button
         v-for="(question, index) in questions"
         :key="index"

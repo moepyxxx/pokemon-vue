@@ -183,8 +183,6 @@ export default class StartPage extends Vue {
   };
   heroName: string = '';
 
-  isQuestion: boolean = false;
-
   next: (() => void) | null = this.empty;
   back: (() => void) | null = this.empty;
 
