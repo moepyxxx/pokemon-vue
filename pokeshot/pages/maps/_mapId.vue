@@ -37,11 +37,17 @@
         </span>
       </div>
 
+      <Menu
+        :isMenuActive="isMenuActive"
+        @reportClick="isReportActive"
+      />
+
       <Serif
         :serifs="serifs"
         @next="next"
         :questions="questions"
       />
+
     </Screen>
 
     <div class="controller" v-if="!isPokemonAppear">
@@ -51,6 +57,7 @@
         @controllRight="controllDirection('right')"
         @controllBelow="controllDirection('below')"
         @controllAPush="controllAPush"
+        @controllStart="isMenuActive = !isMenuActive"
       />
     </div>
   </div>
@@ -62,6 +69,7 @@ import { Component, Vue } from 'vue-property-decorator';
 import Screen from '../../component/games/Screen.vue';
 import Controller from '../../component/games/Controller.vue';
 import Serif from '../../component/games/Serif.vue';
+import Menu from '../../component/games/Menu.vue';
 
 import { getModule } from 'vuex-module-decorators';
 import HeroCurrent from '~/store/modules/heroCurrent';
@@ -81,7 +89,8 @@ const heroCurrentModule = getModule(HeroCurrent);
   components: {
     Screen,
     Controller,
-    Serif
+    Serif,
+    Menu
   },
   
   async asyncData(ctx) {
@@ -102,6 +111,11 @@ const heroCurrentModule = getModule(HeroCurrent);
 })
 
 export default class MapPage extends Vue {
+
+  // メニュ系開閉について
+  isMenuActive: boolean = false;
+  isReportActive: boolean = false;
+
   currentPosition: number = 200;
   allPositionLength: number = 240;
   fieldsIsBlacks: boolean[] = [...Array(this.allPositionLength)].map((_, i) => false);

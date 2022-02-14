@@ -11,6 +11,7 @@
     <div class="right">
       <button class="button button-a" @click="$emit('controllAPush')">A</button>
       <button class="button button-b">B</button>
+      <button class="start" @click="$emit('controllStart')">START</button>
     </div>
 
   </div>
@@ -99,12 +100,31 @@
     }
 
     &.button-a {
-      top: 20px;
-      right: 20px;
+      top: 0px;
+      right: 0px;
     }
     &.button-b {
-      bottom: 20px;
-      left: 20px;
+      bottom: 60px;
+      left: 0;
+    }
+  }
+
+  .start {
+    position: absolute;
+    padding: 4px 16px;
+    background: #EEF2F1;
+    border-radius: 12px;
+    box-shadow: 0 4px 0 0 #D4D9D7;
+    letter-spacing: 1px;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 0;
+    transition: .5s all;
+    font-weight: bold;
+
+    &:active {
+      box-shadow: none;
+      transform: translateY(4px) translateX(-50%);
     }
   }
 }
