@@ -1,11 +1,15 @@
 <template>
   <Screen>
 
-    <div v-if="status === 'greeting' || status === 'getFirstPokemon'" class="center">
+    <div
+      v-if="
+        scenarios[currentScenarioIndex].status === 'greeting' ||
+        scenarios[currentScenarioIndex].status === 'getFirstPokemon'"
+      class="center">
       <img src="~/assets/img/scenario/odamaki.png" alt="オダマキ博士">
     </div>
 
-    <div v-else-if="status === 'selectGender'" class="center flex">
+    <div v-else-if="scenarios[currentScenarioIndex].status === 'selectGender'" class="center flex">
       <div v-for="(gender, index) in genders" :key="index" class="card">
         <button @click="registerGender(gender)">
           <img
@@ -17,7 +21,7 @@
       </div>
     </div>
 
-    <div v-else-if="status === 'registerName'"  class="center">
+    <div v-else-if="scenarios[currentScenarioIndex].status === 'registerName'"  class="center">
       <div class="card">
         <img
           :src="require(`@/assets/img/scenario/${selectedGender.english}.png`)"
@@ -31,7 +35,7 @@
       </div>
     </div>
 
-    <div v-else-if="status === 'selectPokemon'" class="center flex">
+    <div v-else-if="scenarios[currentScenarioIndex].status === 'selectPokemon'" class="center flex">
       <div v-for="pokemon in pokemons" :key="pokemon.base.id" class="card">
         <button @click="changeSelectPokemon(pokemon)">
           <img
@@ -43,7 +47,7 @@
       </div>
     </div>
     
-    <div v-else-if="status === 'confirm'" class="center card">
+    <div v-else-if="scenarios[currentScenarioIndex].status === 'confirm'" class="center card">
       <img
         :src="require(`@/assets/img/scenario/pokemon/${selectPokemon.base.id}.png`)"
         :alt="selectPokemon.base.name"
@@ -51,7 +55,7 @@
       <p>{{ selectPokemon.base.name }}</p>
     </div>
 
-    <div v-else-if="status === 'registerNickname'" class="center">
+    <div v-else-if="scenarios[currentScenarioIndex].status === 'registerNickname'" class="center">
       <div class="card">
         <img
           :src="require(`@/assets/img/scenario/pokemon/${selectPokemon.base.id}.png`)"
@@ -71,17 +75,17 @@
     </div>
 
     <Serif
-      :serifs="serifs"
-      :isQuestion="isQuestion"
-      @next="next"
-      @back="back"
+      :serifs="scenarios[currentScenarioIndex].serifs"
+      :isQuestion="scenarios[currentScenarioIndex].isQuestion"
+      @next="scenarios[currentScenarioIndex].next"
+      @back="scenarios[currentScenarioIndex].back"
     />
 
   </Screen>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from 'vue-property-decorator';
+import { Component, Vue } from 'vue-property-decorator';
 
 import Screen from '../component/games/Screen.vue'
 import Serif from '../component/games/Serif.vue'
@@ -94,14 +98,22 @@ import HeroCurrent, { IHeroCurrent } from '~/store/modules/heroCurrent';
 import { THeroGender } from '~/store/modules/hero';
 import Hero from '~/store/modules/hero';
 
-
 const handPokemonsModule = getModule(HandPokemons);
 const heroCurrentModule = getModule(HeroCurrent);
 const heroModule = getModule(Hero);
 
-type TStatus = 'greeting' | 'selectGender' | 'registerName' | 'selectPokemon' | 'confirm' | 'registerNickname' | 'getFirstPokemon' | 'gotoField';
+type TStatus = 'greeting' | 'selectGender' | 'registerName' | 'selectPokemon' | 'confirm' | 'registerNickname' | 'getFirstPokemon';
+
+export type TScenario = {
+  status: TStatus,
+  serifs: string[],
+  next: null | (() => void),
+  back: null | (() => void),
+  isQuestion: boolean
+}
 
 @Component({
+  name: 'StartPage',
   components: {
     Screen,
     Serif
@@ -120,12 +132,60 @@ type TStatus = 'greeting' | 'selectGender' | 'registerName' | 'selectPokemon' | 
 
   }
 })
-
 export default class StartPage extends Vue {
 
   pokemons: IHandPokemon[] = [];
   pokemonNickname: string = '';
-  selectPokemon: IWildPokemon|null = null;
+  selectPokemon: IWildPokemon | null = null;
+
+  scenarios: TScenario[] = [{
+    status: "greeting",
+    serifs: [
+      'こんにちは ぼくのなまえは オダマキ博士',
+      'これから きみのあいぼうを えらんで たびに でよう'
+    ],
+    next: this.nextScenario,
+    back: null,
+    isQuestion: false
+  }, {
+    status: "selectGender",
+    serifs: ['そのまえに まずはあなたのことを教えてもらうよ。 あなたは おとこのこ？ それともおんなのこ？'],
+    next: null,
+    back: null,
+    isQuestion: false
+  }, {
+    status: "registerName",
+    serifs: ['あなたの なまえも 教えてね'],
+    next: null,
+    back: null,
+    isQuestion: false
+  }, {
+    status: "selectPokemon",
+    serifs: [`${heroModule.hero.name} 次はいよいよ きみのさいしょのポケモンを えらぶときだ。さあ どのポケモンにする？`],
+    next: null,
+    back: null,
+    isQuestion: false    
+  }, {
+    status: 'confirm',
+    serifs: [`ほんとうに この${ this.selectPokemon?.base.name }で良いのかな？`],
+    next: this.nextScenario,
+    back: this.backScenario,
+    isQuestion: true
+  }, {
+    status: 'registerNickname',
+    serifs: [`${this.selectPokemon?.base.name}に ニックネームをつけてみるかい？`],
+    next: null,
+    back: null,
+    isQuestion: false
+  }, {
+    status: 'getFirstPokemon',
+    serifs: [`あなたは さいしょの あいぼうとして ${ this.selectPokemon?.base.name } を選んだね`, 'それでは 今から たくさんの冒険を はじめてみよう'],
+    next: this.startAdventure,
+    back: null,
+    isQuestion: false
+  }];
+  currentScenarioIndex = 0;
+  serifs: string[] = this.scenarios[0].serifs;
 
   genders: THeroGender[] = [{
     english: 'girl',
@@ -138,18 +198,16 @@ export default class StartPage extends Vue {
     english: 'girl',
     japanese: 'おんなのこ'
   };
-
   heroName: string = '';
 
-  isFixFirstPokemon: boolean = false;
-
-  status: TStatus = 'greeting';
-
   isQuestion: boolean = false;
-  serifs: string[] = [
-    'こんにちは ぼくのなまえは オダマキ博士',
-    'これから きみのあいぼうを えらんで たびに でよう'
-  ]
+
+  next: () => void = this.empty;
+  back: () => void = this.empty;
+
+  empty() {
+    // 何もしない
+  }
 
   registerGender(gender: THeroGender) {
     this.selectedGender = gender;
@@ -157,8 +215,7 @@ export default class StartPage extends Vue {
       ...heroModule.hero,
       gender
     })
-    this.serifs.splice(0);
-    this.status = 'registerName';
+    this.nextScenario();
   }
 
   registerHeroName() {
@@ -166,8 +223,12 @@ export default class StartPage extends Vue {
       ...heroModule.hero,
       name: this.heroName
     })
-    this.serifs.splice(0);
-    this.status = 'selectPokemon';
+    this.nextScenario();
+  }
+
+  changeSelectPokemon(pokemon: IWildPokemon) {
+    this.selectPokemon = pokemon;
+    this.nextScenario();
   }
 
   registerPokemonNickname() {
@@ -175,43 +236,10 @@ export default class StartPage extends Vue {
       ...heroModule.hero,
       name: this.heroName
     })
-    this.serifs.splice(0);
-    this.status = 'selectPokemon';
+    this.nextScenario();
   }
 
-  changeSelectPokemon(pokemon: IWildPokemon) {
-    this.selectPokemon = pokemon;
-    this.serifs.splice(0);
-    this.status = 'confirm';
-  }
-
-  next() {
-    switch (this.status) {
-      case 'greeting':
-        this.serifs.splice(0);
-        this.status = 'selectGender';
-        break;
-      case 'confirm':
-        this.serifs.splice(0);
-        this.status = 'registerNickname';
-        break;
-      case 'getFirstPokemon':
-        this.serifs.splice(0);
-        this.status = 'gotoField';
-        break;
-    }
-  }
-
-  back() {
-    switch (this.status) {
-      case 'confirm':
-        this.serifs.splice(0);
-        this.isQuestion = false;
-        this.status = 'selectPokemon';
-        break;
-    }
-  }
-
+  // [todo]: ポケモンゲットはどこでも使うためpluginから呼び出す
   fixFirstPokemon(isNickname: boolean) {
     if (!this.selectPokemon) return;
 
@@ -219,10 +247,8 @@ export default class StartPage extends Vue {
 
     const onHandPokemon: IHandPokemon = this.$Poke.getHandPokemon(this.selectPokemon, this.pokemonNickname);
     handPokemonsModule.addToOnHandPokemon(onHandPokemon);
-    this.isFixFirstPokemon = true;
 
-    this.serifs.splice(0);
-    this.status = 'getFirstPokemon';
+    this.nextScenario();
   }
 
   setFirstHeroCurrent() {
@@ -235,39 +261,23 @@ export default class StartPage extends Vue {
     heroCurrentModule.updateCurrent(firstHeroCurrent);
   }
 
-  @Watch('status')
-  private changeStatus(status: TStatus, oldStatus: TStatus) {
-    switch(status) {
-      case 'greeting':
-        break;
-      case 'selectGender':
-        this.serifs.push('そのまえに まずはあなたのことを教えてもらうよ。 あなたは おとこのこ？ それともおんなのこ？');
-        break;
-      case 'registerName':
-        this.serifs.push('それではつぎに あなたの名前を おしえてね');
-        break;
-      case 'selectPokemon':
-        this.serifs.push(`${heroModule.hero.name} 次はいよいよ きみのさいしょのポケモンを えらぶときだ。 さあ どのポケモンにする？`);
-        break;
-      case 'confirm':
-        this.serifs.push(`ほんとうに この${ this.selectPokemon!.base.name }で良いのかな？`);
-        this.isQuestion = true;
-        break;
-      case 'registerNickname':
-        this.serifs.splice(0);
-        this.isQuestion = false;
-        this.serifs.push(`${this.selectPokemon!.base.name}に ニックネームをつけてみるかい？`);
-        break;
-      case 'getFirstPokemon':
-        this.serifs.push(`あなたは さいしょの あいぼうとして ${ this.selectPokemon!.base.name } を選んだね`);
-        this.serifs.push(`それでは 旅に でてみよう！`);
-        this.setFirstHeroCurrent();
-        break;
-      case 'gotoField':
-        const { fieldId, position } = heroCurrentModule.heroCurrent;
-        this.$router.push(`/maps/${fieldId}?position=${position}`);
-        break;
-    }
+  nextScenario() {
+    this.currentScenarioIndex++;
+  }
+
+  backScenario() {
+    this.currentScenarioIndex--;
+  }
+
+  startAdventure() {
+    this.setFirstHeroCurrent();
+    const { fieldId, position } = heroCurrentModule.heroCurrent;
+    this.$router.push(`/maps/${fieldId}?position=${position}`);
+
+    // [todo]: フォームの値が取れていないため後で確認
+    // console.log(handPokemonsModule.pokemons);
+    // console.log(heroModule.hero);
+    // console.log(heroCurrentModule.heroCurrent);
   }
 }
 

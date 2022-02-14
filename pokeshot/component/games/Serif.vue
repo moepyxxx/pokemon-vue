@@ -1,10 +1,10 @@
 <template>
   <section>
     <div v-if="isQuestion" class="question">
-      <button @click="next">はい</button>
+      <button @click="nextAction">はい</button>
       <button @click="$emit('back')">いいえ</button>
     </div>
-    <div v-if="serifs.length !== 0" class="serif" @click="next">
+    <div v-if="serifs.length !== 0" class="serif" @click="nextAction">
       <p>{{ serifs[currentIndex] }}</p>
       <span>▼</span>
     </div>
@@ -15,20 +15,24 @@
 import { PropType } from 'vue'
 import { Component, Vue, Prop } from 'vue-property-decorator';
 
-@Component({
-  props: {
-    nextAction: { type: Function },
-    isQuestion: { type: Boolean }
-  },
-})
+@Component
 export default class Serif extends Vue {
 
   currentIndex: number = 0;
 
   @Prop({ type: Array as PropType<string[]> })
-  serifs: string[];
+  serifs!: string[];
 
-  next() {
+  @Prop({ type: Function as () => Function | null })
+  next!: () => void;
+
+  @Prop({ type: Function as () => Function | null })
+  back!: () => void;
+
+  @Prop({ type: Boolean })
+  isQuestion!: boolean;
+
+  nextAction() {
     if ( this.currentIndex < this.serifs.length - 1 ) {
       this.currentIndex++;
     } else {
