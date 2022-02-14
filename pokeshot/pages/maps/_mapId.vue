@@ -39,9 +39,8 @@
 
       <Serif
         :serifs="serifs"
-        :isQuestion="isQuestion"
         @next="next"
-        @back="back"
+        :questions="questions"
       />
     </Screen>
 
@@ -114,10 +113,12 @@ export default class MapPage extends Vue {
 
   isPokemonAppear: boolean = false;
 
-  isQuestion: boolean = false;
   serifs: string[] = [];
   next: () => void = this.empty;
-  back: () => void = this.empty;
+  questions: {
+    select: string;
+    execute: (...args: any) => void;
+  }[] = [];
 
   private fields: TField[] = [];
   private fieldObjects: TFieldObject[] = [];
@@ -254,7 +255,13 @@ export default class MapPage extends Vue {
     }
   }
 
+  resetHumanAction() {
+    this.serifs = [];
+    this.questions = [];
+  }
+
   humanAction(humanId: string, actionId: string): void {
+    this.resetHumanAction();
 
     const human: THuman = humans.find(_human => _human.id === humanId) as THuman;
     const action: THumanAction = human.actions.find(action => action.actionId === actionId) as THumanAction;
@@ -262,9 +269,9 @@ export default class MapPage extends Vue {
     switch (action.execute) {
       case 'recoverPokemon':
         this.recoverPokemonAction(human, action);
-      // case 'question':
-      //   this.talkQuestion(human, action);
-      default:
+      case 'question':
+        this.questionAction(human, action);
+      case 'talk':
         this.$MapController.humanChangeDirection(this.fieldObjects, this.currentPosition, this.direction, this.position);
         this.talkAction(human, action);
     }
@@ -288,6 +295,22 @@ export default class MapPage extends Vue {
     this.$router.push(`${id}?position=${position}`);
   }
 
+  questionAction(human: THuman, action: THumanAction) {
+    if (!action.questions || !action.talk) return;
+
+    for (let i = 0; i < action.talk.length; i++) {
+      this.serifs.push(action.talk[i]);
+    }
+
+    this.next = this.empty;
+    this.questions = action.questions.map(question => {
+      return {
+        select: question.select,
+        execute: this.humanAction.bind(this, human.id, question.nextActionId as string)
+      }
+    })
+  }
+
   talkAction(human: THuman, action: THumanAction) {
 
     if (!action.talk) return;
@@ -305,7 +328,6 @@ export default class MapPage extends Vue {
   }
 
   recoverPokemonAction(human: THuman, action: THumanAction) {
-    // ポケモン回復処理
     this.$Hero.getRecoveryPokemon();
 
     if (action.nextActionId) {

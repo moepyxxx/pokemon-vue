@@ -6,6 +6,7 @@ export const yoshihiko: THuman = {
   imagename: 'obocchama',
   actions: [{
     actionId: 'greeting',
+    execute: 'talk',
     talk: ['知っていたか？ ここでは どんなポケモンも むりょうで回復できるんだぜ', 'だからしょみんも 快適にたびができるってわけだ']
   }]
 }

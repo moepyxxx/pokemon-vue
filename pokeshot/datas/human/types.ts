@@ -1,14 +1,11 @@
-type THumanExecute = 'getItem' | 'buttle' | 'recoverPokemon' | 'question';
+type THumanExecute = 'talk' | 'getItem' | 'buttle' | 'recoverPokemon' | 'question';
 
 type TTalk = string[];
 
 type TQuestion = {
-  selects: string[],
-  result: {
-    selects: string,
-    execute?: THumanExecute,
-    nextActionId?: string
-  }[]
+  select: string,
+  execute?: THumanExecute,
+  nextActionId?: string
 };
 
 // [note]: いつか実装のため
@@ -17,8 +14,8 @@ type TButtle = any;
 export type THumanAction = {
   actionId: string,
   talk?: TTalk,
-  question?: TQuestion,
-  execute?: THumanExecute,
+  questions?: TQuestion[],
+  execute: THumanExecute,
   buttle?: TButtle,
   nextActionId?: string
 }

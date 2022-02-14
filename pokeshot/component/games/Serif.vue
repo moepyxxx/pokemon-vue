@@ -1,13 +1,11 @@
 <template>
   <section>
-    <div v-if="questions" class="question">
+    <div v-if="questions.length !== 0" class="question">
       <button
         v-for="(question, index) in questions"
         :key="index"
         @click="question.execute"
       >{{ question.select }}</button>
-      <!-- <button @click="$emit('next')">はい</button>
-      <button @click="$emit('back')">いいえ</button> -->
     </div>
 
     <div v-if="serifs.length !== 0" class="serif" @click="nextAction">
@@ -57,6 +55,7 @@ export default class Serif extends Vue {
   bottom: 120px;
   right: 10px;
   border: 4px solid #31A4AB;
+  background: #fff;
   border-radius: 12px;
   padding: 10px 20px;
 
