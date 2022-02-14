@@ -3,13 +3,13 @@
 
     <div
       v-if="
-        scenarios[currentScenarioIndex].status === 'greeting' ||
-        scenarios[currentScenarioIndex].status === 'getFirstPokemon'"
+        currentScenario.status === 'greeting' ||
+        currentScenario.status === 'getFirstPokemon'"
       class="center">
       <img src="~/assets/img/scenario/odamaki.png" alt="オダマキ博士">
     </div>
 
-    <div v-else-if="scenarios[currentScenarioIndex].status === 'selectGender'" class="center flex">
+    <div v-else-if="currentScenario.status === 'selectGender'" class="center flex">
       <div v-for="(gender, index) in genders" :key="index" class="card">
         <button @click="registerGender(gender)">
           <img
@@ -21,7 +21,7 @@
       </div>
     </div>
 
-    <div v-else-if="scenarios[currentScenarioIndex].status === 'registerName'"  class="center">
+    <div v-else-if="currentScenario.status === 'registerName'"  class="center">
       <div class="card">
         <img
           :src="require(`@/assets/img/scenario/${selectedGender.english}.png`)"
@@ -35,7 +35,7 @@
       </div>
     </div>
 
-    <div v-else-if="scenarios[currentScenarioIndex].status === 'selectPokemon'" class="center flex">
+    <div v-else-if="currentScenario.status === 'selectPokemon'" class="center flex">
       <div v-for="pokemon in pokemons" :key="pokemon.base.id" class="card">
         <button @click="changeSelectPokemon(pokemon)">
           <img
@@ -47,7 +47,7 @@
       </div>
     </div>
     
-    <div v-else-if="scenarios[currentScenarioIndex].status === 'confirm'" class="center card">
+    <div v-else-if="currentScenario.status === 'confirm'" class="center card">
       <img
         :src="require(`@/assets/img/scenario/pokemon/${selectPokemon.base.id}.png`)"
         :alt="selectPokemon.base.name"
@@ -55,7 +55,7 @@
       <p>{{ selectPokemon.base.name }}</p>
     </div>
 
-    <div v-else-if="scenarios[currentScenarioIndex].status === 'registerNickname'" class="center">
+    <div v-else-if="currentScenario.status === 'registerNickname'" class="center">
       <div class="card">
         <img
           :src="require(`@/assets/img/scenario/pokemon/${selectPokemon.base.id}.png`)"
@@ -75,10 +75,10 @@
     </div>
 
     <Serif
-      :serifs="scenarios[currentScenarioIndex].serifs"
-      :isQuestion="scenarios[currentScenarioIndex].isQuestion"
-      @next="scenarios[currentScenarioIndex].next"
-      @back="scenarios[currentScenarioIndex].back"
+      :serifs="getSerifs"
+      :isQuestion="currentScenario.isQuestion"
+      @next="currentScenario.next"
+      @back="currentScenario.back"
     />
 
   </Screen>
@@ -106,7 +106,6 @@ type TStatus = 'greeting' | 'selectGender' | 'registerName' | 'selectPokemon' | 
 
 export type TScenario = {
   status: TStatus,
-  serifs: string[],
   next: () => void,
   back: () => void,
   isQuestion: boolean
@@ -140,52 +139,42 @@ export default class StartPage extends Vue {
 
   scenarios: TScenario[] = [{
     status: "greeting",
-    serifs: [
-      'こんにちは ぼくのなまえは オダマキ博士',
-      'これから きみのあいぼうを えらんで たびに でよう'
-    ],
     next: this.nextScenario,
     back: this.empty,
     isQuestion: false
   }, {
     status: "selectGender",
-    serifs: ['そのまえに まずはあなたのことを教えてもらうよ。 あなたは おとこのこ？ それともおんなのこ？'],
     next: this.empty,
     back: this.empty,
     isQuestion: false
   }, {
     status: "registerName",
-    serifs: ['あなたの なまえも 教えてね'],
     next: this.empty,
     back: this.empty,
     isQuestion: false
   }, {
     status: "selectPokemon",
-    serifs: [`${heroModule.hero.name} 次はいよいよ きみのさいしょのポケモンを えらぶときだ。さあ どのポケモンにする？`],
     next: this.empty,
     back: this.empty,
     isQuestion: false    
   }, {
     status: 'confirm',
-    serifs: [`ほんとうに この${ this.selectPokemon?.base.name }で良いのかな？`],
     next: this.nextScenario,
     back: this.backScenario,
     isQuestion: true
   }, {
     status: 'registerNickname',
-    serifs: [`${this.selectPokemon?.base.name}に ニックネームをつけてみるかい？`],
     next: this.empty,
     back: this.empty,
     isQuestion: false
   }, {
     status: 'getFirstPokemon',
-    serifs: [`あなたは さいしょの あいぼうとして ${ this.selectPokemon?.base.name } を選んだね`, 'それでは 今から たくさんの冒険を はじめてみよう'],
     next: this.startAdventure,
     back: this.empty,
     isQuestion: false
   }];
   currentScenarioIndex = 0;
-  serifs: string[] = this.scenarios[0].serifs;
+  currentScenario: TScenario = this.scenarios[this.currentScenarioIndex];
 
   genders: THeroGender[] = [{
     english: 'girl',
@@ -207,6 +196,49 @@ export default class StartPage extends Vue {
 
   empty() {
     // 何もしない
+  }
+
+  get getSerifs(): string[] {
+    switch(this.currentScenario.status) {
+      case 'greeting':
+        return [
+          'こんにちは ぼくのなまえは オダマキ博士',
+          'これから きみのあいぼうを えらんで たびに でよう'
+        ];
+      case 'selectGender':
+        return [
+          'そのまえに まずはあなたのことを教えてもらうよ。 あなたは おとこのこ？ それともおんなのこ？'
+        ];
+      case 'registerName':
+        return [
+          'あなたの なまえも 教えてね'
+        ];
+      case 'selectPokemon':
+        return [
+          `${heroModule.hero.name} 次はいよいよ きみのさいしょのポケモンを えらぶときだ。さあ どのポケモンにする？`
+        ];
+      case 'confirm':
+        return [
+          `ほんとうに この${ this.selectPokemonName }で良いのかな？`
+        ];
+      case 'registerNickname':
+        return [
+          `${ this.selectPokemonName }に ニックネームをつけてみるかい？`
+        ];
+      case 'getFirstPokemon':
+        return [
+          `あなたは さいしょの あいぼうとして ${ this.selectPokemonName } を選んだね`,
+          'それでは 今から たくさんの冒険を はじめてみよう'
+        ];
+      default:
+        return [
+          ''
+        ];
+    }
+  }
+
+  get selectPokemonName() {
+    return this.selectPokemon?.base.name;
   }
 
   registerGender(gender: THeroGender) {
@@ -263,10 +295,12 @@ export default class StartPage extends Vue {
 
   nextScenario() {
     this.currentScenarioIndex++;
+    this.currentScenario = this.scenarios[this.currentScenarioIndex];
   }
 
   backScenario() {
     this.currentScenarioIndex--;
+    this.currentScenario = this.scenarios[this.currentScenarioIndex];
   }
 
   startAdventure() {
@@ -275,9 +309,9 @@ export default class StartPage extends Vue {
     this.$router.push(`/maps/${fieldId}?position=${position}`);
 
     // [todo]: フォームの値が取れていないため後で確認
-    // console.log(handPokemonsModule.pokemons);
-    // console.log(heroModule.hero);
-    // console.log(heroCurrentModule.heroCurrent);
+    console.log(handPokemonsModule.pokemons);
+    console.log(heroModule.hero);
+    console.log(heroCurrentModule.heroCurrent);
   }
 }
 
