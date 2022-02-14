@@ -30,7 +30,7 @@
         <p>{{ selectedGender.japanese }}</p>
       </div>
       <div class="form">
-        <input type="text" placeholder="5文字いないのなまえ" :v-model="heroName" />
+        <input type="text" placeholder="5文字いないのなまえ" v-model="heroName" />
         <button class="submit" @click="registerHeroName">これで決定</button>
       </div>
     </div>
@@ -65,7 +65,7 @@
       </div>
       <div class="form flex flex-column">
         <div>
-          <input type="text" placeholder="5文字いないのなまえ" :v-model="pokemonNickname" />
+          <input type="text" placeholder="5文字いないのなまえ" v-model="pokemonNickname" />
           <button class="submit" @click="fixFirstPokemon(true)">これで決定</button>
         </div>
         <div>
@@ -307,11 +307,6 @@ export default class StartPage extends Vue {
     this.setFirstHeroCurrent();
     const { fieldId, position } = heroCurrentModule.heroCurrent;
     this.$router.push(`/maps/${fieldId}?position=${position}`);
-
-    // [todo]: フォームの値が取れていないため後で確認
-    console.log(handPokemonsModule.pokemons);
-    console.log(heroModule.hero);
-    console.log(heroCurrentModule.heroCurrent);
   }
 }
 
