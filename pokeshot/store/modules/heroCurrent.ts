@@ -16,7 +16,7 @@ export default class HeroCurrent extends VuexModule {
     direction: 'below'
   }
 
-  get current() {
+  get getHeroCurrent() {
     return this.heroCurrent;
   }
 

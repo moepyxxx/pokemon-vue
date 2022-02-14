@@ -21,7 +21,7 @@ export default class HeroCurrent extends VuexModule {
     name: ''
   }
 
-  get current() {
+  get getHero() {
     return this.hero;
   }
 
