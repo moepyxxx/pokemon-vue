@@ -76,9 +76,8 @@
 
     <Serif
       :serifs="getSerifs"
-      :isQuestion="currentScenario.isQuestion"
+      :questions="currentScenario.questions"
       @next="currentScenario.next"
-      @back="currentScenario.back"
     />
 
   </Screen>
@@ -107,8 +106,10 @@ type TStatus = 'greeting' | 'selectGender' | 'registerName' | 'selectPokemon' | 
 export type TScenario = {
   status: TStatus,
   next: () => void,
-  back: () => void,
-  isQuestion: boolean
+  questions?: {
+    select: string,
+    execute: () => void
+  }[]
 }
 
 @Component({
@@ -140,38 +141,31 @@ export default class StartPage extends Vue {
   scenarios: TScenario[] = [{
     status: "greeting",
     next: this.nextScenario,
-    back: this.empty,
-    isQuestion: false
   }, {
     status: "selectGender",
     next: this.empty,
-    back: this.empty,
-    isQuestion: false
   }, {
     status: "registerName",
     next: this.empty,
-    back: this.empty,
-    isQuestion: false
   }, {
     status: "selectPokemon",
     next: this.empty,
-    back: this.empty,
-    isQuestion: false    
   }, {
     status: 'confirm',
-    next: this.nextScenario,
-    back: this.backScenario,
-    isQuestion: true
+    next: this.empty,
+    questions: [{
+      select: 'はい',
+      execute: this.nextScenario,
+    }, {
+      select: 'いいえ',
+      execute: this.backScenario
+    }]
   }, {
     status: 'registerNickname',
     next: this.empty,
-    back: this.empty,
-    isQuestion: false
   }, {
     status: 'getFirstPokemon',
     next: this.startAdventure,
-    back: this.empty,
-    isQuestion: false
   }];
   currentScenarioIndex = 0;
   currentScenario: TScenario = this.scenarios[this.currentScenarioIndex];

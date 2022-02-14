@@ -1,9 +1,15 @@
 <template>
   <section>
-    <div v-if="isQuestion" class="question">
-      <button @click="nextAction">はい</button>
-      <button @click="$emit('back')">いいえ</button>
+    <div v-if="questions" class="question">
+      <button
+        v-for="(question, index) in questions"
+        :key="index"
+        @click="question.execute"
+      >{{ question.select }}</button>
+      <!-- <button @click="$emit('next')">はい</button>
+      <button @click="$emit('back')">いいえ</button> -->
     </div>
+
     <div v-if="serifs.length !== 0" class="serif" @click="nextAction">
       <p>{{ serifs[currentIndex] }}</p>
       <span>▼</span>
@@ -26,11 +32,11 @@ export default class Serif extends Vue {
   @Prop({ type: Function })
   next!: () => void;
 
-  @Prop({ type: Function })
-  back!: () => void;
-
-  @Prop({ type: Boolean })
-  isQuestion!: boolean;
+  @Prop({ type: Array as PropType<Object[]> })
+  questions!: {
+    select: string,
+    execute: () => void
+  }[];
 
   nextAction() {
     if ( this.currentIndex < this.serifs.length - 1 ) {
