@@ -23,10 +23,10 @@ export default class Serif extends Vue {
   @Prop({ type: Array as PropType<string[]> })
   serifs!: string[];
 
-  @Prop({ type: Function as () => Function | null })
+  @Prop({ type: Function })
   next!: () => void;
 
-  @Prop({ type: Function as () => Function | null })
+  @Prop({ type: Function })
   back!: () => void;
 
   @Prop({ type: Boolean })
@@ -35,9 +35,10 @@ export default class Serif extends Vue {
   nextAction() {
     if ( this.currentIndex < this.serifs.length - 1 ) {
       this.currentIndex++;
+      
     } else {
-      this.$emit('next');
       this.currentIndex = 0;
+      this.$emit('next');
     }
   }
 }

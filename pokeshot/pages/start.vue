@@ -107,8 +107,8 @@ type TStatus = 'greeting' | 'selectGender' | 'registerName' | 'selectPokemon' | 
 export type TScenario = {
   status: TStatus,
   serifs: string[],
-  next: null | (() => void),
-  back: null | (() => void),
+  next: () => void,
+  back: () => void,
   isQuestion: boolean
 }
 
@@ -145,25 +145,25 @@ export default class StartPage extends Vue {
       'これから きみのあいぼうを えらんで たびに でよう'
     ],
     next: this.nextScenario,
-    back: null,
+    back: this.empty,
     isQuestion: false
   }, {
     status: "selectGender",
     serifs: ['そのまえに まずはあなたのことを教えてもらうよ。 あなたは おとこのこ？ それともおんなのこ？'],
-    next: null,
-    back: null,
+    next: this.empty,
+    back: this.empty,
     isQuestion: false
   }, {
     status: "registerName",
     serifs: ['あなたの なまえも 教えてね'],
-    next: null,
-    back: null,
+    next: this.empty,
+    back: this.empty,
     isQuestion: false
   }, {
     status: "selectPokemon",
     serifs: [`${heroModule.hero.name} 次はいよいよ きみのさいしょのポケモンを えらぶときだ。さあ どのポケモンにする？`],
-    next: null,
-    back: null,
+    next: this.empty,
+    back: this.empty,
     isQuestion: false    
   }, {
     status: 'confirm',
@@ -174,14 +174,14 @@ export default class StartPage extends Vue {
   }, {
     status: 'registerNickname',
     serifs: [`${this.selectPokemon?.base.name}に ニックネームをつけてみるかい？`],
-    next: null,
-    back: null,
+    next: this.empty,
+    back: this.empty,
     isQuestion: false
   }, {
     status: 'getFirstPokemon',
     serifs: [`あなたは さいしょの あいぼうとして ${ this.selectPokemon?.base.name } を選んだね`, 'それでは 今から たくさんの冒険を はじめてみよう'],
     next: this.startAdventure,
-    back: null,
+    back: this.empty,
     isQuestion: false
   }];
   currentScenarioIndex = 0;
@@ -202,8 +202,8 @@ export default class StartPage extends Vue {
 
   isQuestion: boolean = false;
 
-  next: () => void = this.empty;
-  back: () => void = this.empty;
+  next: (() => void) | null = this.empty;
+  back: (() => void) | null = this.empty;
 
   empty() {
     // 何もしない
