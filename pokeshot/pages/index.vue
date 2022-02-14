@@ -14,17 +14,21 @@
         <button @click="start">さいしょから</button>
       </div>
     </Screen>
+    
+    <GreetingModal />
   </section>
 </template>
 
 <script lang="ts">
 import Screen from '../component/games/Screen.vue';
+import GreetingModal from '../component/settings/GreetingModal.vue';
 
 import { Component, Vue } from 'vue-property-decorator';
 
 @Component({
   components: {
-    Screen
+    Screen,
+    GreetingModal
   },
 })
 export default class IndexPage extends Vue {
