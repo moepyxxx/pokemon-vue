@@ -12,7 +12,7 @@ export interface IHero {
 }
 
 @Module({ dynamic: true, store, name: "hero" })
-export default class HeroCurrent extends VuexModule {
+export default class Hero extends VuexModule {
   hero: IHero = {
     gender: {
       english: 'girl',

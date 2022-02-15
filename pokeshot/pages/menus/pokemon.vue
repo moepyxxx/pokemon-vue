@@ -1,108 +1,100 @@
 <template>
   <div>
-    <Screen>
-      <div class="wrapper">
-        <div class="pokemons">
-          <div class="first">
-            <NuxtLink to="/pokemon-detail/aaa" class="first-inner back">
-              <div class="base">
-                <div class="img">
-                  <img
-                    :src="first.base.imageUrl"
-                    :alt="first.base.name">
-                </div>
-                <div class="text">
-                  <p class="name">{{ first.nickname }}</p>
-                  <span class="other">
-                    <p class="level">Lv. {{ first.level }}</p>
-                    <p class="gender">
-                      <img
-                        :src="require(
-                          `@/assets/img/game/icon-${first.base.gender === 'オス' ? 'boy' : 'girl'}.svg`
-                        )"
-                        :alt="first.base.gender">
-                    </p>
-                  </span>
-                </div>
-              </div>
-              <div class="status">
-                <div class="v-hp">
-                  HP
-                  <span class="allhp"></span>
-                  <span class="remainhp" :class="remainHpClass(first.remainHp, first.stats.hp)"></span>
-                </div>
-                <div class="n-hp">
-                  <p>{{ first.remainHp }}  /  {{ first.stats.hp }}</p>
-                </div>
-              </div>
-            </NuxtLink>
-          </div>
-          <div class="other">
-            <NuxtLink
-              to="/pokemon-detail/aaa"
-              class="other-inner back"
-              v-for="(other, index) in others"
-              :key="index"
-            >
+    <MenuFlame
+      message="ポケモンを えらんで ください"
+    >
+      <div class="pokemons">
+        <div class="first">
+          <NuxtLink to="/pokemon-detail/aaa" class="first-inner back">
+            <div class="base">
               <div class="img">
                 <img
-                  :src="other.base.imageUrl"
-                  :alt="other.base.name">
+                  :src="first.base.imageUrl"
+                  :alt="first.base.name">
               </div>
-              <div class="base">
-                <p class="name">{{ other.nickname }}</p>
+              <div class="text">
+                <p class="name">{{ first.nickname }}</p>
                 <span class="other">
-                  <p class="level">Lv. {{ other.level }}</p>
+                  <p class="level">Lv. {{ first.level }}</p>
                   <p class="gender">
                     <img
                       :src="require(
-                        `@/assets/img/game/icon-${other.base.gender === 'オス' ? 'boy' : 'girl'}.svg`
+                        `@/assets/img/game/icon-${first.base.gender === 'オス' ? 'boy' : 'girl'}.svg`
                       )"
-                      :alt="other.base.gender"
-                    >
+                      :alt="first.base.gender">
                   </p>
                 </span>
               </div>
-              <div class="status">
-                <div class="v-hp">
-                  HP
-                  <span class="allhp"></span>
-                  <span class="remainhp" :class="remainHpClass(other.remainHp, other.stats.hp)"></span>
-                </div>
-                <div class="n-hp">
-                  <p>{{ other.remainHp }}  /  {{ other.stats.hp }}</p>
-                </div>
+            </div>
+            <div class="status">
+              <div class="v-hp">
+                HP
+                <span class="allhp"></span>
+                <span class="remainhp" :class="remainHpClass(first.remainHp, first.stats.hp)"></span>
               </div>
-            </NuxtLink>
-          </div>
+              <div class="n-hp">
+                <p>{{ first.remainHp }}  /  {{ first.stats.hp }}</p>
+              </div>
+            </div>
+          </NuxtLink>
         </div>
-        <div class="description">
-          <div class="serifs">
-            <p>ポケモンを えらんで ください</p>
-          </div>
-          <button @click="backToField">戻る</button>
+        <div class="other">
+          <NuxtLink
+            to="/pokemon-detail/aaa"
+            class="other-inner back"
+            v-for="(other, index) in others"
+            :key="index"
+          >
+            <div class="img">
+              <img
+                :src="other.base.imageUrl"
+                :alt="other.base.name">
+            </div>
+            <div class="base">
+              <p class="name">{{ other.nickname }}</p>
+              <span class="other">
+                <p class="level">Lv. {{ other.level }}</p>
+                <p class="gender">
+                  <img
+                    :src="require(
+                      `@/assets/img/game/icon-${other.base.gender === 'オス' ? 'boy' : 'girl'}.svg`
+                    )"
+                    :alt="other.base.gender"
+                  >
+                </p>
+              </span>
+            </div>
+            <div class="status">
+              <div class="v-hp">
+                HP
+                <span class="allhp"></span>
+                <span class="remainhp" :class="remainHpClass(other.remainHp, other.stats.hp)"></span>
+              </div>
+              <div class="n-hp">
+                <p>{{ other.remainHp }}  /  {{ other.stats.hp }}</p>
+              </div>
+            </div>
+          </NuxtLink>
         </div>
       </div>
-    </Screen>
+    </MenuFlame>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import Screen from '@/component/games/Screen.vue';
+import MenuFlame from '@/component/games/MenuFlame.vue';
 
 import { getModule } from 'vuex-module-decorators'
 import HandPokemons from "@/store/modules/handPokemons"
-import HeroCurrent from '@/store/modules/heroCurrent';
 import IHandPokemon from '~/interface/IHandPokemon';
 
 @Component({
   components: {
-    Screen
+    MenuFlame
   }
 })
 export default class MenusPokemonPage extends Vue {
-  heroCurrent: HeroCurrent = getModule(HeroCurrent);
   handPokemonsModule: HandPokemons = getModule(HandPokemons);
 
   first: IHandPokemon = this.handPokemonsModule.firstOnHandPokemon;
@@ -126,11 +118,6 @@ export default class MenusPokemonPage extends Vue {
     return [`ratio-${Number(ratio)}`, dangerColor];
   }
 
-  backToField() {
-    const { fieldId, position } = this.heroCurrent.getHeroCurrent;
-    this.$router.push(`/maps/${fieldId}?position=${position}`);
-  }
-
   created() {
     if (!this.first) {
       throw new Error('ポケモンいないよ！');
@@ -141,20 +128,6 @@ export default class MenusPokemonPage extends Vue {
 </script>
 
 <style scoped lang="scss">
-
-p {
-  margin: 0;
-}
-
-.wrapper {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  padding: 32px 60px;
-  background: #467B61;
-}
 
 .pokemons {
   display: flex;
@@ -321,37 +294,6 @@ p {
         }
       }
     }
-  }
-}
-
-.description {
-  position: absolute;
-  bottom: 32px;
-  left: 60px;
-  width: calc(100% - 120px);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  .serifs {
-    width: 75%;
-    border: #1D4A48 solid 4px;
-    background: #fff;
-    padding: 0 30px;
-    border-radius: 12px;
-    p {
-      line-height: 40px;
-    }
-  }
-
-  button {
-    width: calc(25% - 20px);
-    background: #1D4A48;
-    border: #1D4A48 solid 4px;
-    font-weight: bold;
-    border-radius: 12px;
-    line-height: 40px;
-    color: #fff;
   }
 }
 </style>
