@@ -5,7 +5,7 @@
         <span v-for="(field, fieldIndex) in fields" :key="fieldIndex" :class="field.type">
 
           <div v-if="fieldIndex === currentPosition">
-            <img class="hero" :src="require(`~/assets/img/hero/girl-${direction}.gif`)" />
+            <img class="hero" :src="require(`~/assets/img/hero/${hero.getHero.gender.english}-${direction}.gif`)" />
           </div>
 
           <img
@@ -81,8 +81,7 @@ import { TDirection, TField, TFieldObject, TObjectAction, TObjectType } from '..
 import { THuman, THumanAction } from '@/datas/human/types';
 import humans from '@/datas/human/index';
 import { TPosition } from '@/types/position';
-
-const heroCurrentModule = getModule(HeroCurrent);
+import Hero from '~/store/modules/hero';
 
 @Component({
   name: 'MapPage',
@@ -113,6 +112,10 @@ const heroCurrentModule = getModule(HeroCurrent);
 
 export default class MapPage extends Vue {
 
+  // ストア
+  heroCurrentModule: HeroCurrent = getModule(HeroCurrent);
+  hero: Hero = getModule(Hero);
+
   // メニュ系開閉について
   isMenuActive: boolean = false;
   isReportActive: boolean = false;
@@ -124,7 +127,7 @@ export default class MapPage extends Vue {
     col: 12,
     row: 20
   };
-  direction: TDirection = heroCurrentModule.heroCurrent.direction;
+  direction: TDirection = this.heroCurrentModule.heroCurrent.direction;
 
   isPokemonAppear: boolean = false;
 
@@ -301,7 +304,7 @@ export default class MapPage extends Vue {
     const { id, position, direction } = goOtherField;
 
     // 現在地をストアへ保存
-    heroCurrentModule.updateCurrent({
+    this.heroCurrentModule.updateCurrent({
       position,
       fieldId: id,
       direction
@@ -343,8 +346,8 @@ export default class MapPage extends Vue {
   }
 
   openMenuAction(linkPath: string): void {
-    heroCurrentModule.updateCurrent({
-      ...heroCurrentModule.getHeroCurrent,
+    this.heroCurrentModule.updateCurrent({
+      ...this.heroCurrentModule.getHeroCurrent,
       position: this.currentPosition,
       direction: this.direction,
       fieldId: this.$route.params.mapId
@@ -366,8 +369,8 @@ export default class MapPage extends Vue {
 
   async pokemonAppearAction() {
     // 現在地をストアへ保存
-    heroCurrentModule.updateCurrent({
-      ...heroCurrentModule.heroCurrent,
+    this.heroCurrentModule.updateCurrent({
+      ...this.heroCurrentModule.heroCurrent,
       position: this.currentPosition,
       direction: this.direction
     });
