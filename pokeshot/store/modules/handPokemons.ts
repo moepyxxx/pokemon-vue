@@ -4,7 +4,11 @@ import IHandPokemon from '~/interface/IHandPokemon';
 
 @Module({ stateFactory: true, dynamic: true, store, name: "handPokemons" })
 export default class HandPokemons extends VuexModule {
-  pokemons: IHandPokemon[] = [];
+  private pokemons: IHandPokemon[] = [];
+
+  get allPokemons() {
+    return this.pokemons;
+  }
 
   get firstOnHandPokemon() {
     return this.pokemons[0];

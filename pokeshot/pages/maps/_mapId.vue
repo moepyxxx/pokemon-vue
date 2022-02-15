@@ -287,13 +287,27 @@ export default class MapPage extends Vue {
     switch (action.execute) {
       case 'recoverPokemon':
         this.recoverPokemonAction(human, action);
+        break;
       case 'question':
         this.questionAction(human, action);
+        break;
+      case 'report':
+        this.report();
+        const nextAction = human.actions.find(_action => action.nextActionId === _action.nextActionId);
+        if (nextAction) {
+          this.talkAction(human, nextAction);
+        }
+        break;
       case 'talk':
         this.$MapController.humanChangeDirection(this.fieldObjects, this.currentPosition, this.direction, this.position);
         this.talkAction(human, action);
+        break;
     }
 
+  }
+
+  report() {
+    this.$Hero.writeReport();
   }
 
   goOtherFieldAction(goOtherField: {
@@ -356,7 +370,14 @@ export default class MapPage extends Vue {
   }
 
   reportAction() {
-    // レポート処理
+
+    const reporter: THuman | undefined = humans.find(human => human.id === 'reportSystem');
+    if (!reporter) return;
+
+    const question: THumanAction | undefined = reporter.actions.find(action => action.actionId === 'questionreport');
+    if (!question) return;
+
+    this.questionAction(reporter, question);
   }
 
   recoverPokemonAction(human: THuman, action: THumanAction) {

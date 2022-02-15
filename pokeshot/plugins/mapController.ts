@@ -168,7 +168,7 @@ export class MapController {
 
     const nextPosition = this.getNextPosition(currentPosition, heroDirection, position);
     const humanObject: TFieldObject = fieldObjects[nextPosition];
-    if (humanObject.objectType !== 'human') return;
+    if (!humanObject || humanObject.objectType !== 'human') return;
 
     const humanDirection = this.getReverseDirection(heroDirection);
 

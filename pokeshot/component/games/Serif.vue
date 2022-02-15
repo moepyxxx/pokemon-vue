@@ -58,7 +58,8 @@ export default class Serif extends Vue {
   background: #fff;
   border-radius: 12px;
   padding: 10px 20px;
-
+  z-index: 15;
+  
   button {
     display: block;
   }
