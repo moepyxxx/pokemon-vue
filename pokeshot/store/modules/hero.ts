@@ -11,7 +11,7 @@ export interface IHero {
   name: string;
 }
 
-@Module({ dynamic: true, store, name: "hero" })
+@Module({ stateFactory: true, dynamic: true, store, name: "hero" })
 export default class Hero extends VuexModule {
   hero: IHero = {
     gender: {

@@ -8,7 +8,7 @@ export interface IHeroCurrent {
   direction: TDirection;
 }
 
-@Module({ dynamic: true, store, name: "heroCurrent" })
+@Module({ stateFactory: true, dynamic: true, store, name: "heroCurrent" })
 export default class HeroCurrent extends VuexModule {
   heroCurrent: IHeroCurrent = {
     fieldId: '101',

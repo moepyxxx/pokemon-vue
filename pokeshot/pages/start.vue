@@ -113,6 +113,7 @@ export type TScenario = {
 }
 
 @Component({
+  layout: 'index',
   name: 'StartPage',
   components: {
     Screen,

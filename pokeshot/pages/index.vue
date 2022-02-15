@@ -26,6 +26,8 @@ import GreetingModal from '../component/settings/GreetingModal.vue';
 import { Component, Vue } from 'vue-property-decorator';
 
 @Component({
+  name: 'IndexPage',
+  layout: 'index',
   components: {
     Screen,
     GreetingModal

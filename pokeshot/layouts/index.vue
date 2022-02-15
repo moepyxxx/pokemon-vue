@@ -10,9 +10,3 @@
     <p style="text-align: center">@ copyright sato 2022 ( <a href="https://twitter.com/sato_yukashi" target="_blank">Twitter</a> )</p>
   </v-app>
 </template>
-
-<script>
-export default {
-  middleware: 'checkIsGaming'
-}
-</script>

@@ -2,7 +2,7 @@ import {VuexModule, Module, Mutation, Action, getModule} from 'vuex-module-decor
 import store from "@/store/store"
 import IHandPokemon from '~/interface/IHandPokemon';
 
-@Module({ dynamic: true, store, name: "handPokemons" })
+@Module({ stateFactory: true, dynamic: true, store, name: "handPokemons" })
 export default class HandPokemons extends VuexModule {
   pokemons: IHandPokemon[] = [];
 
