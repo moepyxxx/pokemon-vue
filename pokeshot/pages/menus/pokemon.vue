@@ -28,8 +28,8 @@
               <div class="status">
                 <div class="v-hp">
                   HP
-                  <span class="remainhp"></span>
                   <span class="allhp"></span>
+                  <span class="remainhp" :class="remainHpClass(first.remainHp, first.stats.hp)"></span>
                 </div>
                 <div class="n-hp">
                   <p>{{ first.remainHp }}  /  {{ first.stats.hp }}</p>
@@ -66,8 +66,8 @@
               <div class="status">
                 <div class="v-hp">
                   HP
-                  <span class="remainhp"></span>
                   <span class="allhp"></span>
+                  <span class="remainhp" :class="remainHpClass(other.remainHp, other.stats.hp)"></span>
                 </div>
                 <div class="n-hp">
                   <p>{{ other.remainHp }}  /  {{ other.stats.hp }}</p>
@@ -107,6 +107,24 @@ export default class MenusPokemonPage extends Vue {
 
   first: IHandPokemon = this.handPokemonsModule.firstOnHandPokemon;
   others: IHandPokemon[] = this.handPokemonsModule.otherOnHandPokemons;
+
+  remainHpClass(remainHp: number, statshp: number): string[] {
+    const ratio = Math.round(remainHp / statshp * 10);
+
+    let dangerColor = 'd-green';
+    switch(true) {
+      case ratio <= 1:
+        dangerColor = 'd-red';
+        break;
+      case ratio >= 2 && ratio <= 6:
+        dangerColor = 'd-yellow';
+        break;
+      case ratio >= 7:
+        dangerColor = 'd-green'
+        break;
+    }
+    return [`ratio-${Number(ratio)}`, dangerColor];
+  }
 
   backToField() {
     const { fieldId, position } = this.heroCurrent.getHeroCurrent;
@@ -235,7 +253,7 @@ p {
     line-height: 20px;
     padding: 0 12px;
     border-radius: 12px;
-    .remainhp {
+    .allhp {
       position: absolute;
       width: 80%;
       height: 16px;
@@ -244,14 +262,31 @@ p {
       background: #fff;
       right: 2px;
     }
-    .allhp {
+    .remainhp {
       position: absolute;
       width: calc(100% - 20% - 4px);
       height: 12px;
       border-radius: 8px;
       top: 4px;
       left: 20%;
-      background: #309464;
+
+      @for $i from 0 through 10 {
+        &.ratio-#{$i} {
+          width: calc(calc(calc(100% - 20% - 4px) / 10) * #{$i});
+        }
+      }
+
+      &.d-green {
+        background: #309464;
+      }
+
+      &.d-yellow {
+        background: #E5D436;
+      }
+
+      &.d-red {
+        background: #AF0A0A;
+      }
     }
   }
   .n-hp {
