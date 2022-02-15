@@ -73,7 +73,7 @@ import Serif from '../../component/games/Serif.vue';
 import Menu from '../../component/games/Menu.vue';
 
 import { getModule } from 'vuex-module-decorators';
-import HeroCurrent from '~/store/modules/heroCurrent';
+import HeroCurrent, { IHeroCurrent } from '~/store/modules/heroCurrent';
 
 import maps, { TMap } from '../../datas/map/index';
 import IPokemon from '../../config/types/pokemon';
@@ -307,6 +307,13 @@ export default class MapPage extends Vue {
   }
 
   report() {
+    const heroCurrent: IHeroCurrent = {
+      fieldId: this.$route.params.mapId,
+      position: this.currentPosition,
+      direction: this.direction
+    }
+    this.heroCurrentModule.updateCurrent(heroCurrent);
+    
     this.$Hero.writeReport();
   }
 

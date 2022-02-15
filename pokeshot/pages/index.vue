@@ -10,8 +10,8 @@
         <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/255.png" alt="アチャモ">
       </div>
       <div class="command">
-        <button @click="start">つづきから</button>
-        <button @click="start">さいしょから</button>
+        <button @click="continuateStart">つづきから</button>
+        <button @click="resetStart">さいしょから</button>
       </div>
     </Screen>
     
@@ -24,6 +24,11 @@ import Screen from '../component/games/Screen.vue';
 import GreetingModal from '../component/settings/GreetingModal.vue';
 
 import { Component, Vue } from 'vue-property-decorator';
+import HandPokemons from '~/store/modules/handPokemons';
+import { getModule } from 'vuex-module-decorators';
+import Hero from '~/store/modules/hero';
+import HeroCurrent from '~/store/modules/heroCurrent';
+import Game from '~/store/modules/game';
 
 @Component({
   name: 'IndexPage',
@@ -34,8 +39,22 @@ import { Component, Vue } from 'vue-property-decorator';
   },
 })
 export default class IndexPage extends Vue {
-  start() {
-    this.$router.push("/start")
+
+  gameModule: Game = getModule(Game);
+
+  get isReportValid(): boolean {
+    return this.$Hero.isReportValid();
+  }
+
+  resetStart() {
+    this.$Hero.destroyReport();
+    this.$router.push("/start");
+  }
+
+  continuateStart() {
+    const { fieldId, position } = this.$Hero.restoreReport();
+    this.gameModule.gameStart();
+    this.$router.push(`/maps/${fieldId}?position=${position}`)
   }
 }
 

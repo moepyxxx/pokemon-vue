@@ -25,7 +25,11 @@ export class Hero {
   heroModule: HeroStore;
   heroCurrentModule: HeroCurrent;
 
-  constructor(handPokemonsModule: HandPokemons, heroModule: HeroStore, heroCurrentModule: HeroCurrent) {
+  constructor(
+    handPokemonsModule: HandPokemons,
+    heroModule: HeroStore,
+    heroCurrentModule: HeroCurrent,
+  ) {
     this.handPokemonsModule = handPokemonsModule;
     this.heroModule = heroModule;
     this.heroCurrentModule = heroCurrentModule;
@@ -48,5 +52,45 @@ export class Hero {
     localStorage.setItem('pokemons', JSON.stringify(pokemons));
     localStorage.setItem('heroCurrent', JSON.stringify(heroCurrent));
     localStorage.setItem('hero', JSON.stringify(hero));
+  }
+
+  destroyReport() {
+    localStorage.removeItem('pokemons');
+    localStorage.removeItem('heroCurrent');
+    localStorage.removeItem('hero');
+  }
+
+  isReportValid(): boolean {
+    const restoredPokemons = localStorage.getItem('pokemons');
+    const restoredHeroCurrent = localStorage.getItem('heroCurrent');
+    const restoredHero = localStorage.getItem('hero');
+    return restoredPokemons && restoredHeroCurrent && restoredHero ? true : false;
+  }
+
+  restoreReport(): {
+    fieldId: string,
+    position: string
+  } {
+
+    const restoredPokemons = localStorage.getItem('pokemons');
+    const restoredHeroCurrent = localStorage.getItem('heroCurrent');
+    const restoredHero = localStorage.getItem('hero');
+
+    if (!restoredPokemons || !restoredHeroCurrent || !restoredHero) {
+      this.destroyReport();
+      throw new Error('データがこわれてしまいました。最初から始めます');
+    }
+
+    handPokemonsModule.updateOnHandPokemons(JSON.parse(restoredPokemons));
+    heroModule.registerHero(JSON.parse(restoredHero));
+    heroCurrentModule.updateCurrent(JSON.parse(restoredHeroCurrent));
+
+    
+    const { fieldId, position } = heroCurrentModule.heroCurrent;
+
+    return {
+      fieldId,
+      position: position.toString()
+    }
   }
 }
