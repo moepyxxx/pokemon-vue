@@ -3,7 +3,7 @@
     <ul>
       <li><button @click="$emit('openMenu', '/menus/pokemon')">ポケモン</button></li>
       <li><button @click="$emit('openMenu', '/menus/bag')">バッグ</button></li>
-      <li><button @click="$emit('openMenu', '/menus/hero')">もえこ</button></li>
+      <li><button @click="$emit('openMenu', '/menus/hero')">{{ hero.getHero.name }}</button></li>
       <li><button @click="$emit('openReport')">レポート</button></li>
     </ul>
   </section>
@@ -11,9 +11,14 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
+import { getModule } from 'vuex-module-decorators';
+import Hero from '~/store/modules/hero';
 
 @Component
 export default class Menu extends Vue {
+
+  hero: Hero = getModule(Hero);
+
   @Prop({ type: Boolean })
   isMenuActive!: boolean;
 }
