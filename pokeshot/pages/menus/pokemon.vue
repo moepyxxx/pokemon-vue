@@ -7,14 +7,20 @@
             <NuxtLink to="/pokemon-detail/aaa" class="first-inner back">
               <div class="base">
                 <div class="img">
-                  <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/255.png" alt="">
+                  <img
+                    :src="first.base.imageUrl"
+                    :alt="first.base.name">
                 </div>
                 <div class="text">
-                  <p class="name">アチャモ</p>
+                  <p class="name">{{ first.nickname }}</p>
                   <span class="other">
-                    <p class="level">Lv. 10</p>
+                    <p class="level">Lv. {{ first.level }}</p>
                     <p class="gender">
-                      <img :src="require('@/assets/img/game/icon-girl.svg')" alt="アイコン">
+                      <img
+                        :src="require(
+                          `@/assets/img/game/icon-${first.base.gender === 'オス' ? 'boy' : 'girl'}.svg`
+                        )"
+                        :alt="first.base.gender">
                     </p>
                   </span>
                 </div>
@@ -26,22 +32,34 @@
                   <span class="allhp"></span>
                 </div>
                 <div class="n-hp">
-                  <p>42  /  42</p>
+                  <p>{{ first.remainHp }}  /  {{ first.stats.hp }}</p>
                 </div>
               </div>
             </NuxtLink>
           </div>
           <div class="other">
-            <NuxtLink to="/pokemon-detail/aaa" class="other-inner back">
+            <NuxtLink
+              to="/pokemon-detail/aaa"
+              class="other-inner back"
+              v-for="(other, index) in others"
+              :key="index"
+            >
               <div class="img">
-                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/255.png" alt="">
+                <img
+                  :src="other.base.imageUrl"
+                  :alt="other.base.name">
               </div>
               <div class="base">
-                <p class="name">アチャモ</p>
+                <p class="name">{{ other.nickname }}</p>
                 <span class="other">
-                  <p class="level">Lv. 10</p>
+                  <p class="level">Lv. {{ other.level }}</p>
                   <p class="gender">
-                    <img :src="require('@/assets/img/game/icon-girl.svg')" alt="アイコン">
+                    <img
+                      :src="require(
+                        `@/assets/img/game/icon-${other.base.gender === 'オス' ? 'boy' : 'girl'}.svg`
+                      )"
+                      :alt="other.base.gender"
+                    >
                   </p>
                 </span>
               </div>
@@ -52,7 +70,7 @@
                   <span class="allhp"></span>
                 </div>
                 <div class="n-hp">
-                  <p>42  /  42</p>
+                  <p>{{ other.remainHp }}  /  {{ other.stats.hp }}</p>
                 </div>
               </div>
             </NuxtLink>
@@ -62,7 +80,7 @@
           <div class="serifs">
             <p>ポケモンを えらんで ください</p>
           </div>
-          <button>戻る</button>
+          <button @click="backToField">戻る</button>
         </div>
       </div>
     </Screen>
@@ -77,10 +95,7 @@ import { getModule } from 'vuex-module-decorators'
 import HandPokemons from "@/store/modules/handPokemons"
 import HeroCurrent from '@/store/modules/heroCurrent';
 import Hero from '@/store/modules/hero';
-
-const handPokemonsModule = getModule(HandPokemons);
-const heroCurrentModule = getModule(HeroCurrent);
-const heroModule = getModule(Hero);
+import IHandPokemon from '~/interface/IHandPokemon';
 
 @Component({
   components: {
@@ -88,7 +103,21 @@ const heroModule = getModule(Hero);
   }
 })
 export default class MenusPokemonPage extends Vue {
+  HeroCurrent: HeroCurrent = getModule(HeroCurrent);
+  handPokemonsModule: HandPokemons = getModule(HandPokemons);
 
+  first: IHandPokemon = this.handPokemonsModule.firstOnHandPokemon;
+  others: IHandPokemon[] = this.handPokemonsModule.otherOnHandPokemons;
+
+  backToField() {
+
+  }
+
+  created() {
+    if (!this.first) {
+      throw new Error('ポケモンいないよ！');
+    }
+  }
 }
 
 </script>

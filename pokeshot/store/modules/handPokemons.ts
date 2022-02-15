@@ -10,6 +10,10 @@ export default class HandPokemons extends VuexModule {
     return this.pokemons[0];
   }
 
+  get otherOnHandPokemons() : IHandPokemon[] {
+    return this.pokemons.filter((_, index) => index !== 0);
+  }
+
   @Mutation
   public addToOnHandPokemon(pokemon: IHandPokemon) {
     if (this.pokemons.length >= 6) return;
