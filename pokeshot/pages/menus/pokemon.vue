@@ -94,7 +94,6 @@ import Screen from '@/component/games/Screen.vue';
 import { getModule } from 'vuex-module-decorators'
 import HandPokemons from "@/store/modules/handPokemons"
 import HeroCurrent from '@/store/modules/heroCurrent';
-import Hero from '@/store/modules/hero';
 import IHandPokemon from '~/interface/IHandPokemon';
 
 @Component({
@@ -103,14 +102,15 @@ import IHandPokemon from '~/interface/IHandPokemon';
   }
 })
 export default class MenusPokemonPage extends Vue {
-  HeroCurrent: HeroCurrent = getModule(HeroCurrent);
+  heroCurrent: HeroCurrent = getModule(HeroCurrent);
   handPokemonsModule: HandPokemons = getModule(HandPokemons);
 
   first: IHandPokemon = this.handPokemonsModule.firstOnHandPokemon;
   others: IHandPokemon[] = this.handPokemonsModule.otherOnHandPokemons;
 
   backToField() {
-
+    const { fieldId, position } = this.heroCurrent.getHeroCurrent;
+    this.$router.push(`/maps/${fieldId}?position=${position}`);
   }
 
   created() {

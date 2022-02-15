@@ -39,7 +39,8 @@
 
       <Menu
         :isMenuActive="isMenuActive"
-        @reportClick="isReportActive"
+        @openMenu="openMenuAction"
+        @openReport="reportAction"
       />
 
       <Serif
@@ -339,6 +340,20 @@ export default class MapPage extends Vue {
         this.humanAction(human.id, action.nextActionId);
       }
     }
+  }
+
+  openMenuAction(linkPath: string): void {
+    heroCurrentModule.updateCurrent({
+      ...heroCurrentModule.getHeroCurrent,
+      position: this.currentPosition,
+      direction: this.direction,
+      fieldId: this.$route.params.mapId
+    })
+    this.$router.push(linkPath);
+  }
+
+  reportAction() {
+    // レポート処理
   }
 
   recoverPokemonAction(human: THuman, action: THumanAction) {

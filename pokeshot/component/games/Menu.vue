@@ -1,10 +1,10 @@
 <template>
   <section class="menu" v-if="isMenuActive">
     <ul>
-      <li><NuxtLink to="/menus/pokemon">ポケモン</NuxtLink></li>
-      <li><NuxtLink to="/menus/bag">バッグ</NuxtLink></li>
-      <li><NuxtLink to="/menus/hero">もえこ</NuxtLink></li>
-      <li><NuxtLink to="" @click="console.log('hoge')">レポート</NuxtLink></li>
+      <li><button @click="$emit('openMenu', '/menus/pokemon')">ポケモン</button></li>
+      <li><button @click="$emit('openMenu', '/menus/bag')">バッグ</button></li>
+      <li><button @click="$emit('openMenu', '/menus/hero')">もえこ</button></li>
+      <li><button @click="$emit('openReport')">レポート</button></li>
     </ul>
   </section>
 </template>
