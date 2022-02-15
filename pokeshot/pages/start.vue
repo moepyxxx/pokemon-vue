@@ -86,20 +86,20 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 
-import Screen from '../component/games/Screen.vue'
-import Serif from '../component/games/Serif.vue'
-import { getModule } from 'vuex-module-decorators'
-import HandPokemons from "../store/modules/handPokemons"
-import { pokemonSelectableInFirst } from "../datas/pokemonSelectableInFirst"
-import IWildPokemon from '../interface/IWildPokemon'
-import IHandPokemon from '../interface/IHandPokemon'
-import HeroCurrent, { IHeroCurrent } from '~/store/modules/heroCurrent';
-import { THeroGender } from '~/store/modules/hero';
-import Hero from '~/store/modules/hero';
+import Screen from '@/component/games/Screen.vue'
+import Serif from '@/component/games/Serif.vue'
 
-const handPokemonsModule = getModule(HandPokemons);
-const heroCurrentModule = getModule(HeroCurrent);
-const heroModule = getModule(Hero);
+import { getModule } from 'vuex-module-decorators'
+import HandPokemons from "@/store/modules/handPokemons"
+import HeroCurrent, { IHeroCurrent } from '@/store/modules/heroCurrent';
+import { THeroGender } from '@/store/modules/hero';
+import Hero from '@/store/modules/hero';
+import Game from '@/store/modules/game';
+
+import { pokemonSelectableInFirst } from "@/datas/pokemonSelectableInFirst"
+
+import IWildPokemon from '@/interface/IWildPokemon'
+import IHandPokemon from '@/interface/IHandPokemon'
 
 type TStatus = 'greeting' | 'selectGender' | 'registerName' | 'selectPokemon' | 'confirm' | 'registerNickname' | 'getFirstPokemon';
 
@@ -134,6 +134,11 @@ export type TScenario = {
   }
 })
 export default class StartPage extends Vue {
+
+  handPokemonsModule: HandPokemons = getModule(HandPokemons);
+  heroCurrentModule: HeroCurrent = getModule(HeroCurrent);
+  heroModule: Hero = getModule(Hero);
+  gameModule: Game = getModule(Game);
 
   pokemons: IHandPokemon[] = [];
   pokemonNickname: string = '';
@@ -208,7 +213,7 @@ export default class StartPage extends Vue {
         ];
       case 'selectPokemon':
         return [
-          `${heroModule.hero.name} 次はいよいよ きみのさいしょのポケモンを えらぶときだ。さあ どのポケモンにする？`
+          `${this.heroModule.hero.name} 次はいよいよ きみのさいしょのポケモンを えらぶときだ。さあ どのポケモンにする？`
         ];
       case 'confirm':
         return [
@@ -236,16 +241,16 @@ export default class StartPage extends Vue {
 
   registerGender(gender: THeroGender) {
     this.selectedGender = gender;
-    heroModule.registerHero({
-      ...heroModule.hero,
+    this.heroModule.registerHero({
+      ...this.heroModule.hero,
       gender
     })
     this.nextScenario();
   }
 
   registerHeroName() {
-    heroModule.registerHero({
-      ...heroModule.hero,
+    this.heroModule.registerHero({
+      ...this.heroModule.hero,
       name: this.heroName
     })
     this.nextScenario();
@@ -257,8 +262,8 @@ export default class StartPage extends Vue {
   }
 
   registerPokemonNickname() {
-    heroModule.registerHero({
-      ...heroModule.hero,
+    this.heroModule.registerHero({
+      ...this.heroModule.hero,
       name: this.heroName
     })
     this.nextScenario();
@@ -271,7 +276,7 @@ export default class StartPage extends Vue {
     this.pokemonNickname = isNickname ? this.pokemonNickname : this.selectPokemon.base.name;
 
     const onHandPokemon: IHandPokemon = this.$Poke.getHandPokemon(this.selectPokemon, this.pokemonNickname);
-    handPokemonsModule.addToOnHandPokemon(onHandPokemon);
+    this.handPokemonsModule.addToOnHandPokemon(onHandPokemon);
 
     this.nextScenario();
   }
@@ -283,7 +288,7 @@ export default class StartPage extends Vue {
       position: 163,
       direction: 'below'
     }
-    heroCurrentModule.updateCurrent(firstHeroCurrent);
+    this.heroCurrentModule.updateCurrent(firstHeroCurrent);
   }
 
   nextScenario() {
@@ -298,7 +303,10 @@ export default class StartPage extends Vue {
 
   startAdventure() {
     this.setFirstHeroCurrent();
-    const { fieldId, position } = heroCurrentModule.heroCurrent;
+    this.gameModule.gameStart();
+    console.log(this.gameModule.game);
+
+    const { fieldId, position } = this.heroCurrentModule.heroCurrent;
     this.$router.push(`/maps/${fieldId}?position=${position}`);
   }
 }

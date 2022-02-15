@@ -2,7 +2,9 @@ import { Middleware } from '@nuxt/types'
 import store from '@/store/store'
 
 const checkIsGaming: Middleware = ({ redirect }) => {
-  if (!store.state.game.getIsGaming) {
+  const isGaming = store.state.game.game.gaming;
+  
+  if (!isGaming) {
     redirect('/');
   } 
 }
