@@ -14,6 +14,10 @@
       <button class="start" @click="$emit('controllStart')">START</button>
     </div>
 
+    <div class="bottom">
+      <NuxtLink class="power" to="/end">POWER</NuxtLink>
+    </div>
+
   </div>
 </template>
 
@@ -24,6 +28,7 @@
   width: 700px;
   margin: 40px auto 0;
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: center;
 
@@ -31,6 +36,11 @@
     width: 132px;
     height: 132px;
     position: relative;
+  }
+  
+  .bottom {
+    margin-top: 24px;
+    width: 100%;
   }
 
   .left {
@@ -121,6 +131,21 @@
     bottom: 0;
     transition: .5s all;
     font-weight: bold;
+
+    &:active {
+      box-shadow: none;
+      transform: translateY(4px) translateX(-50%);
+    }
+  }
+
+  .power {
+    background: rgb(52, 54, 56);
+    padding: 4px 16px;
+    box-shadow: 0 4px 0 0 rgb(24, 27, 27);
+    border-radius: 12px;
+    color: #fff;
+    text-decoration: none;
+    transition: .5s all;
 
     &:active {
       box-shadow: none;

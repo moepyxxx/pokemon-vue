@@ -304,7 +304,6 @@ export default class StartPage extends Vue {
   startAdventure() {
     this.setFirstHeroCurrent();
     this.gameModule.gameStart();
-    console.log(this.gameModule.game);
 
     const { fieldId, position } = this.heroCurrentModule.heroCurrent;
     this.$router.push(`/maps/${fieldId}?position=${position}`);
