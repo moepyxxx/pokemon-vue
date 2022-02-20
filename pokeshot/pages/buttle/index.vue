@@ -74,7 +74,7 @@ type TController = {
 
     // バトル展開
     const opponent = ctx.$ButtleSys.prepareButtleRequired(wildPokemon);
-    const pokemons = handPokemonsModule.pokemons;
+    const pokemons = handPokemonsModule.allPokemons;
     const onHand = ctx.$ButtleSys.prepareButtleRequired(_.cloneDeep(pokemons[0]));
 
     const serifs = [

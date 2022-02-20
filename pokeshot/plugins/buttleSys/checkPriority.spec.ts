@@ -26,6 +26,7 @@ describe('ButtleSys.checkPriority()', () => {
       specialDefense: 50,
       speed: speedDefault
     },
+    remainHp: 45,
     moves:[{
       id: 1,
       name: 'たいあたり',
